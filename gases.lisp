@@ -4,27 +4,9 @@
 
 ;;; "gases" goes here. Hacks and glory await!
 
-
-*N2*	          0.0003
-*CO2*	          0.0022
-*C1*	          0.7374
-*C2*	          0.0593
-*C3*	          0.1179
-*iC4*	          0.0131
-*nC4*	          0.0379
-*iC5*	          0.0130
-*nC5*	          0.0139
-*nC6*	          0.0017
-*Mcyclo_C5*	  0.0004
-*Cyclo_C6*	  0.0002
-*nC7*	          0.0001
-*Mcyclo_C6*	  0.0001
-*H2O*	          0.0027
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-
-
+(defun μ (x)
+  "Возвращает мольную массу компонента кг/моль"
+  (fourth x))
 
 (defun μCp (x temp)
   "Возвращает мольную изобарную теплоемкость в ккал/(моль*К)"
@@ -39,29 +21,67 @@
 
 (defun Cp (x temp)
   "Возвращает массовую изобарную теплоемкость в ккал/(кг*К)"
-  (let ((μ (fourth x)))
+  (let ((μ (μ x)))
     (/ (μCp x temp) μ 1000.0)))
 
 (defun Cv (x temp)
     "Возвращает массовую изохорную теплоемкость в ккал/(моль*К)"
-  (let ((μ (fourth x)))
+  (let ((μ (μ x)))
     (/ (μCv x temp) μ 1000.0)))
 
 (defun k (x temp)
   (/  (Cp x temp) (Cv x temp)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defun μ-mixture (m-stuff)
+  "Возвращает мольную массу компонента кг/моль"
+  "Возвращает молекулярную массу  [ккал/(кг*К)] для смеси газов m-stuff при температере temp[К].
+Пример использования:
+(Cp-mixture *running-gas* 373) => 0.5388392"
+  (let ((summ-ri-μi 0))
+    (mapcar
+     #'(lambda (el)
+	 (let
+	     ((x-i (first el))
+	      (r-i (second el)))
+	   (setf summ-ri-μi (+ summ-ri-μi (* r-i (μ x-i))))))
+     m-stuff)
+     summ-ri-μi))
 
-(k *H2O* 573)
+(defun Cp-mixture (m-stuff temp)
+  "Возвращает массовую изобарную теплоемкость [ккал/(кг*К)] для смеси газов m-stuff при температере temp[К].
+Пример использования:
+(Cp-mixture *running-gas* 373) => 0.5388392"
+  (let ((summ-ri-μi-cpi 0)
+	(summ-ri-μi 0))
+    (mapcar
+     #'(lambda (el)
+	 (let
+	     ((x-i (first el))
+	      (r-i (second el)))
+	   (setf summ-ri-μi-cpi (+ summ-ri-μi-cpi (* r-i (μ x-i) (Cp x-i temp)))
+		 summ-ri-μi (+ summ-ri-μi (* r-i (μ x-i))))))
+     m-stuff)
+    (/ summ-ri-μi-cpi summ-ri-μi)))
 
-(Cp *C1* 373)
+(defun Cv-mixture (m-stuff temp)
+    "Возвращает массовую изохорную теплоемкость [ккал/(кг*К)] для смеси газов m-stuff при температере temp[К].
+Пример использования:
+(Cv-mixture *running-gas* 373) => 0.45559332"
+  (let ((summ-ri-μi-cpi 0)
+	(summ-ri-μi 0))
+    (mapcar
+     #'(lambda (el)
+	 (let
+	     ((x-i (first el))
+	      (r-i (second el)))
+	   (setf summ-ri-μi-cpi (+ summ-ri-μi-cpi (* r-i (μ x-i) (Cv x-i temp)))
+		 summ-ri-μi (+ summ-ri-μi (* r-i (μ x-i))))))
+     m-stuff)
+    (/ summ-ri-μi-cpi summ-ri-μi)))
 
-(Cv *C1* 373)
-
-(mapcar
- #'(lambda (el)
-     (list el (Cp '("С1" 3.381 18.044 -4.000) (+ 273 el)))
-     
-
-     )
- '(0 100 200 300 400 500 600 700 800 900 1000))
+(defun k-mixture (m-stuff temp)
+  "Возвращает коэффициент адиабаты для смеси газов m-stuff при температере temp[К]."
+  (/ (Cp-mixture m-stuff temp)
+     (Cv-mixture m-stuff temp)))

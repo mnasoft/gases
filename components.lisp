@@ -1,4 +1,4 @@
-s;;;; gases.lisp
+;;;; components.lisp
 
 (in-package #:gases)
 
@@ -9,7 +9,7 @@ s;;;; gases.lisp
   " Вода H2O (+ (* 16 1) 2)")
 
 (defparameter *N2*
-  '(6.4492 1.4125  -0.0807 0.014)
+  '(6.4492 1.4125  -0.0807 0.028)
   " Азот N2 (* 14 2)")
 
 (defparameter *CO2*

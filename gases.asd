@@ -6,5 +6,7 @@
   :license "Specify license here"
   :serial t
   :components ((:file "package")
-               (:file "gases")))
-
+	       (:file "components")
+               (:file "gases")
+	       (:file "running-gas")
+	       (:file "stopping-gas")))
