@@ -5,7 +5,7 @@
 ;;; "gases" goes here. Hacks and glory await!
 
 (defparameter *running-gas*
-  '(
+  (list
     (list *N2*	          0.0003)
     (list *CO2*	          0.0022)
     (list *C1*	          0.7374)
