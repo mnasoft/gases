@@ -20,3 +20,11 @@
 	(list *nC7*	          0.0000)
 	(list *Mcyclo_C6*	  0.0000)
 	(list *H2O*	          0.0024)))
+
+(mapcar
+ #'(lambda (el)
+     (format t "<tr><td>~A<td><td>~A<td><td>~A<td></tr>~%"
+	     (molecule-name-ru (first el))
+	     (molecule-name-en-short (first el))
+	     (second el)))
+ *stopping-gas*)

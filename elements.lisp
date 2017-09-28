@@ -1,0 +1,72 @@
+;;;; elements.lisp
+
+(in-package #:gases)
+
+;;; "gases" goes here. Hacks and glory await!
+
+(defclass molecule ()
+  ((molecule-name-ru       :accessor molecule-name-ru       :initarg :molecule-name-ru       :initform "" :documentation "Обозначение русскоязычное")
+   (molecule-name-en       :accessor molecule-name-en       :initarg :molecule-name-en       :initform "" :documentation "Обозначение англоязычное")
+   (molecule-name-en-short :accessor molecule-name-en-short :initarg :molecule-name-en-short :initform "" :documentation "Короткое англоязычное обозначение")
+   (molecule-smile         :accessor molecule-name-en       :initarg :molecule-name-en       :initform "" :documentation "Smile")
+   (molecule-mass          :accessor molecule-mass          :initarg :molecule-mass          :initform "" :documentation "Молекулярная масса кг/моль")
+   (molecule-μcp-a-b-c     :accessor molecule-μcp-a-b-c     :initarg :molecule-μcp-a-b-c     :initform "" :documentation "Коэффициенты для расчета мольной теплоемкости ккал/(моль*К)")
+   (molecule-formula       :accessor molecule-formula       :initarg :molecule-formula       :initform "" :documentation "Химическая формула")
+   (molecule-note          :accessor molecule-note          :initarg :molecule-note          :initform "" :documentation "Примечание")
+   )
+  (:documentation "Представляет молекулу."))
+
+(defmethod print-object :before ((x molecule) s) (format s " #molecule(~S ~S ~S ~S ~S ~S" (molecule-name-en-short x) (molecule-name-ru x) (molecule-μcp-a-b-c x) (molecule-mass x) (molecule-formula x) (molecule-note x)))
+(defmethod print-object         ((x molecule) s) (format s "" ))
+(defmethod print-object :after  ((x molecule) s) (format s ")" ))
+
+(progn
+  (defparameter *Air*          (make-instance 'molecule :molecule-name-en-short "Air"          :molecule-μcp-a-b-c '( 6.557 1.477 -0.2148  )    :molecule-mass 0.02896      :molecule-name-ru "Воздух"              :molecule-formula "Воздух"     :molecule-note "0.02896"))
+  (defparameter *NH3*          (make-instance 'molecule :molecule-name-en-short "NH3"          :molecule-μcp-a-b-c '( 6.086 8.812 -1.506  )     :molecule-mass 0.0170306    :molecule-name-ru "Аммиак"              :molecule-formula "NH3"        :molecule-note "(+ 14 3)"))
+  (defparameter *Br2*          (make-instance 'molecule :molecule-name-en-short "Br2"          :molecule-μcp-a-b-c '( 8.4228 0.9739 -0.3555  )  :molecule-mass 0.159808     :molecule-name-ru "Бром"                :molecule-formula "Br2"        :molecule-note "(* 79.904 2)"))
+  (defparameter *CO2*          (make-instance 'molecule :molecule-name-en-short "CO2"          :molecule-μcp-a-b-c '( 6.214 10.396 -3.545  )    :molecule-mass 0.04401      :molecule-name-ru "Двуокись углерода"   :molecule-formula "CO2"        :molecule-note "(+ (* 12 1) (* 16 2))"))
+  (defparameter *CO*           (make-instance 'molecule :molecule-name-en-short "CO"           :molecule-μcp-a-b-c '( 6.420 1.665 -0.196  )     :molecule-mass 0.02801      :molecule-name-ru "Окись углерода"      :molecule-formula "CO"         :molecule-note "(+ (* 12 1) (* 16 1))"))
+  (defparameter *Cl2*          (make-instance 'molecule :molecule-name-en-short "Cl2"          :molecule-μcp-a-b-c '( 7.5755 2.4244 -0.9650  )  :molecule-mass 0.070903     :molecule-name-ru "Хлор"                :molecule-formula "Cl2"        :molecule-note "(+ 35.446 35.457)"))
+  (defparameter *H2*           (make-instance 'molecule :molecule-name-en-short "H2"           :molecule-μcp-a-b-c '( 6.9469 -0.1999 0.4808  )  :molecule-mass 0.0020159502 :molecule-name-ru "Водород"             :molecule-formula "H2"         :molecule-note "(+ 1.00784 1.00811)"))
+  (defparameter *HBr*          (make-instance 'molecule :molecule-name-en-short "HBr"          :molecule-μcp-a-b-c '( 5.5776 0.9549 0.1581  )   :molecule-mass 0.08091      :molecule-name-ru "Бромистый водород"   :molecule-formula "HBr"        :molecule-note "80.91"))
+  (defparameter *HCl*          (make-instance 'molecule :molecule-name-en-short "HCl"          :molecule-μcp-a-b-c '( 6.732 0.4325 0.3697  )    :molecule-mass 0.0364606    :molecule-name-ru "Хлористый водород"   :molecule-formula "HCl"        :molecule-note "36.46061"))
+  (defparameter *H2S*          (make-instance 'molecule :molecule-name-en-short "H2S"          :molecule-μcp-a-b-c '( 6.662 5.134 -0.854  )     :molecule-mass 0.034082     :molecule-name-ru "Сероводород"         :molecule-formula "H2S"        :molecule-note "34.082"))
+  (defparameter *N2*           (make-instance 'molecule :molecule-name-en-short "N2"           :molecule-μcp-a-b-c '( 6.4492 1.4125 -0.0807  )  :molecule-mass 0.02801371   :molecule-name-ru "Азот"                :molecule-formula "N2"         :molecule-note "(+ 14.00643 14.00728)"))
+  (defparameter *NO*           (make-instance 'molecule :molecule-name-en-short "NO"           :molecule-μcp-a-b-c '( 6.440 2.069 -0.4206  )    :molecule-mass 0.02801371   :molecule-name-ru "Оксид азота"         :molecule-formula "NO"         :molecule-note "30.0061"))
+  (defparameter *N2O*          (make-instance 'molecule :molecule-name-en-short "N2O"          :molecule-μcp-a-b-c '( 6.529 10.515 -3.571  )    :molecule-mass 0.0440128    :molecule-name-ru "Закись азота"        :molecule-formula "N2O"        :molecule-note "44.0128"))
+  (defparameter *O2*           (make-instance 'molecule :molecule-name-en-short "O2"           :molecule-μcp-a-b-c '( 6.0954 3.2533 -1.0171  )  :molecule-mass 0.02801371   :molecule-name-ru "Кислород"            :molecule-formula "O2"         :molecule-note "O2 (+ 15.99903 15.99977)"))
+  (defparameter *PH3*          (make-instance 'molecule :molecule-name-en-short "PH3"          :molecule-μcp-a-b-c '( 4.496 14.372 -4.072  )    :molecule-mass 0.03400      :molecule-name-ru "Фосфин"              :molecule-formula "PH3"        :molecule-note "34.00"))
+  (defparameter *SO2*          (make-instance 'molecule :molecule-name-en-short "SO2"          :molecule-μcp-a-b-c '( 7.116 9.512 -3.511  )     :molecule-mass 0.0640540    :molecule-name-ru "Двуокись серы"       :molecule-formula "SO2"        :molecule-note "64.054"))
+  (defparameter *SO3*          (make-instance 'molecule :molecule-name-en-short "SO3"          :molecule-μcp-a-b-c '( 6.077 23.537 -9.687  )    :molecule-mass 0.08006      :molecule-name-ru "Серный ангидрид"     :molecule-formula "SO3"        :molecule-note "80.06"))
+  (defparameter *H2O*          (make-instance 'molecule :molecule-name-en-short "H2O"          :molecule-μcp-a-b-c '( 7.256 2.298 0.283  )      :molecule-mass 0.01801528   :molecule-name-ru "Вода"                :molecule-formula "H2O"        :molecule-note "!!! (+ (* 16 1) 2)"))
+  
+  (defparameter *C1*           (make-instance 'molecule :molecule-name-en-short "C1"           :molecule-μcp-a-b-c '( 3.381 18.044 -4.300  )    :molecule-mass 0.01604      :molecule-name-ru "Метан"               :molecule-formula "CH4"        :molecule-note "!!! (+ (* 12 1) 4)" ))
+  (defparameter *C2*           (make-instance 'molecule :molecule-name-en-short "C2"           :molecule-μcp-a-b-c '( 2.247 38.201 -11.049  )   :molecule-mass 0.03007      :molecule-name-ru "Этан"                :molecule-formula "C2H6"       :molecule-note "(+ (* 12 2) 6)"))
+  (defparameter *C3*           (make-instance 'molecule :molecule-name-en-short "C3"           :molecule-μcp-a-b-c '( 2.410 57.195 -17.533  )   :molecule-mass 0.04410      :molecule-name-ru "Пропан"              :molecule-formula "C3H8"       :molecule-note "(+ (* 12 3) 8)"))
+  (defparameter *nC4*          (make-instance 'molecule :molecule-name-en-short "nC4"          :molecule-μcp-a-b-c '( 4.453 72.270 -22.214  )   :molecule-mass 0.05812      :molecule-name-ru "н-Бутан"             :molecule-formula "C4H10"      :molecule-note "(+ (* 12 4) 10)"))
+  (defparameter *iC4*          (make-instance 'molecule :molecule-name-en-short "iC4"          :molecule-μcp-a-b-c '( 3.332 75.214 -23.734  )   :molecule-mass 0.05812      :molecule-name-ru "2-Метил-Пропан"      :molecule-formula "C4H10"      :molecule-note "изо-Бутан (+ (* 12 4) 10)"))
+
+  (defparameter *nC5*          (make-instance 'molecule :molecule-name-en-short "nC5"          :molecule-μcp-a-b-c '( 5.910 88.449 -27.388  )   :molecule-mass 0.07215      :molecule-name-ru "н-Пентан"            :molecule-formula "C5H12"      :molecule-note "(+ (* 12 5) 12)"))
+  (defparameter *iC5*          (make-instance 'molecule :molecule-name-en-short "iC5"          :molecule-μcp-a-b-c '( 5.910 88.449 -27.388  )   :molecule-mass 0.07215      :molecule-name-ru "изо-Пентан"          :molecule-formula "C5H12"      :molecule-note "molecule-μcp-a-b-c приняты по н-Пентану (+ (* 12 5) 12)")) 
+
+  (defparameter *nC6*          (make-instance 'molecule :molecule-name-en-short "C6"          :molecule-μcp-a-b-c '( 7.477 104.422 -32.471  )  :molecule-mass 0.08617848   :molecule-name-ru "н-Гексан"            :molecule-formula "C6H14"      :molecule-note "(+ (* 12 6) 14)"))
+  (defparameter *nC7*          (make-instance 'molecule :molecule-name-en-short "C7"          :molecule-μcp-a-b-c '( 9.055 120.352 -37.528  )  :molecule-mass 0.10021      :molecule-name-ru "н-Гептан"            :molecule-formula "C7H16"      :molecule-note "(+ (* 12 7) 16)"))
+  (defparameter *nC8*          (make-instance 'molecule :molecule-name-en-short "C8"          :molecule-μcp-a-b-c '(10.626 136.298 -42.592  )  :molecule-mass 0.11423      :molecule-name-ru "н-Октан"             :molecule-formula "C8H18"      :molecule-note "(+ (* 12 8) 18)"))
+  (defparameter *C2H4*         (make-instance 'molecule :molecule-name-en-short "C2H4"         :molecule-μcp-a-b-c '( 2.830 28.601 -8.726  )    :molecule-mass 0.02805      :molecule-name-ru "Этилен"              :molecule-formula "C2H4"       :molecule-note "28.05"))
+  (defparameter *C3H6*         (make-instance 'molecule :molecule-name-en-short "C3H6"         :molecule-μcp-a-b-c '( 3.253 45.116 -13.740  )   :molecule-mass 0.04208      :molecule-name-ru "Пропилен"            :molecule-formula "C3H6"       :molecule-note "42.08"))
+  (defparameter *1-C4H8*       (make-instance 'molecule :molecule-name-en-short "1-C4H8"       :molecule-μcp-a-b-c '( 5.132 61.760 -19.322  )   :molecule-mass 0.05611      :molecule-name-ru "1-Бутен"             :molecule-formula "C4H8"       :molecule-note "56.11"))
+  (defparameter *cys-2-C4H8*   (make-instance 'molecule :molecule-name-en-short "cys-2-C4H8"   :molecule-μcp-a-b-c '( 1.625 64.836 -20.047  )   :molecule-mass 0.05611      :molecule-name-ru "цис-2-Бутен"         :molecule-formula "C4H8"       :molecule-note "56.11"))
+  (defparameter *trans-2-C4H8* (make-instance 'molecule :molecule-name-en-short "trans-2-C4H8" :molecule-μcp-a-b-c '( 4.967 59.961 -18.147  )   :molecule-mass 0.05611      :molecule-name-ru "транс-2-Бутен"       :molecule-formula "C4H8"       :molecule-note "56.11"))
+  (defparameter *C2H2*         (make-instance 'molecule :molecule-name-en-short "C2H2"         :molecule-μcp-a-b-c '( 7.331 12.622 -3.886  )    :molecule-mass 0.026038     :molecule-name-ru "Ацетилен"            :molecule-formula "C2H4"       :molecule-note "26.038"))
+  (defparameter *C3H4*         (make-instance 'molecule :molecule-name-en-short "C3H4"         :molecule-μcp-a-b-c '( 6.334 30.990 -9.457  )    :molecule-mass 0.04006      :molecule-name-ru "Пропин"              :molecule-formula "C3H6"       :molecule-note "40.06"))     
+  (defparameter *2-C4H6*       (make-instance 'molecule :molecule-name-en-short "2-C4H6"       :molecule-μcp-a-b-c '( 5.700 48.207 -14.479  )   :molecule-mass 0.05409      :molecule-name-ru "2-Бутин"             :molecule-formula "C4H8"       :molecule-note "54.09"))
+  (defparameter *Бензол*       (make-instance 'molecule :molecule-name-en-short "Бензол"       :molecule-μcp-a-b-c '(-0.409 77.621 -26.429  )   :molecule-mass 0.07811      :molecule-name-ru "Бензол"              :molecule-formula "C6H6"       :molecule-note "78.11"))           
+  (defparameter *Толуол*       (make-instance 'molecule :molecule-name-en-short "Толуол"       :molecule-μcp-a-b-c '( 0.576 93.593 -31.227  )   :molecule-mass 0.09214      :molecule-name-ru "Толуол"              :molecule-formula "CH3-C6H6"   :molecule-note "92.14"))
+  (defparameter *Стирол*       (make-instance 'molecule :molecule-name-en-short "Стирол"       :molecule-μcp-a-b-c '( 4.074 99.731 -33.108  )   :molecule-mass 0.10415      :molecule-name-ru "Стирол"              :molecule-formula "CH2=C-C6H6" :molecule-note "104.15"))
+  (defparameter *Cyclo_C5*     (make-instance 'molecule :molecule-name-en-short "Cyclo_C5"     :molecule-μcp-a-b-c '(-5.763 97.377 -31.328  )   :molecule-mass 0.0701       :molecule-name-ru "Циклопентан"         :molecule-formula "C5H10"      :molecule-note "(+ (* 12 5) 10)"))
+  (defparameter *Cyclo_C6*     (make-instance 'molecule :molecule-name-en-short "Cyclo_C6"     :molecule-μcp-a-b-c '(-7.701 125.675 -41.584  )  :molecule-mass 0.08416      :molecule-name-ru "Циклогексан"         :molecule-formula "C6H12"      :molecule-note "84.16 (+ (* 12 6) 12)"))
+  (defparameter *Mcyclo_C5*    (make-instance 'molecule :molecule-name-en-short "Mcyclo_C5"    :molecule-μcp-a-b-c '(-7.701 125.675 -41.584  )  :molecule-mass 0.08416      :molecule-name-ru "метил-Цеклопентан"   :molecule-formula "CH3-C5H9"   :molecule-note "принят по Циклогексану 84.16 (+ (* 12 6) 12)"))
+  (defparameter *Mcyclo_C6*    (make-instance 'molecule :molecule-name-en-short "Mcyclo_C6"    :molecule-μcp-a-b-c '( -4.624 140.877 -46.698  ) :molecule-mass 0.09819      :molecule-name-ru "метил-Цеклогексан"   :molecule-formula "CH3-C6H11"  :molecule-note "98.19 (+ (* 12 7) 14)"))
+  )
+
+
