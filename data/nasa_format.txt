@@ -1,0 +1,47 @@
+https://www.grc.nasa.gov/www/CEAWeb/
+
+http://combustion.berkeley.edu/gri_mech/data/nasa_plnm.html
+
+The NASA polynomials have the form:
+
+    Cp/R = a1 + a2 T + a3 T^2 + a4 T^3 + a5 T^4
+    
+    H/RT = a1 + a2 T /2 + a3 T^2 /3 + a4 T^3 /4 + a5 T^4 /5 + a6/T
+    
+    S/R  = a1 lnT + a2 T + a3 T^2 /2 + a4 T^3 /3 + a5 T^4 /4 + a7
+
+where a1, a2, a3, a4, a5, a6, and a7 are the numerical coefficients supplied in NASA thermodynamic files. The first 7 numbers starting on the second line of each species entry (five of the second line and the first two of the third line) are the seven coefficients (a1 through a7, respectively) for the high-temperature range (above 1000 K, the upper boundary is specified on the first line of the species entry). The following seven numbers are the coefficients (a1 through a7, respectively) for the low-temperature range (below 1000 K, the lower boundary is specified on the first line of the species entry).
+
+H in the above equation is defined as
+
+    H(T) = Delta Hf(298) + [ H(T) - H(298) ]
+
+so that, in general, H(T) is not equal to Delta Hf(T) and one needs to have the data for the reference elements to calculate Delta Hf(T).
+
+|See GRI-Mech thermodynamic values|
+To find out more about NASA polynomials you can consult the report by Alex Burcat 'Thermochemical Data for Combustion Calculations', Chapter 8 of Combustion Chemistry, W.C. Gardiner, Ed, Springer-Verlag, New York, 1984; '1994 Ideal Gas Thermodynamic Data for Combustion and Air- Pollution Use', Technion Report TAE 697, December 1993, by A. Burcat and B. McBride; or 'Coefficients for Calculating Thermodynamic and Transport Properties of Individual Species', NASA Report TM-4513, by B.J. McBride, S. Gordon and M.A. Reno, October 1993. Alex can be contacted by Internet at aer0201@technion.technion.ac.il. If you use the Sandia data base usually supplied with Chemkin you may get output that is significantly different. 
+
+
+thermo                                                                          
+   200.000  1000.000  6000.000 20000.000   9/09/04
+CH4               Gurvich,1991 pt1 p44 pt2 p36.                                 
+ 2 g 8/99 C   1.00H   4.00    0.00    0.00    0.00 0   16.0424600     -74600.000
+    200.000   1000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0        10016.202
+-1.766850998D+05 2.786181020D+03-1.202577850D+01 3.917619290D-02-3.619054430D-05
+ 2.026853043D-08-4.976705490D-12                -2.331314360D+04 8.904322750D+01
+   1000.000   6000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0        10016.202
+ 3.730042760D+06-1.383501485D+04 2.049107091D+01-1.961974759D-03 4.727313040D-07
+-3.728814690D-11 1.623737207D-15                 7.532066910D+04-1.219124889D+02
+C2H4              TRC(4/88) w2600. Chao,1975. Knippers,1985.                    
+ 2 g 1/00 C   2.00H   4.00    0.00    0.00    0.00 0   28.0531600      52500.000
+    200.000   1000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0        10518.689
+-1.163605836D+05 2.554851510D+03-1.609746428D+01 6.625779320D-02-7.885081860D-05
+ 5.125224820D-08-1.370340031D-11                -6.176191070D+03 1.093338343D+02
+   1000.000   6000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0        10518.689
+ 3.408763670D+06-1.374847903D+04 2.365898074D+01-2.423804419D-03 4.431395660D-07
+-4.352683390D-11 1.775410633D-15                 8.820429380D+04-1.371278108D+02
+END PRODUCTS                                                                    
+END REACTANTS 
+
+
+https://cearun.grc.nasa.gov/cea/index_ds.html 
