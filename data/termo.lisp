@@ -36,6 +36,7 @@ OCCN              Cyanooxomethyl radical. Dorofeeva,2001.
 -3.945148580D-11 1.509592679D-15 0.000000000D+00 4.951216910D+04-5.417083590D+01
 
 
+
 ("C                 Hf:Douglas,1955. Moore,1970b. Gordon,1999.                    "
  " 3 g 7/97 C   1.00    0.00    0.00    0.00    0.00 0   12.0107000     716680.000"
  "    200.000   1000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0         6535.895"
@@ -57,142 +58,44 @@ OCCN              Cyanooxomethyl radical. Dorofeeva,2001.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun read-el-header ()
-  (let ((str-01 (read-line *data-file*))
-	(str-02 (read-line *data-file*))
-	(d-01 nil)
-	(d-02 nil)
-	(d-03 nil)
-	(t-int nil)
-	(s (make-string-output-stream))
-	(rez nil)
-	(n-row nil))
-    (format s "(~S ~S ~A ~S ((~S ~A)(~S ~A)(~S ~A)(~S ~A)(~S ~A)) ~A ~A ~A)"
-	    (string-trim " " (subseq str-01 0 18))
-	    (string-trim " " (subseq str-01 18))
-	    (string-trim " " (SUBSEQ STR-02 0 2))
-	    (string-trim " " (SUBSEQ STR-02 2 10))
-	    (string-trim " " (SUBSEQ STR-02 10 12))
-	    (string-trim " " (SUBSEQ STR-02 12 18))
-	    (string-trim " " (SUBSEQ STR-02 18 20))
-	    (string-trim " " (SUBSEQ STR-02 20 26))
-	    (string-trim " " (SUBSEQ STR-02 26 28))
-	    (string-trim " " (SUBSEQ STR-02 28 34))
-	    (string-trim " " (SUBSEQ STR-02 34 36))
-	    (string-trim " " (SUBSEQ STR-02 36 42))
-	    (string-trim " " (SUBSEQ STR-02 42 44))
-	    (string-trim " " (SUBSEQ STR-02 44 50))
-	    (string-trim " " (SUBSEQ STR-02 50 52))
-	    (string-trim " " (SUBSEQ STR-02 52 65))
-	    (string-trim " " (SUBSEQ STR-02 65 80)))
-    (setf rez (read (make-string-input-stream (get-output-stream-string s)))
-	  n-row (third rez))
-    (dotimes (i n-row)
-      (setf d-01 (read-line *data-file*)
-	    d-02 (read-line *data-file*)
-	    d-03 (read-line *data-file*))
-      (format s "((~A ~A) (~A ~A ~A ~A ~A ~A ~A ~A ~A ~A))"
-	      (string-trim " " (SUBSEQ d-01 0 11))
-	      (string-trim " " (SUBSEQ d-01 11 22))
-	      (string-trim " " (SUBSEQ d-01 22 23))
-	      (string-trim " " (SUBSEQ d-01 23 28))
-	      (string-trim " " (SUBSEQ d-01 28 33))
-	      (string-trim " " (SUBSEQ d-01 33 38))
-	      (string-trim " " (SUBSEQ d-01 38 43))
-	      (string-trim " " (SUBSEQ d-01 43 48))
-	      (string-trim " " (SUBSEQ d-01 48 53))
-	      (string-trim " " (SUBSEQ d-01 53 58))
-	      (string-trim " " (SUBSEQ d-01 58 63))
-	      (string-trim " " (SUBSEQ d-01 63 80)))
-      (push  (read (make-string-input-stream (get-output-stream-string s))) t-int)
-      (format s "(~A ~A ~A ~A ~A)"
-	      (string-trim " " (SUBSEQ d-02 0 16))
-	      (string-trim " " (SUBSEQ d-02 16 32))
-	      (string-trim " " (SUBSEQ d-02 32 48))
-	      (string-trim " " (SUBSEQ d-02 48 64))
-	      (string-trim " " (SUBSEQ d-02 64 80)))
-      (push  (read (make-string-input-stream (get-output-stream-string s))) t-int)
-            (format s "(~A ~A   ~A ~A)"
-	      (string-trim " " (SUBSEQ d-03 0 16))
-	      (string-trim " " (SUBSEQ d-03 16 32))
-;;;;	      (string-trim " " (SUBSEQ d-03 32 48))
-	      (string-trim " " (SUBSEQ d-03 48 64))
-	      (string-trim " " (SUBSEQ d-03 64 80)))
-      (push  (read (make-string-input-stream (get-output-stream-string s))) t-int))
-    (list str-01 str-02 rez n-row t-int)))
+(defun read-string (str &optional (ft 's))
+  (cond
+    ((or (eq ft 'f) (eq ft 'e) (eq ft 'd) (eq ft 'g) (eq ft 'i))
+     (if (string= "" str) 0.0 (read (make-string-input-stream str))))
+    ((eq ft 's) str)
+    (t "Format error!")))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(progn
-  (close-data-file)
-  (open-data-file)
-  (read-line *data-file*)
-  (read-line *data-file*)
-  (read-el-header))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun foo (lst)
+(defun read-record (ln-str-format str)
   (let ((st 0))
-    (mapcar #'(lambda(el)
-	       (let ((rez (list 'subseq 'str-02 st (+ el st))))
-		 (setf st (+ st el)) rez))
-	    lst)))
+    (mapcar
+     #'(lambda (el)
+	 (let ((rez (string-trim " " (subseq str st (+ (second el) st)))))
+	   (setf st (+ st (second el)))
+	   (read-string rez (first el))))
+     ln-str-format)))
 
-(foo (list 2 8
-	   2 6 2 6
-	   2 6 2 6
-	   2 6
-	   2 13 15))
+(defun read-el-header ()
+  (let* ((rec-1 '((s 18) (s 62)))
+	 (rec-2 '((i  2) (s  8) (s  2) (f  6) (s 2) (f 6) (s 2) (f 6) (s 2) (f 6) (s 2) (f 6) (i 2) (f 13) (f 15)))
+	 (rec-3 '((f 11) (f 11) (i  1) (f  5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 17)))
+	 (rec-4 '((f 16) (f 16) (f 16) (f 16) (f 16)))
+	 (rec-5 '((f 16) (f 16) (f 16) (f 16) (f 16)))
+	 (r-1 (read-record rec-1 (read-line *data-file*)))
+	 (r-2 (read-record rec-2 (read-line *data-file*)))
+	 (n-row (first r-2))
+	 (t-int nil))
+    (dotimes (i n-row)
+      (mapc #'(lambda (el) (push (read-record el (read-line *data-file*)) t-int) )
+       (list rec-3 rec-4 rec-5)))
+    (list r-1 r-2 (reverse t-int))))
 
-(foo (list 11 11 1  5 5 5 5  5 5 5 5 17))
-
-(foo (list 16 16 16 16 16))
-	   16 16 16 16 16 
-	  
-
-
-
-(defun read-el-data ()
-  (let ((str-01 (read-line *data-file*))
-	(str-02 (read-line *data-file*))
-	(str-03 (read-line *data-file*))
-	(str-04 (read-line *data-file*))
-	(str-05 (read-line *data-file*))
-	(str-06 (read-line *data-file*))
-	(str-07 (read-line *data-file*))
-	(str-08 (read-line *data-file*))
-	(str-09 (read-line *data-file*))
-	(str-10 (read-line *data-file*))
-	(str-11 (read-line *data-file*)))
-    (list str-01
-	  str-02
-	  str-03
-	  str-04
-	  str-05
-	  str-06
-	  str-07
-	  str-08
-	  str-09
-	  str-10
-	  str-11)
-))
-
-(read-el-data)
-
+(progn (close-data-file) (open-data-file) (read-line *data-file*) (read-line *data-file*))
+  (read-el-header)
+  
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (with-open-file (str "/home/namatv/quicklisp/local-projects/clisp/gases/gases/data/termo.inp" :direction :input)
   (string-right-trim " " )
-
-
-(progn
-  (close-data-file)
-  (open-data-file)
-  (read-line *data-file*)
-  (read-line *data-file*)
-  (read-el-header))
-
-(read "0.0")
 
 (defparameter *o* (make-string-output-stream))
 
