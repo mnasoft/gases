@@ -4,54 +4,9 @@
 
 ;;; "gases" goes here. Hacks and glory await!
 
-Ar                Ref-Elm. Moore,1971. Gordon,1999.                             
- 3 g 3/98 AR  1.00    0.00    0.00    0.00    0.00 0   39.9480000          0.000
-    200.000   1000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0         6197.428
- 0.000000000D+00 0.000000000D+00 2.500000000D+00 0.000000000D+00 0.000000000D+00
- 0.000000000D+00 0.000000000D+00                -7.453750000D+02 4.379674910D+00
-   1000.000   6000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0         6197.428
- 2.010538475D+01-5.992661070D-02 2.500069401D+00-3.992141160D-08 1.205272140D-11
--1.819015576D-15 1.078576636D-19                -7.449939610D+02 4.379180110D+00
-   6000.000  20000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0         6197.428
--9.951265080D+08 6.458887260D+05-1.675894697D+02 2.319933363D-02-1.721080911D-06
- 6.531938460D-11-9.740147729D-16                -5.078300340D+06 1.465298484D+03
-C                 Hf:Douglas,1955. Moore,1970b. Gordon,1999.                    
- 3 g 7/97 C   1.00    0.00    0.00    0.00    0.00 0   12.0107000     716680.000
-    200.000   1000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0         6535.895
- 6.495031470D+02-9.649010860D-01 2.504675479D+00-1.281448025D-05 1.980133654D-08
--1.606144025D-11 5.314483411D-15                 8.545763110D+04 4.747924288D+00
-   1000.000   6000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0         6535.895
--1.289136472D+05 1.719528572D+02 2.646044387D+00-3.353068950D-04 1.742092740D-07
--2.902817829D-11 1.642182385D-15                 8.410597850D+04 4.130047418D+00
-   6000.000  20000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0         6535.895
- 4.432528010D+08-2.886018412D+05 7.737108320D+01-9.715281890D-03 6.649595330D-07
--2.230078776D-11 2.899388702D-16                 2.355273444D+06-6.405123160D+02
-OCCN              Cyanooxomethyl radical. Dorofeeva,2001.                       
- 2 srd 01 C   2.00N   1.00O   1.00    0.00    0.00 0   54.0275000     210000.000
-    200.000  1000.000 7 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0        13594.351
- 2.428801128D+04-5.525864490D+02 8.587838090D+00-3.379387570D-03 1.119841795D-05
--1.008408053D-08 3.086448751D-12 0.000000000D+00 2.599620066D+04-1.659592428D+01
-   1000.000  6000.000 7 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0        13594.351
- 9.359095680D+05-4.441073340D+03 1.368958451D+01-1.647526929D-03 3.819863520D-07
--3.945148580D-11 1.509592679D-15 0.000000000D+00 4.951216910D+04-5.417083590D+01
-
-
-
-("C                 Hf:Douglas,1955. Moore,1970b. Gordon,1999.                    "
- " 3 g 7/97 C   1.00    0.00    0.00    0.00    0.00 0   12.0107000     716680.000"
- "    200.000   1000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0         6535.895"
- " 6.495031470D+02-9.649010860D-01 2.504675479D+00-1.281448025D-05 1.980133654D-08"
- "-1.606144025D-11 5.314483411D-15                 8.545763110D+04 4.747924288D+00"
- "   1000.000   6000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0         6535.895"
- "-1.289136472D+05 1.719528572D+02 2.646044387D+00-3.353068950D-04 1.742092740D-07"
- "-2.902817829D-11 1.642182385D-15                 8.410597850D+04 4.130047418D+00"
- "   6000.000  20000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0         6535.895"
- " 4.432528010D+08-2.886018412D+05 7.737108320D+01-9.715281890D-03 6.649595330D-07"
- "-2.230078776D-11 2.899388702D-16                 2.355273444D+06-6.405123160D+02")
-
 (defun open-data-file ()
   (defparameter *data-file*
-    (open  "/home/namatv/quicklisp/local-projects/clisp/gases/gases/data/termo.inp" :direction :input)))
+    (open  "~/quicklisp/local-projects/clisp/gases/gases/data/termo.inp" :direction :input)))
 
 (defun close-data-file ()
   (close *data-file*))
@@ -74,35 +29,117 @@ OCCN              Cyanooxomethyl radical. Dorofeeva,2001.
 	   (read-string rez (first el))))
      ln-str-format)))
 
-(defun read-el-header ()
+(defun read-el-header (is str-1)
   (let* ((rec-1 '((s 18) (s 62)))
 	 (rec-2 '((i  2) (s  8) (s  2) (f  6) (s 2) (f 6) (s 2) (f 6) (s 2) (f 6) (s 2) (f 6) (i 2) (f 13) (f 15)))
 	 (rec-3 '((f 11) (f 11) (i  1) (f  5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 17)))
 	 (rec-4 '((f 16) (f 16) (f 16) (f 16) (f 16)))
 	 (rec-5 '((f 16) (f 16) (f 16) (f 16) (f 16)))
-	 (r-1 (read-record rec-1 (read-line *data-file*)))
-	 (r-2 (read-record rec-2 (read-line *data-file*)))
+	 (r-1 (read-record rec-1 str-1))
+	 (r-2 (read-record rec-2 (read-line is)))
 	 (n-row (first r-2))
 	 (t-int nil))
     (dotimes (i n-row)
-      (mapc #'(lambda (el) (push (read-record el (read-line *data-file*)) t-int) )
+      (mapc #'(lambda (el) (push (read-record el (read-line is)) t-int) )
        (list rec-3 rec-4 rec-5)))
     (list r-1 r-2 (reverse t-int))))
 
-(progn (close-data-file) (open-data-file) (read-line *data-file*) (read-line *data-file*))
-  (read-el-header)
-  
+(defun read-el-header (is str-1)
+  (let* ((rec-1 '((s 18) (s 62)))
+	 (rec-2 '((i  2) (s  8) (s  2) (f  6) (s 2) (f 6) (s 2) (f 6) (s 2) (f 6) (s 2) (f 6) (i 2) (f 13) (f 15)))
+	 (rec-3 '((f 11) (f 11) (i  1) (f  5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 17)))
+	 (rec-4 '((f 16) (f 16) (f 16) (f 16) (f 16)))
+	 (rec-5 '((f 16) (f 16) (f 16) (f 16) (f 16)))
+	 (r-1 (read-record rec-1 str-1))
+	 (r-2 (read-record rec-2 (read-line is)))
+	 (n-row (first r-2))
+	 (t-int nil))
+    (dotimes (i n-row)
+      (push 
+       (append (read-record rec-3 (read-line is))
+	       (read-record rec-4 (read-line is))
+	       (read-record rec-5 (read-line is)))
+       t-int))
+    (append r-1 r-2 (list (reverse t-int)))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(with-open-file (str "/home/namatv/quicklisp/local-projects/clisp/gases/gases/data/termo.inp" :direction :input)
-  (string-right-trim " " )
+(defun clean-termo-inp ()
+  "Выполняет очистку формата ввода данных от комментариев"
+  (with-open-file (os "~/quicklisp/local-projects/clisp/gases/gases/data/termo.inp.clean" :direction :output :if-exists :supersede)
+    (with-open-file (is "~/quicklisp/local-projects/clisp/gases/gases/data/termo.inp" :direction :input)
+      (do ((line (read-line is nil 'eof) (read-line is nil 'eof))
+	   (str-format "~A"))
+	  ((eql line 'eof))
+	(unless
+	    (or (string= "" (string-trim " " line))
+		(string= "!" (subseq line 0 1))
+		(string= "#" (subseq line 0 1))
+		(string= "END PRODUCTS" (string-trim " " line))
+		(string= "END REACTANTS" (string-trim " " line)))
+	  (format os str-format line)
+	  (setf str-format "~%~A"))))))
 
-(defparameter *o* (make-string-output-stream))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(format *o* "~A" 12)
+(clean-termo-inp)
 
-(get-output-stream-string *o*)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defparameter *i* (make-string-input-stream "(\"as\" 12 ) "))
+(defun make-element-table()
+  (let ((rez nil)
+	(len 0)
+	(rez-lst nil)
+	)
+    (with-open-file (is "~/quicklisp/local-projects/clisp/gases/gases/data/termo.inp.clean" :direction :input)
+      (read-line is nil 'eof)
+      (read-line is nil 'eof)
+      (do ((line (read-line is nil 'eof) (read-line is nil 'eof))
+	   (str-format "~A"))
+	  ((eql line 'eof))
+	(setf rez (read-el-header is line))
+	(incf len)
+	(push rez rez-lst)
+;;;;	(break "rez =~S" rez)
+	))
+    (list len rez-lst)))
 
-(read *i*)
+(make-element-table)
+
+
+(defclass mol ()
+  ((mol-name-ru       :accessor mol-name-ru       :initarg :mol-name-ru       :initform "" :documentation "Обозначение русскоязычное")
+   (mol-name-en       :accessor mol-name-en       :initarg :mol-name-en       :initform "" :documentation "Обозначение англоязычное")
+   
+   (mol-formula       :accessor mol-formula       :initarg :mol-formula       :initform "" :documentation "Species name/formula (cols 1-15, 15str). This serves as an ID. Note that 'l' is represented by L and condensed phases designated as α, β, γ or δ are renamed a, b, c or d due to ASCII limitations.")
+   (mol-comments      :accessor mol-comments      :initarg :mol-comments      :initform "" :documentation "Comments (cols 16-80, 65str). These include references in the format of author, year or page and date in the case of TRC tables. When heat of formation is taken from a separate reference, this is included as Hf:<ref>. Reference elements or species used for heat of formation calculations are indicated by Ref-Elm or Ref-Species.")
+   (mol-t-int-number  :accessor mol-t-int-number  :initarg :mol-t-int-number  :initform "" :documentation "Number of temperature intervals (col 2, 2int).")
+   (mol-code          :accessor mol-code          :initarg :mol-code          :initform "" :documentation "Reference-Date code (cols 4-9, 6str). This includes a character indicating a general reference followed by a date (e.g. g indicates that NASA Glenn was the source of significant work in deriving the data and 10/96 indicates the month/year).")
+   (mol-atoms         :accessor mol-atoms         :initarg :mol-atoms         :initform "" :documentation "Chemical formula (cols 11-50, 2str + 6.2f). This is a set of 5 element/atom, number pairs. In the vast majority of cases the numbers are integers but in some cases they are non-integer, so floats are used.")
+   (mol-phase         :accessor mol-phase         :initarg :mol-phase         :initform "" :documentation "Phase (col 52, int). Zero for gas, nonzero for condensed phases.")
+   (mol-molar-mass    :accessor mol-molar-mass    :initarg :mol-molar-mass    :initform "" :documentation "Molar mass (cols 53-65, 13.5f). Originally labelled molecular weight (in units g/mol).")
+
+   (mol-heat-formation   :accessor mol-heat-formation  :initarg :mol-heat-formation  :initform "" :documentation "Heat of formation (cols 66-80, 13.5f). In the case of condensed species this is actually an assigned enthalpy (equivalent to the heat of formation at 298.15 K). Units J/mol.")
+
+Record 3
+•	Temperature range (cols 2-21, 2x 10.3f). The minimum and maximum bounds for the current temperature interval. Units, K.
+•	Number of coefficients (col 23, int). This is always 7 in this data (though the database format supports 8, see section Redundancy).
+•	Polynomial exponents (cols 24-63, 8x 5.1f). These are always [-2, -1, 0, 1, 2, 3, 4] in this data.
+•	{H(298.15) - H(0)} (cols 66-80, 15.3f). This is the difference between the heat of formation at the enthalpy at T = 0 K.
+Record 4
+•	Coefficients 1-5 (cols 1-80, 5x 16.8f).
+Record 5
+•	Coefficients 6-8 (cols 1-48, 3x 16.8f). The 8th is not used in this data (see section Redundancy).
+•	Integration constants (cols 49-80, 2x 16.8f). Used in evaluation of enthalpy and temperature-dependent component of entropy, respectively.
+
+
+   
+   (mol-smile         :accessor mol-name-en       :initarg :mol-name-en       :initform "" :documentation "Smile")
+   (mol-mass          :accessor mol-mass          :initarg :mol-mass          :initform "" :documentation "Молекулярная масса кг/моль")
+   (mol-μcp-a-b-c     :accessor mol-μcp-a-b-c     :initarg :mol-μcp-a-b-c     :initform "" :documentation "Коэффициенты для расчета мольной теплоемкости ккал/(моль*К)")
+   (mol-formula       :accessor mol-formula       :initarg :mol-formula       :initform "" :documentation "Химическая формула")
+   (mol-note          :accessor mol-note          :initarg :mol-note          :initform "" :documentation "Примечание")
+   )
+  (:documentation "Представляет молекулу."))
+
+
