@@ -4,13 +4,6 @@
 
 ;;; "gases" goes here. Hacks and glory await!
 
-(defun open-data-file ()
-  (defparameter *data-file*
-    (open  "~/quicklisp/local-projects/clisp/gases/gases/data/termo.inp" :direction :input)))
-
-(defun close-data-file ()
-  (close *data-file*))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun read-string (str &optional (ft 's))
@@ -74,28 +67,32 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun make-element-table()
+  "Пример использования:
+(make-element-table)
+"
   (let ((rez nil)
-	(len 0)
-	(rez-lst nil)
-	)
+	(rez-lst nil))
     (with-open-file (is "~/quicklisp/local-projects/clisp/gases/gases/data/termo.inp.clean" :direction :input)
       (read-line is nil 'eof)
       (read-line is nil 'eof)
-      (do ((line (read-line is nil 'eof) (read-line is nil 'eof))
-	   (str-format "~A"))
+      (do ((line (read-line is nil 'eof) (read-line is nil 'eof)))
 	  ((eql line 'eof))
 	(setf rez (read-el-header is line))
-	(incf len)
-	(push rez rez-lst)
-;;;;	(break "rez =~S" rez)
-	))
-    (list len rez-lst)))
-
-(make-element-table)
+	(push rez rez-lst)))
+    rez-lst))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defparameter *sp-db* (make-hash-table :test #'equal))
+
+(mapc #'(lambda (el)
+	  (let ((sp-elem (make-sp-instance el)))
+	    (setf (gethash (sp-name sp-elem) *sp-db*) sp-elem)))
+      (make-element-table))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (defclass sp-rec ()
   ((sp-rec-temperature-range      :accessor sp-rec-temperature-range     :initarg :sp-rec-temperature-range     :initform nil                :documentation "Temperature range (cols 2-21, 2x 10.3f). The minimum and maximum bounds for the current temperature interval. Units, K.")
    (sp-rec-number-coeff           :accessor sp-rec-number-coeff          :initarg :sp-rec-number-coeff          :initform 7                  :documentation "Number of coefficients (col 23, int). This is always 7 in this data (though the database format supports 8, see section Redundancy).")
@@ -124,16 +121,6 @@
    :sp-rec-coefficients          (subseq lst 12 (+ 12 (nth  2 lst)))
    :sp-rec-integration-constants (list (nth  20 lst) (nth  21 lst))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defparameter *sp-rec*
-  (make-sp-rec-instance
-   '(200.0 1000.0 7 -2.0 -1.0 0.0 1.0 2.0 3.0 4.0 0.0 11688.499 -39528.5529d0
-     620.857257d0 -1.437731716d0 0.02764126467d0 -3.144958662d-5 1.792798d-8
-     -4.12638666d-12 0.0 -51841.0617d0 33.91331216d0)))
-
-(sp-rec-integration-constants *sp-rec*)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass sp ()
@@ -159,6 +146,7 @@
 (defmethod print-object :after  ((x sp) s) (format s ")" ))
 
 (defun make-sp-instance (lst)
+  "Создает оъект sp "
   (make-instance
    'sp
    :sp-name (first lst)
@@ -178,30 +166,25 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defparameter *sp*
-  (make-sp-instance
-   '("SO3" "Gurvich,1989 pt1 p292 pt2 p177." 2 "tpis89" "S" 1.0 "O" 3.0 "" 0.0 ""
-     0.0 "" 0.0 0 80.0632 -395900.0
-     ((200.0 1000.0 7 -2.0 -1.0 0.0 1.0 2.0 3.0 4.0 0.0 11688.499 -39528.5529d0
-       620.857257d0 -1.437731716d0 0.02764126467d0 -3.144958662d-5 1.792798d-8
-       -4.12638666d-12 0.0 -51841.0617d0 33.91331216d0)
-      (1000.0 6000.0 7 -2.0 -1.0 0.0 1.0 2.0 3.0 4.0 0.0 11688.499 -216692.3781d0
-       -1301.022399d0 10.96287985d0 -3.83710002d-4 8.46688904d-8 -9.70539929d-12
-       4.49839754d-16 0.0 -43982.8399d0 -36.55217314d0)))))
-
-
-(car (last '("SO3" "Gurvich,1989 pt1 p292 pt2 p177." 2 "tpis89" "S" 1.0 "O" 3.0 "" 0.0 ""
-     0.0 "" 0.0 0 80.0632 -395900.0
-     ((200.0 1000.0 7 -2.0 -1.0 0.0 1.0 2.0 3.0 4.0 0.0 11688.499 -39528.5529d0
-       620.857257d0 -1.437731716d0 0.02764126467d0 -3.144958662d-5 1.792798d-8
-       -4.12638666d-12 0.0 -51841.0617d0 33.91331216d0)
-      (1000.0 6000.0 7 -2.0 -1.0 0.0 1.0 2.0 3.0 4.0 0.0 11688.499 -216692.3781d0
-       -1301.022399d0 10.96287985d0 -3.83710002d-4 8.46688904d-8 -9.70539929d-12
-       4.49839754d-16 0.0 -43982.8399d0 -36.55217314d0)))))
-
-(sp-comments *sp*)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+(apply #'+
+       (mapcar #'(lambda (el)
+		   (let ((elm (gethash (first el) *sp-db*)))
+;;;;	      (break "~S" elm)
+		     (* (sp-molar-mass elm ) (second el))))
+	       '(("N2"	                0.0003)
+		 ("CO2"	                0.0022)
+		 ("CH4"	                0.7374 "C1")
+		 ("C2H6"	        0.0593)
+		 ("C3H8"	        0.1179)
+		 ("C4H10,isobutane" 	0.0131)
+		 ("C4H10,n-butane"	0.0379)
+		 ("C5H12,i-pentane" 	0.0130)
+		 ("C5H12,n-pentane"	0.0139)
+		 ("C6H14,n-hexane" 	0.0017)
+		 ("C6H12,1-hexene"      0.0004 "Mcyclo_C5")
+		 ("C6H12,cyclo-"	0.0002)
+		 ("C7H16,n-heptane"     0.0001)
+		 ("C7H14,1-heptene" 	0.0001 "Mcyclo_C6")
+		 ("H2O"	        0.0025))))
 
 
