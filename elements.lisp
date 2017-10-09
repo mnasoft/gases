@@ -2,23 +2,7 @@
 
 (in-package #:gases)
 
-;;; "gases" goes here. Hacks and glory await!
-
-(defclass molecule ()
-  ((molecule-name-ru       :accessor molecule-name-ru       :initarg :molecule-name-ru       :initform "" :documentation "Обозначение русскоязычное")
-   (molecule-name-en       :accessor molecule-name-en       :initarg :molecule-name-en       :initform "" :documentation "Обозначение англоязычное")
-   (molecule-name-en-short :accessor molecule-name-en-short :initarg :molecule-name-en-short :initform "" :documentation "Короткое англоязычное обозначение")
-   (molecule-smile         :accessor molecule-name-en       :initarg :molecule-name-en       :initform "" :documentation "Smile")
-   (molecule-mass          :accessor molecule-mass          :initarg :molecule-mass          :initform "" :documentation "Молекулярная масса кг/моль")
-   (molecule-μcp-a-b-c     :accessor molecule-μcp-a-b-c     :initarg :molecule-μcp-a-b-c     :initform "" :documentation "Коэффициенты для расчета мольной теплоемкости ккал/(моль*К)")
-   (molecule-formula       :accessor molecule-formula       :initarg :molecule-formula       :initform "" :documentation "Химическая формула")
-   (molecule-note          :accessor molecule-note          :initarg :molecule-note          :initform "" :documentation "Примечание")
-   )
-  (:documentation "Представляет молекулу."))
-
-(defmethod print-object :before ((x molecule) s) (format s " #molecule(~S ~S ~S ~S ~S ~S" (molecule-name-en-short x) (molecule-name-ru x) (molecule-μcp-a-b-c x) (molecule-mass x) (molecule-formula x) (molecule-note x)))
-(defmethod print-object         ((x molecule) s) (format s "" ))
-(defmethod print-object :after  ((x molecule) s) (format s ")" ))
+;;;; "Данные взяты из файла ./doc/111.jpg (см. мультитехнический справочник)."
 
 (progn
   (defparameter *Air*          (make-instance 'molecule :molecule-name-en-short "Air"          :molecule-μcp-a-b-c '( 6.557 1.477 -0.2148  )    :molecule-mass 0.02896      :molecule-name-ru "Воздух"              :molecule-formula "Воздух"     :molecule-note "0.02896"))
@@ -32,9 +16,9 @@
   (defparameter *HCl*          (make-instance 'molecule :molecule-name-en-short "HCl"          :molecule-μcp-a-b-c '( 6.732 0.4325 0.3697  )    :molecule-mass 0.0364606    :molecule-name-ru "Хлористый водород"   :molecule-formula "HCl"        :molecule-note "36.46061"))
   (defparameter *H2S*          (make-instance 'molecule :molecule-name-en-short "H2S"          :molecule-μcp-a-b-c '( 6.662 5.134 -0.854  )     :molecule-mass 0.034082     :molecule-name-ru "Сероводород"         :molecule-formula "H2S"        :molecule-note "34.082"))
   (defparameter *N2*           (make-instance 'molecule :molecule-name-en-short "N2"           :molecule-μcp-a-b-c '( 6.4492 1.4125 -0.0807  )  :molecule-mass 0.02801371   :molecule-name-ru "Азот"                :molecule-formula "N2"         :molecule-note "(+ 14.00643 14.00728)"))
-  (defparameter *NO*           (make-instance 'molecule :molecule-name-en-short "NO"           :molecule-μcp-a-b-c '( 6.440 2.069 -0.4206  )    :molecule-mass 0.02801371   :molecule-name-ru "Оксид азота"         :molecule-formula "NO"         :molecule-note "30.0061"))
+  (defparameter *NO*           (make-instance 'molecule :molecule-name-en-short "NO"           :molecule-μcp-a-b-c '( 6.440 2.069 -0.4206  )    :molecule-mass 0.0300061    :molecule-name-ru "Оксид азота"         :molecule-formula "NO"         :molecule-note "30.0061"))
   (defparameter *N2O*          (make-instance 'molecule :molecule-name-en-short "N2O"          :molecule-μcp-a-b-c '( 6.529 10.515 -3.571  )    :molecule-mass 0.0440128    :molecule-name-ru "Закись азота"        :molecule-formula "N2O"        :molecule-note "44.0128"))
-  (defparameter *O2*           (make-instance 'molecule :molecule-name-en-short "O2"           :molecule-μcp-a-b-c '( 6.0954 3.2533 -1.0171  )  :molecule-mass 0.02801371   :molecule-name-ru "Кислород"            :molecule-formula "O2"         :molecule-note "O2 (+ 15.99903 15.99977)"))
+  (defparameter *O2*           (make-instance 'molecule :molecule-name-en-short "O2"           :molecule-μcp-a-b-c '( 6.0954 3.2533 -1.0171  )  :molecule-mass 0.0319988    :molecule-name-ru "Кислород"            :molecule-formula "O2"         :molecule-note "O2 (+ 15.99903 15.99977)"))
   (defparameter *PH3*          (make-instance 'molecule :molecule-name-en-short "PH3"          :molecule-μcp-a-b-c '( 4.496 14.372 -4.072  )    :molecule-mass 0.03400      :molecule-name-ru "Фосфин"              :molecule-formula "PH3"        :molecule-note "34.00"))
   (defparameter *SO2*          (make-instance 'molecule :molecule-name-en-short "SO2"          :molecule-μcp-a-b-c '( 7.116 9.512 -3.511  )     :molecule-mass 0.0640540    :molecule-name-ru "Двуокись серы"       :molecule-formula "SO2"        :molecule-note "64.054"))
   (defparameter *SO3*          (make-instance 'molecule :molecule-name-en-short "SO3"          :molecule-μcp-a-b-c '( 6.077 23.537 -9.687  )    :molecule-mass 0.08006      :molecule-name-ru "Серный ангидрид"     :molecule-formula "SO3"        :molecule-note "80.06"))

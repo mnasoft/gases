@@ -7,6 +7,8 @@
   :serial t
   :components ((:file "package")
                (:file "gases")
+	       (:file "classes")
+	       (:file "defmethods")
 	       (:file "elements")
 	       (:file "running-gas")
 	       (:file "stopping-gas")
