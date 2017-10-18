@@ -1,5 +1,5 @@
 ;;;; package.lisp
 
 (defpackage #:gases
-  (:use #:cl))
+  (:use #:cl #:mnas-defclass)) 
 
