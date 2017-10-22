@@ -2,13 +2,70 @@ https://www.grc.nasa.gov/www/CEAWeb/
 
 http://combustion.berkeley.edu/gri_mech/data/nasa_plnm.html
 
+https://www.grc.nasa.gov/www/CEAWeb/RP-1311.pdf p20
+
 The NASA polynomials have the form:
 
-    Cp/R = a1 + a2 T + a3 T^2 + a4 T^3 + a5 T^4
+    Cp/R = a1 + a2 T + a3 T^2 + a4 T^3 + a5 T^4                                                      (4.6)
+    (defun Cp/R-old (TT a1 a2 a3 a4 a5 a6 a7)
+      (+ a1
+         (* a2 TT)
+         (* a3 TT TT)
+	 (* a4 TT TT TT)
+	 (* a5 TT TT TT TT)))
     
-    H/RT = a1 + a2 T /2 + a3 T^2 /3 + a4 T^3 /4 + a5 T^4 /5 + a6/T
+    H/RT = a1 + a2 T /2 + a3 T^2 /3 + a4 T^3 /4 + a5 T^4 /5 + a6/T                                   (4.7)
+    (defun H/RT-old (TT a1 a2 a3 a4 a5 a6 a7)
+      (+ a1
+         (* a2 TT 1/2)
+	 (* a3 TT TT 1/3)
+	 (* a4 TT TT TT 1/4)
+	 (* a5 TT TT TT TT 1/5)
+	 (/ a6 TT)))
     
-    S/R  = a1 lnT + a2 T + a3 T^2 /2 + a4 T^3 /3 + a5 T^4 /4 + a7
+    S/R  = a1 lnT + a2 T + a3 T^2 /2 + a4 T^3 /3 + a5 T^4 /4 + a7                                    (4.8)
+    (defun S/R-old (TT a1 a2 a3 a4 a5 a6 a7)
+      (+ (* a1 (log TT))
+         (* a2 TT)
+	 (* a3 TT TT 1/2)
+	 (* a4 TT TT TT 1/3)
+	 (* a5 TT TT TT TT 1/4)
+	 a7))
+
+The NASA polynomials have the form:
+
+    Cp/R = a1 T^-2 + a2 T^-1 + a3 + a4 T + a5 T^2 + a6 T^3 + a7 T^4                                  (4.9)
+    (defun Cp/R-new (TT a1 a2 a3 a4 a5 a6 a7 a8 a9)
+      (+ (/ a1 TT TT)
+         (/ a2 TT)
+         a3
+         (* a4 TT)
+         (* a5 TT TT)
+	 (* a6 TT TT TT)
+	 (* a7 TT TT TT TT)))
+
+    H/RT = -a1 T^-2 + a2 T^-1 ln T + a3 T^2 /3 + a4 T /2 + a5 T^2 /3 + a6 T^3 /4 + a7 T^4 /5 + a8/T  (4.10)
+
+    (defun H/RT-new (TT a1 a2 a3 a4 a5 a6 a7 a8 a9)
+      (+ (/ a1 TT TT -1)
+         (* a2 (/ TT) (log TT))
+         a3
+         (* a4 TT 1/2)
+	 (* a5 TT TT 1/3)
+	 (* a6 TT TT TT 1/4)
+	 (* a7 TT TT TT TT 1/5)
+	 (/ a8 TT)))
+    
+    S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4 + a9            (4.11)
+    (defun S/R-new (TT a1 a2 a3 a4 a5 a6 a7 a8 a9)
+      (+ (/ a1 TT TT -2)
+         (/ a2 TT -1)
+         (* a3 (log TT))
+         (* a4 TT)
+	 (* a5 TT TT 1/2)
+	 (* a6 TT TT TT 1/3)
+	 (* a7 TT TT TT TT 1/4)
+	 a9))
 
 where a1, a2, a3, a4, a5, a6, and a7 are the numerical coefficients supplied in NASA thermodynamic files. The first 7 numbers starting on the second line of each species entry (five of the second line and the first two of the third line) are the seven coefficients (a1 through a7, respectively) for the high-temperature range (above 1000 K, the upper boundary is specified on the first line of the species entry). The following seven numbers are the coefficients (a1 through a7, respectively) for the low-temperature range (below 1000 K, the lower boundary is specified on the first line of the species entry).
 

@@ -38,13 +38,18 @@
 
 (defmethod molar-isobaric-heat-capacity ((x sp-rec) temperature)
   "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]"
-  nil
-  )
+  (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7)  (values-list (sp-rec-coefficients x))
+    (* *Rμ* (Cp/R-new temperature a1 a2 a3 a4 a5 a6 a7))))
 
 (defmethod molar-isobaric-heat-capacity ((x sp) temperature)
   "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]"
-  nil
-  )
+  (molar-isobaric-heat-capacity
+   (find-if
+    #'(lambda (el)
+	(multiple-value-bind (a b) (values-list (sp-rec-temperature-range el))
+	  (<= a temperature b)))
+    (sp-reccords x))
+   temperature))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-isochoric-heat-capacity                                                           ;;;;
@@ -56,12 +61,24 @@
 - в зависимости от температуры (temperature), [K]"))
 
 (defmethod molar-isochoric-heat-capacity ((x sp-rec) temperature)
-    "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
-    )
+  "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
+  (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7 a8)
+      (values-list
+       (concatenate
+	'list
+	(sp-rec-coefficients x)
+	(list (first (sp-rec-integration-constants x)))))
+       (* *Rμ* temperature (H/RT-new temperature a1 a2 a3 a4 a5 a6 a7 a8))))
 
 (defmethod molar-isochoric-heat-capacity ((x sp) temperature)
-    "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
-    )
+  "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
+  (molar-isochoric-heat-capacity
+   (find-if
+    #'(lambda (el)
+	(multiple-value-bind (a b) (values-list (sp-rec-temperature-range el))
+	  (<= a temperature b)))
+    (sp-reccords x))
+   temperature))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    adiabatic-index                                                                         ;;;;
@@ -80,37 +97,5 @@
     "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
     )
 
-
-(molar-mass (gethash "N2" *sp-db*))
-	    
-(molar-mass (gethash "CH4" *sp-db*))
-
-(defmethod muCv ((x sp) temperature)
-  )
-
-
-    
-(gethash "N2" *sp-db*)
-
-(apply #'+
-       (mapcar #'(lambda (el)
-		   (let ((elm (gethash (first el) *sp-db*)))
-;;;;	      (break "~S" elm)
-		     (* (sp-molar-mass elm ) (second el))))
-	       '(("N2"	                0.0003)
-		 ("CO2"	                0.0022)
-		 ("CH4"	                0.7374 "C1")
-		 ("C2H6"	        0.0593)
-		 ("C3H8"	        0.1179)
-		 ("C4H10,isobutane" 	0.0131)
-		 ("C4H10,n-butane"	0.0379)
-		 ("C5H12,i-pentane" 	0.0130)
-		 ("C5H12,n-pentane"	0.0139)
-		 ("C6H14,n-hexane" 	0.0017)
-		 ("C6H12,1-hexene"      0.0004 "Mcyclo_C5")
-		 ("C6H12,cyclo-"	0.0002)
-		 ("C7H16,n-heptane"     0.0001)
-		 ("C7H14,1-heptene" 	0.0001 "Mcyclo_C6")
-		 ("H2O"	                0.0025))))
 
 

@@ -1,4 +1,4 @@
-;;;; gases.lisp
+;;;; termo.lisp
 
 (in-package #:gases)
 
@@ -10,51 +10,50 @@
 (defun make-instance-sp-rec (lst)
   (make-instance
    'sp-rec
-   :sp-rec-temperature-range     (list (nth  0 lst) (nth  1 lst))
-   :sp-rec-number-coeff          (nth  2 lst)
-   :sp-rec-polynomial-exponents  (subseq lst 3 (+ 3 (nth  2 lst)))
-   :sp-rec-H_298.15-H-0          (nth  11 lst)
-   :sp-rec-coefficients          (subseq lst 12 (+ 12 (nth  2 lst)))
-   :sp-rec-integration-constants (list (nth  20 lst) (nth  21 lst))))
-
+   :temperature-range     (list (nth  0 lst) (nth  1 lst))
+   :number-coeff          (nth  2 lst)
+   :polynomial-exponents  (subseq lst 3 (+ 3 (nth  2 lst)))
+   :H_298.15-H-0          (nth  11 lst)
+   :coefficients          (subseq lst 12 (+ 12 (nth  2 lst)))
+   :integration-constants (list (nth  20 lst) (nth  21 lst))))
 
 (defun make-instance-sp (lst)
   "Создает оъект sp "
   (make-instance
    'sp
-   :sp-name (first lst)
-   :sp-comments (second lst)
-   :sp-number-temperature-intervals (third lst)
-   :sp-reference-date-code (fourth lst)         
-   :sp-chemical-formula (list (list (nth  4 lst) (nth  5 lst))
+   :name (first lst)
+   :comments (second lst)
+   :number-temperature-intervals (third lst)
+   :reference-date-code (fourth lst)         
+   :chemical-formula (list (list (nth  4 lst) (nth  5 lst))
 			      (list (nth  6 lst) (nth  7 lst))
 			      (list (nth  8 lst) (nth  9 lst))
 			      (list (nth 10 lst) (nth 11 lst))
 			      (list (nth 12 lst) (nth 13 lst)))            
-   :sp-phase                        (nth 14 lst)
-   :sp-molar-mass                   (nth 15 lst)
-   :sp-heat-formation               (nth 16 lst)
-   :sp-reccords               (mapcar #'make-instance-sp-rec (car(last lst)))))
+   :phase                        (nth 14 lst)
+   :molar-mass                   (nth 15 lst)
+   :heat-formation               (nth 16 lst)
+   :reccords               (mapcar #'make-instance-sp-rec (car(last lst)))))
 
 
 (defun make-instance-component (component-name mole-fraction)
-  (make-instance 'component
-		 :component-species (gethash component-name *sp-db*)
-		 :component-mole-fraction mole-fraction))
+  (make-instance 'component 
+		 :species (gethash component-name *sp-db*)
+		 :mole-fraction mole-fraction))
 
 
-(make-instance-component "N2" 0.78)
+;;;; (make-instance-component "N2" 0.78)
 
-(make-instance-component "N2" 0.21)
+;;;; (make-instance-component "N2" 0.21)
 
 (defun make-instance-composition (lst)
-  (make-instance 'composition
-		 :composition-components (mapcar
-					  #'(lambda(el)
-					      (make-instance-component (first el)(second el)))
-					  lst)))
+  (make-instance 'composition 
+		 :components (mapcar
+			      #'(lambda(el)
+				  (make-instance-component (first el)(second el)))
+			      lst)))
 
-(make-instance-composition '(("N2" 0.78) ("O2" 0.20)))
+;;;; (make-instance-composition '(("N2" 0.78) ("O2" 0.20)))
  
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;read-formated-data
@@ -133,10 +132,18 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(clean-termo-inp)
+
 (defparameter *sp-db* (make-hash-table :test #'equal))
 
 (mapc #'(lambda (el)
 	  (let ((sp-elem (make-instance-sp el)))
 	    (setf (gethash (sp-name sp-elem) *sp-db*) sp-elem)))
       (make-element-table))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
 
