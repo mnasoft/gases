@@ -4,37 +4,15 @@
 
 ;;; "gases" goes here. Hacks and glory await!
 
-
-
-
-(let ((rec (first (sp-reccords (gethash "N2" *sp-db*)))))
-  (molar-isobaric-heat-capacity rec 200.0)
-  )
-
-(let ((sp (gethash "O2" *sp-db*)))
-  (molar-isobaric-heat-capacity sp  999.99999d0)
-  )
-
-(let ((sp (gethash "Air" *sp-db*))
-      (tt 680.d0))
+(let ((sp (gethash (first '("H2O" "CH4" "N2" "O2" "Air")) *sp-db*))
+      (tt 2500.d0))
   (list (molar-isobaric-heat-capacity sp tt)
-	(molar-isochoric-heat-capacity sp tt)))
+	(molar-isochoric-heat-capacity sp tt)
+	(molar-enthalpy sp tt)
+	(molar-entropy  sp tt)
+	(adiabatic-index sp tt)))
 
-
-
- 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(molar-mass (gethash "N2" *sp-db*))
-	    
-(molar-mass (gethash "CH4" *sp-db*))
-
-(defmethod muCv ((x sp) temperature)
-  )
-
-
-    
-(gethash "N2" *sp-db*)
 
 (apply #'+
        (mapcar #'(lambda (el)

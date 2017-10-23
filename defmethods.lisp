@@ -11,9 +11,9 @@
 (defmethod molar-mass ((x molecule))
   "Возвращает молекулярную массу, [g/mol]
 Пример использования:
-(molar-mass *air*)
-(molar-mass *N2*)
-(molar-mass *O2*)
+;;;; (molar-mass *air*)
+;;;; (molar-mass *N2*)
+;;;; (molar-mass *O2*)
 "
   (* (molecule-mass x) 1000))
 
@@ -22,8 +22,8 @@
 (defmethod molar-mass ((x sp))
   "Возвращает молекулярную массу, [g/mol]
 Пример использования
-(molar-mass (gethash \"N2\" *sp-db*)) => 28.0134
-(molar-mass (gethash \"CH4\" *sp-db*)) => 16.04246
+;;;; (molar-mass (gethash \"N2\" *sp-db*)) => 28.0134
+;;;; (molar-mass (gethash \"CH4\" *sp-db*)) => 16.04246
 "
   (sp-molar-mass x))
 
@@ -62,6 +62,23 @@
 
 (defmethod molar-isochoric-heat-capacity ((x sp-rec) temperature)
   "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
+  (- (molar-isobaric-heat-capacity x temperature) *Rμ*))
+
+(defmethod molar-isochoric-heat-capacity ((x sp) temperature)
+  "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
+  (- (molar-isobaric-heat-capacity x temperature) *Rμ*))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;    molar-enthalpy                                                                          ;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defgeneric molar-enthalpy (species temperature)
+  (:documentation "Возвращает мольную энтальпию 
+- для класса species
+- в зависимости от температуры (temperature), [K]"))
+
+(defmethod molar-enthalpy ((x sp-rec) temperature)
+  "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
   (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7 a8)
       (values-list
        (concatenate
@@ -70,9 +87,38 @@
 	(list (first (sp-rec-integration-constants x)))))
        (* *Rμ* temperature (H/RT-new temperature a1 a2 a3 a4 a5 a6 a7 a8))))
 
-(defmethod molar-isochoric-heat-capacity ((x sp) temperature)
-  "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
-  (molar-isochoric-heat-capacity
+(defmethod molar-enthalpy ((x sp) temperature)
+  "Возвращает мольную энтальпию muΗ, [J/(mol*K)]"
+  (molar-enthalpy
+   (find-if
+    #'(lambda (el)
+	(multiple-value-bind (a b) (values-list (sp-rec-temperature-range el))
+	  (<= a temperature b)))
+    (sp-reccords x))
+   temperature))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;    molar-entropy                                                                           ;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defgeneric molar-entropy (species temperature)
+  (:documentation "Возвращает мольную энтальпию 
+- для класса species
+- в зависимости от температуры (temperature), [K]"))
+
+(defmethod molar-entropy ((x sp-rec) temperature)
+  "Возвращает мольную энтропию muS, [?J/(mol*K)]"
+  (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7 a9)
+      (values-list
+       (concatenate
+	'list
+	(sp-rec-coefficients x)
+	(list (second (sp-rec-integration-constants x)))))
+    (* *Rμ* (S/R-new temperature a1 a2 a3 a4 a5 a6 a7 a9))))
+
+(defmethod molar-entropy ((x sp) temperature)
+  "Возвращает мольную энтропию muS, [?J/(mol*K)]"
+  (molar-entropy
    (find-if
     #'(lambda (el)
 	(multiple-value-bind (a b) (values-list (sp-rec-temperature-range el))
@@ -90,12 +136,20 @@
 - в зависимости от температуры (temperature), [K]"))
 
 (defmethod adiabatic-index ((x sp-rec) temperature)
-    "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
-    )
+  "Возвращает показатель адиабаты
+- для класса sp-rec
+- в зависимости от температуры (temperature), [K]"
+  (/ (molar-isobaric-heat-capacity x temperature)
+     (molar-isochoric-heat-capacity x temperature)))
 
 (defmethod adiabatic-index ((x sp) temperature)
-    "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
-    )
+  "Возвращает показатель адиабаты
+- для класса sp-rec
+- в зависимости от температуры (temperature), [K]"
+  (/ (molar-isobaric-heat-capacity x temperature)
+     (molar-isochoric-heat-capacity x temperature)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
