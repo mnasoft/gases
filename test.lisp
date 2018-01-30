@@ -35,6 +35,31 @@
 		 ("C7H14,1-heptene" 	0.0001 "Mcyclo_C6")
 		 ("H2O"	                0.0025))))
 
+(apply #'+
+       (mapcar #'(lambda (el)
+		   (let ((elm (gethash (first el) *sp-db*)))
+		     (* (sp-molar-mass elm ) (second el))))
+	       '(
+		 ("CO2"	                0.0739)
+		 ("N2"	                0.0004)
+		 ("CH4"	                0.8134 "C1")
+		 ("C2H6"	        0.0558)
+		 ("C3H8"	        0.0367)
+		 ("C4H10,isobutane" 	0.0061)
+		 ("C4H10,n-butane"	0.0087)
+		 ("C5H12,i-pentane" 	0.0023)
+		 ("C5H12,n-pentane"	0.0016)
+		 ("C6H14,n-hexane" 	0.0006)
+;;;;		 ("C6H12,1-hexene"      0.0004 "Mcyclo_C5")
+;;;;		 ("C6H12,cyclo-"	0.0002)
+		 ("C7H16,n-heptane"     0.0005)
+;;;;		 ("C7H14,1-heptene" 	0.0001 "Mcyclo_C6")
+;;;;		 ("H2O"	                0.0025)
+		 )))
+
+(gethash "N2" *sp-db*)
+
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
