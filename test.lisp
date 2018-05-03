@@ -96,72 +96,22 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-Молекулярная масса топливного газа, кг/моль
 
-
-
-(areas:circle-diameter-by-area (/ 8.61198 24.0 0.9))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-thermo                                                                          
-   200.000  1000.000  6000.000 20000.000   9/09/04
-CH4               Gurvich,1991 pt1 p44 pt2 p36.                                 
- 2 g 8/99 C   1.00H   4.00    0.00    0.00    0.00 0   16.0424600     -74600.000
-    200.000   1000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0        10016.202
--1.766850998D+05 2.786181020D+03-1.202577850D+01 3.917619290D-02-3.619054430D-05
- 2.026853043D-08-4.976705490D-12                -2.331314360D+04 8.904322750D+01
-   1000.000   6000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0        10016.202
- 3.730042760D+06-1.383501485D+04 2.049107091D+01-1.961974759D-03 4.727313040D-07
--3.728814690D-11 1.623737207D-15                 7.532066910D+04-1.219124889D+02
-C2H4              TRC(4/88) w2600. Chao,1975. Knippers,1985.                    
- 2 g 1/00 C   2.00H   4.00    0.00    0.00    0.00 0   28.0531600      52500.000
-    200.000   1000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0        10518.689
--1.163605836D+05 2.554851510D+03-1.609746428D+01 6.625779320D-02-7.885081860D-05
- 5.125224820D-08-1.370340031D-11                -6.176191070D+03 1.093338343D+02
-   1000.000   6000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0        10518.689
- 3.408763670D+06-1.374847903D+04 2.365898074D+01-2.423804419D-03 4.431395660D-07
--4.352683390D-11 1.775410633D-15                 8.820429380D+04-1.371278108D+02
-END PRODUCTS                                                                    
-END REACTANTS 
-
-
-thermo                                                                          
-   200.000  1000.000  6000.000 20000.000   9/09/04
-CH4               Gurvich,1991 pt1 p44 pt2 p36.                                 
- 2 g 8/99 C   1.00H   4.00    0.00    0.00    0.00 0   16.0424600     -74600.000
-200.000   1000.0007
-
-(defparameter qi (list -2.0 -1.0 0.0 1.0 2.0 3.0 4.0))
-
-0.0        10016.202
-
-(defparameter ai
-  (list -1.766850998D+05 2.786181020D+03 -1.202577850D+01  3.917619290D-02 -3.619054430D-05 2.026853043D-08 -4.976705490D-12))
-
--2.331314360D+04 8.904322750D+01
-   1000.000   6000.0007 -2.0 -1.0  0.0  1.0  2.0  3.0  4.0  0.0        10016.202
- 3.730042760D+06-1.383501485D+04 2.049107091D+01-1.961974759D-03 4.727313040D-07
--3.728814690D-11 1.623737207D-15                 7.532066910D+04-1.219124889D+02
-
-(defun Cp (temp ai qi)
-	(do ((rez 0.0 () )))
-	)
-
-(defparameter Rmu 8.3144598) ; "м2 кг с-2 К-1 Моль-1"
-
-(let ((temp 973.15))
-  (* Rmu (apply #'+
-		(mapcar
-		 #'(lambda (a-i q-i)
-		     (* a-i (expt temp q-i)))
-		 ai qi))))
-
-72.48385879469781d0
-34.85801543107575d0                34.858
-
-
-(vector 1 2 3)
-
-(svref ai 0 ) 
+(let ((test (make-instance
+	      'composition :components
+	      (list (make-instance 'component :species (gethash "N2"              *sp-db*) :mole-fraction 0.0003 )
+		    (make-instance 'component :species (gethash "CO2"             *sp-db*) :mole-fraction 0.0022 )
+		    (make-instance 'component :species (gethash "CH4"             *sp-db*) :mole-fraction 0.7374 )
+		    (make-instance 'component :species (gethash "C2H6"            *sp-db*) :mole-fraction 0.0593 )
+		    (make-instance 'component :species (gethash "C3H8"            *sp-db*) :mole-fraction 0.1179 )
+		    (make-instance 'component :species (gethash "C4H10,isobutane" *sp-db*) :mole-fraction 0.0131 )
+		    (make-instance 'component :species (gethash "C4H10,n-butane"  *sp-db*) :mole-fraction 0.0379 )
+		    (make-instance 'component :species (gethash "C5H12,i-pentane" *sp-db*) :mole-fraction 0.0130 )
+		    (make-instance 'component :species (gethash "C5H12,n-pentane" *sp-db*) :mole-fraction 0.0139 )
+		    (make-instance 'component :species (gethash "C6H14,n-hexane"  *sp-db*) :mole-fraction 0.0017 )
+		    (make-instance 'component :species (gethash "C6H10,cyclo-"    *sp-db*) :mole-fraction 0.0004 )
+		    (make-instance 'component :species (gethash "C6H10,cyclo-"    *sp-db*) :mole-fraction 0.0002 )
+		    (make-instance 'component :species (gethash "C7H16,n-heptane" *sp-db*) :mole-fraction 0.0001 )
+		    (make-instance 'component :species (gethash "C6H10,cyclo-"    *sp-db*) :mole-fraction 0.0001 )
+		    (make-instance 'component :species (gethash "H2O"             *sp-db*) :mole-fraction 0.0027 )))))
+  (adiabatic-index test 473))

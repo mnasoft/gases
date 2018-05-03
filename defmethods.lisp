@@ -8,6 +8,9 @@
 ;;;;    molar-mass                                                                              ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defgeneric molar-mass (species)
+    (:documentation "Возвращает молекулярную массу, [g/mol]"))
+
 (defmethod molar-mass ((x molecule))
   "Возвращает молекулярную массу, [g/mol]
 Пример использования:
@@ -26,6 +29,38 @@
 ;;;; (molar-mass (gethash \"CH4\" *sp-db*)) => 16.04246
 "
   (sp-molar-mass x))
+
+(defmethod molar-mass ((x component))
+  "Возвращает молекулярную массу, [g/mol]
+Пример использования:
+;;;; (molar-mass ) => 3.1998801
+;;;; (molar-mass (make-instance 'component :mole-fraction 0.2 :species (gethash \"N2\"  *sp-db*))) => 5.6026797
+;;;; (molar-mass (make-instance 'component :mole-fraction 0.3 :species (gethash \"CH4\" *sp-db*))) => 4.812738
+"
+  (* (component-mole-fraction  x) (molar-mass (component-species x))))
+
+(defmethod molar-mass ((x composition))
+  "Возвращает молекулярную массу, [g/mol]
+Пример использования:
+  (make-instance
+   'composition :components
+   (list (make-instance 'component :species (gethash \"N2\"              *sp-db*) :mole-fraction 0.0003 )
+	 (make-instance 'component :species (gethash \"CO2\"             *sp-db*) :mole-fraction 0.0022 )
+	 (make-instance 'component :species (gethash \"CH4\"             *sp-db*) :mole-fraction 0.7374 )
+	 (make-instance 'component :species (gethash \"C2H6\"            *sp-db*) :mole-fraction 0.0593 )
+	 (make-instance 'component :species (gethash \"C3H8\"            *sp-db*) :mole-fraction 0.1179 )
+	 (make-instance 'component :species (gethash \"C4H10,isobutane\" *sp-db*) :mole-fraction 0.0131 )
+	 (make-instance 'component :species (gethash \"C4H10,n-butane\"  *sp-db*) :mole-fraction 0.0379 )
+	 (make-instance 'component :species (gethash \"C5H12,i-pentane\" *sp-db*) :mole-fraction 0.0130 )
+	 (make-instance 'component :species (gethash \"C5H12,n-pentane\" *sp-db*) :mole-fraction 0.0139 )
+ 	 (make-instance 'component :species (gethash \"C6H14,n-hexane\"  *sp-db*) :mole-fraction 0.0017 )
+	 (make-instance 'component :species (gethash \"C6H10,cyclo-\"    *sp-db*) :mole-fraction 0.0004 )
+	 (make-instance 'component :species (gethash \"C6H10,cyclo-\"    *sp-db*) :mole-fraction 0.0002 )
+	 (make-instance 'component :species (gethash \"C7H16,n-heptane\" *sp-db*) :mole-fraction 0.0001 )
+	 (make-instance 'component :species (gethash \"C6H10,cyclo-\"    *sp-db*) :mole-fraction 0.0001 )
+	 (make-instance 'component :species (gethash \"H2O\"             *sp-db*) :mole-fraction 0.0027 )))
+"
+  (apply #'+ (mapcar #'molar-mass  (composition-components x))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-isobaric-heat-capacity                                                            ;;;;
@@ -51,6 +86,12 @@
     (sp-reccords x))
    temperature))
 
+(defmethod molar-isobaric-heat-capacity ((x component) temperature)
+  (* (component-mole-fraction  x) (molar-isobaric-heat-capacity (component-species x) temperature)))
+
+(defmethod molar-isobaric-heat-capacity ((x composition) temperature)
+  (apply #'+ (mapcar #'(lambda (el) (molar-isobaric-heat-capacity el  temperature ) ) (composition-components x))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-isochoric-heat-capacity                                                           ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -67,6 +108,16 @@
 (defmethod molar-isochoric-heat-capacity ((x sp) temperature)
   "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
   (- (molar-isobaric-heat-capacity x temperature) *Rμ*))
+
+(defmethod molar-isochoric-heat-capacity ((x sp) temperature)
+  "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
+  (- (molar-isobaric-heat-capacity x temperature) *Rμ*))
+
+(defmethod molar-isochoric-heat-capacity ((x component) temperature)
+  (* (component-mole-fraction x) (molar-isochoric-heat-capacity (component-species x) temperature)))
+
+(defmethod molar-isochoric-heat-capacity ((x composition) temperature)
+  (apply #'+ (mapcar #'(lambda (el) (molar-isochoric-heat-capacity el temperature ) ) (composition-components x))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-enthalpy                                                                          ;;;;
@@ -148,6 +199,14 @@
 - в зависимости от температуры (temperature), [K]"
   (/ (molar-isobaric-heat-capacity x temperature)
      (molar-isochoric-heat-capacity x temperature)))
+
+(defmethod adiabatic-index ((x component) temperature)
+    (/ (molar-isobaric-heat-capacity x temperature)
+     (molar-isochoric-heat-capacity x temperature)))
+
+(defmethod adiabatic-index ((x composition) temperature)
+      (/ (molar-isobaric-heat-capacity x temperature)
+	 (molar-isochoric-heat-capacity x temperature)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

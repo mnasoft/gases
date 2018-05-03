@@ -90,7 +90,7 @@
 (mnas-defclass
  (composition "Представляет смесь, состоящую из объектов класса component."
 	    ()
-	    ((components nil "Содержит список компонентов."))))
+	    ((components nil "Содержит список компонентов. Элементами которого д.б. данные соответствущие типу component"))))
 
 (defmethod print-object :before ((x composition) s)
 	   (format s

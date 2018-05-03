@@ -24,12 +24,13 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
-(mapcar
- #'(lambda (el)
-     (format t "<tr><td>~A<td><td>~A<td><td>~A<td></tr>~%"
-	     (molecule-name-ru (first el))
-	     (molecule-name-en-short (first el))
-	     (second el)))
- *running-gas*)
+(progn
+  (format t "<table>~%")
+  (mapcar
+   #'(lambda (el)
+       (format t "<tr><td>~A</td><td>~A</td><td>~A</td></tr>~%"
+	       (molecule-name-ru (first el))
+	       (molecule-name-en-short (first el))
+	       (second el)))
+   *running-gas*)
+  (format t "</table>~%~%~%"))
