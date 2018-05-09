@@ -1,5 +1,9 @@
 ;;;; test.lisp
 
+(annot:enable-annot-syntax)
+
+
+
 (in-package #:gases)
 
 ;;; "gases" goes here. Hacks and glory await!
