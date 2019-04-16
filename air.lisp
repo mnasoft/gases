@@ -4,6 +4,8 @@
 
 ;;; "gases" goes here. Hacks and glory await!
 
+(defparameter *torr* 133.322 "Один торр = 133.322 Па")
+
 (defun J-wet-air (temerature d)
   (values
    (+
@@ -13,11 +15,21 @@
   )
 
 (defun p-wet-air-water-full (temerature)
-  "Давление насыщения водяных паров влажного воздуха от температуры"
-  (* 133.3
+  "Давление насыщения водяных паров влажного воздуха от температуры. 
+Формулу предложил М.И. Фильней. Более точная"
+  (* *torr*
      (expt 10.0
 	   (/ (+ 156.0 (* 8.12 temerature))
 	      (+ 236 temerature)))))
+
+(defun p-wet-air-water-full-1 (temerature)
+  "Давление насыщения водяных паров влажного воздуха от температуры. 
+Формулу предложил Г.К. Филоненко"
+  (* *torr*
+     (expt 10.0
+	   (+ 0.622 (/ (* 7.5 temerature) (+ 238 temerature))))))
+
+(/ (p-wet-air-water-full 60.0) 133.3)
 
 (defun d-wet-air (p-b p-w)
   "Влагосодержание влажного воздуха"
