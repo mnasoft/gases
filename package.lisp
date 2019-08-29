@@ -11,3 +11,5 @@
    d-wet-air
    d-wet-air-by-temp
    )) 
+
+;;;; (declaim (optimize (compilation-speed 0) (debug 3) (safety 0) (space 0) (speed 0)))
