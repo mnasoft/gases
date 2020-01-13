@@ -236,3 +236,175 @@
 	     (- (epsilon-by-lambda lam k) epsilon))))
     (half-div:h-div 0.0 (lambda-upper-bound k)
 		    (closure-lambda-by-epsilon epsilon k))))
+
+@export
+(defparameter *Rmu* 8.314 "Дж/(моль*К) универсальная газовая постоянная")
+
+@export
+@annot.doc:doc
+"@b(Описание:) Вычисляет индивидуальную газовую постоянную 
+по молекулярной массе газа.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (R-by-mu 0.02895) => 287.1848
+@end(code)
+"
+(defun R-by-mu (mu)
+  (/ *Rmu* mu))
+
+@export
+@annot.doc:doc
+"@b(Описание:) Вычисляет индивидуальную газовую постоянную 
+по молекулярной массе газа.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (m-by-k-mu 1.4 0.02895) => 0.040405408
+@end(code)
+"
+(defun m-by-k-mu (k mu)
+  (sqrt
+   (* k
+      (expt (/ 2 (+ k 1))
+	    (/ (+ k 1)(- k 1)))
+      (/ (R-by-mu mu)))))
+
+@export
+@annot.doc:doc
+"@b(Описание:) определяет значение газодинамической функции q.
+
+@begin(list)
+ @item(MFR - расход газа, кг/с;)
+ @item(temperature  - температура остановленного потока, К;)
+ @item(pressure  - полное давление, Па;)
+ @item(area  - площадь м2;)
+ @item(k  - коэффициент адиабаты;)
+ @item(mu - молекулярная масса, кг/моль.)
+@end(list)
+
+@begin[lang=lisp](code)
+
+@end(code)
+
+"
+(defun q-by-MFR-T-P-A-k-mu (MFR Temperature Pressure Area k mu)
+  (/ (* MFR (sqrt Temperature) )
+     (* (m-by-k-mu k mu) Pressure Area)))
+
+(q-by-MFR-T-P-A-k-mu 0.5
+		     (+ 400.0 273.15)
+		     (* 101325.0 1.2)
+		     (/ 4700.0 1000.0 1000.0)
+		     1.4
+		     0.02895)
+@export
+@annot.doc:doc
+"@b(Описание:) возвращает критическую скорость.
+
+ @b(Переменые:)
+@begin(list)
+ @item(temperature - температура торможения, К;) 
+ @item(k  - коэффициект адиабаты cp/cv;
+ @item(mu - молекулярная масса газа, кг/моль;)
+@end(list)
+
+ (a*-by-T-k-mu (+ 273 15) 1.4 0.02895) => 310.635
+"
+(defun a*-by-T-k-mu (Temperature k mu)
+  (sqrt (/ (* 2 k (r-by-mu mu) Temperature) (+ k 1))))
+
+
+@export
+@annot.doc:doc
+"Скорость звука в заторможенном потоке.
+ (a0-by-T-k-mu (+ 273 15)  1.4 0.02895) => 340.2836
+"
+(defun a0-by-T-k-mu (temperature k mu)
+  (sqrt (* k (r-by-mu mu) Temperature)))
+
+@export
+@annot.doc:doc
+"@b(Описание:) возвращает критическую скорость.
+
+ @b(Переменые:)
+@begin(list)
+ @item(a0 - скорость звука в заторможенном потоке, м/с;) 
+ @item(k  - коэффициект адиабаты cp/cv;
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (a*-by-a0-k 340.0 1.4) => 310.37613
+@end(code)
+"
+(defun a*-by-a0-k (a0 k) 
+  (* a0 (sqrt (/ 2 (+ k 1)))))
+
+@export
+@annot.doc:doc
+"@b(Описание:) возвращает плотность заза
+
+ @b(Переменые:)
+@begin(list)
+ @item(pressure  - полное давление, Па;)
+ @item(temperature - температура торможения, К;) 
+ @item(lam - относительная скорость;)
+ @item(k   - коэффициент адиабаты;)
+ @item(mu  - молекулярная масса, кг/моль.)
+@end(list)
+"
+(defun ro-by-p-t-lambda-k-mu (pressure temperature lam k mu)
+  (/ (* pressure (pi-by-lambda lam k))
+     (* (r-by-mu mu) temperature (tau-by-lambda lam k))))
+
+@export
+@annot.doc:doc
+"@b(Описание:) возвращает скорость заза, м/с.
+
+ @b(Переменые:)
+@begin(list)
+ @item(lam - относительная скорость;)
+ @item(temperature - температура торможения, К;) 
+ @item(k   - коэффициент адиабаты;)
+ @item(mu  - молекулярная масса, кг/моль.)
+@end(list)
+
+@begin[lang=lisp](code)
+ (w-by-lambda-temperature 0.5 (+ 400.0 273) 1.4 0.02895) => 260.08917
+@end(code)
+"
+(defun w-by-lambda-temperature (lam temperature k mu)
+  (* lam (a0-by-T-k-mu temperature k mu)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defconstant +F-GT+ 0.004780 "м2")
+
+;;;;                       1      2      3      4      5      6      7      8      9     10     11     12     13     14 
+(defconstant +t02+     '(292.8  293.7  294.6  404.9  407.9  559.0  566.0  667.3  663.4  664.5  666.5  671.9  670.0  681.6 ))
+(defconstant *p02.МТР* '(129.16 113.52 106.42 110.80 121.48 128.51 112.45 115.23 108.05 110.50 122.91 127.29 128.53 142.26))
+(defconstant +G2+      '(0.5867 0.4017 0.2605 0.3017 0.3342 0.3120 0.2743 0.2823 0.1953 0.2296 0.2502 0.2663 0.2598 0.3384))
+
+(defconstant +p02.МТР+ (mapcar #'(lambda (el) (* 1000.0 el)) *p02.МТР*))
+
+(mapcar #'(lambda (g te p) (q-by-mfr-t-p-a-k-mu g te p +F-GT+ 1.4 0.02895)) +G2+ +t02+ +p02.МТР+ )
+
+(defparameter *q-l* '(0.4024447 0.31398872 0.21753718 0.2836887 0.28768098 0.2972051 0.3004742  0.32767135 0.24104485 0.27732542 0.27210265 0.28077716 0.27089724 0.3215474))
+
+(mapcar #'(lambda (tt) (a*-by-t-k-mu tt 1.4 0.02895)) +t02+)
+(313.21292 313.6939 314.1742 368.3223 369.6843 432.77286 435.47412 472.8405 471.45676 471.84744 472.557 474.46747 473.79614 477.88007)
+
+(mapcar #'(lambda (q)
+	    (lambda-by-q q 1.4))
+	*q-l*)
+
+(defparameter *l-otv* '(0.26260614 0.20249128 0.13902235 0.18235731 0.18499899 0.19131422 0.19348574 0.21165133 0.15433455 0.17815351 0.1747098 0.1804328 0.17391539 0.20754576))
+
+(mapcar #'(lambda (p tt lam)
+	    (ro-by-p-t-lambda-k-mu p tt lam 1.4 0.02895))
+	+p02.МТР+ +t02+ *l-otv*)
+
+(1.4922588 1.323006 1.2477454 0.9397152 1.0223008 0.7883519 0.6810608 0.5901283  0.5615249 0.5714092 0.63399833 0.6507601 0.6596007 0.7137875)
+
+  
