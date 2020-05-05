@@ -1,6 +1,6 @@
 ;;;; elements.lisp
 
-(in-package #:gases)
+(in-package :gases)
 
 ;;;; "Данные взяты из файла ./doc/111.jpg (см. мультитехнический справочник)."
 
