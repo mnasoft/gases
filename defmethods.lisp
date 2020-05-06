@@ -20,7 +20,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;
 
-(defmethod molar-mass ((x sp))
+(defmethod molar-mass ((x <sp>))
   "Возвращает молекулярную массу, [g/mol]
 Пример использования
 ;;;; (molar-mass (gethash \"N2\" *sp-db*)) => 28.0134
@@ -74,7 +74,7 @@
   (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7)  (values-list (sp-rec-coefficients x))
     (* *Rμ* (Cp/R-new temperature a1 a2 a3 a4 a5 a6 a7))))
 
-(defmethod molar-isobaric-heat-capacity ((x sp) temperature)
+(defmethod molar-isobaric-heat-capacity ((x <sp>) temperature)
   "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]"
   (molar-isobaric-heat-capacity
    (find-if
@@ -103,11 +103,11 @@
   "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
   (- (molar-isobaric-heat-capacity x temperature) *Rμ*))
 
-(defmethod molar-isochoric-heat-capacity ((x sp) temperature)
+(defmethod molar-isochoric-heat-capacity ((x <sp>) temperature)
   "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
   (- (molar-isobaric-heat-capacity x temperature) *Rμ*))
 
-(defmethod molar-isochoric-heat-capacity ((x sp) temperature)
+(defmethod molar-isochoric-heat-capacity ((x <sp>) temperature)
   "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
   (- (molar-isobaric-heat-capacity x temperature) *Rμ*))
 
@@ -136,7 +136,7 @@
 	(list (first (sp-rec-integration-constants x)))))
        (* *Rμ* temperature (H/RT-new temperature a1 a2 a3 a4 a5 a6 a7 a8))))
 
-(defmethod molar-enthalpy ((x sp) temperature)
+(defmethod molar-enthalpy ((x <sp>) temperature)
   "Возвращает мольную энтальпию muΗ, [J/(mol*K)]"
   (molar-enthalpy
    (find-if
@@ -165,7 +165,7 @@
 	(list (second (sp-rec-integration-constants x)))))
     (* *Rμ* (S/R-new temperature a1 a2 a3 a4 a5 a6 a7 a9))))
 
-(defmethod molar-entropy ((x sp) temperature)
+(defmethod molar-entropy ((x <sp>) temperature)
   "Возвращает мольную энтропию muS, [?J/(mol*K)]"
   (molar-entropy
    (find-if
@@ -191,9 +191,9 @@
   (/ (molar-isobaric-heat-capacity x temperature)
      (molar-isochoric-heat-capacity x temperature)))
 
-(defmethod adiabatic-index ((x sp) temperature)
+(defmethod adiabatic-index ((x <sp>) temperature)
   "Возвращает показатель адиабаты
-- для класса sp
+- для класса <sp>
 - в зависимости от температуры (temperature), [K]"
   (/ (molar-isobaric-heat-capacity x temperature)
      (molar-isochoric-heat-capacity x temperature)))

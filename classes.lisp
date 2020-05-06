@@ -102,7 +102,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defclass sp nil
+(defclass <sp> nil
   ((sp-name
     :accessor sp-name :initarg :name :initform ""
     :documentation
@@ -144,14 +144,14 @@
   (:documentation
    "Представляет молекулу вещества (Species name/Formula). Данные для элементов взяты из базы данных NASA (см. https://www.grc.nasa.gov/www/CEAWeb/)"))
 
-(defmethod print-object :before ((x sp) s)
+(defmethod print-object :before ((x <sp>) s)
 	   (format s
-		   "#sp(sp-name=~S~% sp-comments=~S~% sp-number-temperature-intervals=~S~% sp-reference-date-code=~S~% sp-chemical-formula=~S~% sp-phase=~S~% sp-molar-mass=~S~% sp-heat-formation=~S~% sp-reccords=~S~%"
+		   "#<sp>(sp-name=~S~% sp-comments=~S~% sp-number-temperature-intervals=~S~% sp-reference-date-code=~S~% sp-chemical-formula=~S~% sp-phase=~S~% sp-molar-mass=~S~% sp-heat-formation=~S~% sp-reccords=~S~%"
 		   (sp-name x) (sp-comments x) (sp-number-temperature-intervals x) (sp-reference-date-code x) (sp-chemical-formula x) (sp-phase x) (sp-molar-mass x) (sp-heat-formation x) (sp-reccords x)))
 
-(defmethod print-object         ((x sp) s) (format s "" ))
+(defmethod print-object         ((x <sp>) s) (format s "" ))
 
-(defmethod print-object :after  ((x sp) s) (format s ")" ))
+(defmethod print-object :after  ((x <sp>) s) (format s ")" ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -159,7 +159,7 @@
   ((component-species
     :accessor component-species :initarg :species
     :documentation
-    "Должен содержать объект типа sp.")
+    "Должен содержать объект типа <sp>.")
    (component-mole-fraction
     :accessor component-mole-fraction :initarg
     :mole-fraction :initform 0.0 :documentation

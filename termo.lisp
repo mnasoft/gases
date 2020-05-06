@@ -18,9 +18,9 @@
    :integration-constants (list (nth  20 lst) (nth  21 lst))))
 
 (defun make-instance-sp (lst)
-  "Создает оъект sp "
+  "Создает оъект <sp> "
   (make-instance
-   'sp
+   '<sp>
    :name (first lst)
    :comments (second lst)
    :number-temperature-intervals (third lst)
