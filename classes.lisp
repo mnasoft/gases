@@ -178,20 +178,20 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defclass composition nil
+(defclass <composition> nil
   ((composition-components :accessor composition-components :initarg
                            :components :documentation
                            "Содержит список компонентов. Элементами которого д.б. данные соответствущие типу <component>"))
   (:documentation
    "Представляет смесь, состоящую из объектов класса <component>."))
 
-(defmethod print-object :before ((x composition) s)
+(defmethod print-object :before ((x <composition>) s)
   (format s
-	  "#composition(composition-components=~S"
+	  "#<composition>(composition-components=~S"
 	  (composition-components x)))
 
-(defmethod print-object
-    ((x composition) s) (format s "" ))
+(defmethod print-object ((x <composition>) s)
+  (format s "" ))
 
-(defmethod print-object :after
-    ((x composition) s) (format s ")" ))
+(defmethod print-object :after ((x <composition>) s)
+  (format s ")" ))

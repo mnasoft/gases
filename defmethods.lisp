@@ -37,11 +37,11 @@
 "
   (* (component-mole-fraction  x) (molar-mass (component-species x))))
 
-(defmethod molar-mass ((x composition))
+(defmethod molar-mass ((x <composition>))
   "Возвращает молекулярную массу, [g/mol]
 Пример использования:
   (make-instance
-   'composition :components
+   '<composition> :components
    (list (make-instance '<component> :species (gethash \"N2\"              *sp-db*) :mole-fraction 0.0003 )
 	 (make-instance '<component> :species (gethash \"CO2\"             *sp-db*) :mole-fraction 0.0022 )
 	 (make-instance '<component> :species (gethash \"CH4\"             *sp-db*) :mole-fraction 0.7374 )
@@ -87,7 +87,7 @@
 (defmethod molar-isobaric-heat-capacity ((x <component>) temperature)
   (* (component-mole-fraction  x) (molar-isobaric-heat-capacity (component-species x) temperature)))
 
-(defmethod molar-isobaric-heat-capacity ((x composition) temperature)
+(defmethod molar-isobaric-heat-capacity ((x <composition>) temperature)
   (apply #'+ (mapcar #'(lambda (el) (molar-isobaric-heat-capacity el  temperature ) ) (composition-components x))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -114,7 +114,7 @@
 (defmethod molar-isochoric-heat-capacity ((x <component>) temperature)
   (* (component-mole-fraction x) (molar-isochoric-heat-capacity (component-species x) temperature)))
 
-(defmethod molar-isochoric-heat-capacity ((x composition) temperature)
+(defmethod molar-isochoric-heat-capacity ((x <composition>) temperature)
   (apply #'+ (mapcar #'(lambda (el) (molar-isochoric-heat-capacity el temperature ) ) (composition-components x))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -202,7 +202,7 @@
     (/ (molar-isobaric-heat-capacity x temperature)
      (molar-isochoric-heat-capacity x temperature)))
 
-(defmethod adiabatic-index ((x composition) temperature)
+(defmethod adiabatic-index ((x <composition>) temperature)
       (/ (molar-isobaric-heat-capacity x temperature)
 	 (molar-isochoric-heat-capacity x temperature)))
 
