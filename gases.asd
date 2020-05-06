@@ -8,13 +8,13 @@
   :components
 			((:file "package")
 			 (:file "gases")
-;			 (:file "classes")
-;			 (:file "defmethods")
-;			 (:file "termo")
+			 (:file "classes")
+			 (:file "defmethods")
+			 (:file "termo")
+			 (:file "air")
 			 ;; (:file "elements")
 			 ;; (:file "running-gas")
-			 ;; (:file "stopping-gas")
-			 (:file "air")
+			 ;; (:file "stopping-gas")			 
 			 )
 
 ;  :components ((:module "src"
