@@ -1,0 +1,69 @@
+* Ссылки
+1) Операции git  [[file:~/org/sbcl/Git-memo.org][Git-memo.org]]
+2) [[file:~/org/sbcl/codex.org][Генерирование документации при помощи Codex]]
+3) http://commondoc.github.io/codex/docs/tutorial.html
+4) [[/home/namatv/.slynkrc]]
+5) Тестирование при помощи FiveAm
+   - [[https://common-lisp.net/project/fiveam/][FiveAm]]
+   - [[http://turtleware.eu/posts/Tutorial-Working-with-FiveAM.html][Tutorial]]
+   - [[https://www.darkchestnut.com/2018/how-to-write-5am-test-fixtures/][Fixtures]]
+ 
+* Генерирование документации
+#+name: pwd
+#+BEGIN_SRC shell
+pwd
+#+END_SRC
+
+#+RESULTS: pwd
+: /home/namatv/quicklisp/local-projects/clisp/gases
+
+#+name: basename-pwd
+#+BEGIN_SRC shell
+basename `pwd`
+#+END_SRC
+
+#+RESULTS: basename-pwd
+: gases
+
+#+name:make-graph
+#+BEGIN_SRC lisp :var pwd=pwd :var basename-pwd=basename-pwd
+  ;;;; (require :codex)
+  ;;;; (require :mnas-package)
+  ;;;;
+  ;;;; (require :gases)
+  (let ((pkg :gases)
+	(fpath (concatenate
+		'string
+		(cond ((uiop:getenv "MSYS_HOME")) (t ""))
+		pwd "/docs/build/"
+		basename-pwd "/html/")))
+    (codex:document pkg)
+;    (mnas-package:view-call-graph   pkg :out-type "png" :viewer nil :fpath fpath :fname "call-graph")
+;    (mnas-package:view-system-graph pkg :out-type "png" :viewer nil :fpath fpath :fname "system-graph")
+;    (mnas-package:view-class-graph  pkg :out-type "png" :viewer nil :fpath fpath :fname "class-graph")
+;    (mnas-package:view-symbol-graph pkg :out-type "png" :viewer nil :fpath fpath :fname "symbol-graph")
+)
+#+END_SRC
+
+#+RESULTS: make-graph
+
+* Публикация
+#+name: publish
+#+BEGIN_SRC shell :var make-graph=make-graph
+  if [[ `hostname` == "mnasoft-00" ]]
+  then
+      echo "mnasoft-00"
+      mkdir -p "$HOME/public_html/Common-Lisp-Programs/"
+      CDIR=`basename $PWD`
+      rm -rf "$HOME/public_html/Common-Lisp-Programs/$CDIR/"
+      cp -rf ./docs/build/* "$HOME/public_html/Common-Lisp-Programs/"
+  fi
+  if [[ `hostname` == "ko11-118383" ]]
+  then
+      CDIR=`basename $PWD`
+      rm -rf "\\\\n133619\\home\\_namatv\\public_html\\Site\\Development\\Common-Lisp-Programs\\$CDIR\\"
+      cp -rf ./docs/build/* "\\\\n133619\\home\\_namatv\\public_html\\Site\\Development\\Common-Lisp-Programs\\"
+   fi
+#+END_SRC
+
+#+RESULTS: publish
