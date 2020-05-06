@@ -136,7 +136,8 @@
 
 (clean-termo-inp)
 
-(defparameter *sp-db* (make-hash-table :test #'equal))
+(defparameter *sp-db* (make-hash-table :test #'equal)
+  "База данных компонентов")
 
 (mapc #'(lambda (el)
 	  (let ((sp-elem (make-instance-sp el)))
