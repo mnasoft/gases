@@ -47,7 +47,7 @@
 ;;;; (make-instance-component "N2" 0.21)
 
 (defun make-instance-composition (lst)
-  (make-instance 'composition 
+  (make-instance '<composition> 
 		 :components (mapcar
 			      #'(lambda(el)
 				  (make-instance-component (first el)(second el)))
