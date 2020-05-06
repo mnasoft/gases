@@ -1,12 +1,12 @@
-https://www.grc.nasa.gov/www/CEAWeb/
+[[https://www.grc.nasa.gov/www/CEAWeb/]]
 
-https://www.grc.nasa.gov/www/CEAWeb/ceaThermoBuild.htm
+[[https://www.grc.nasa.gov/www/CEAWeb/ceaThermoBuild.htm]]
 
-http://combustion.berkeley.edu/gri_mech/data/nasa_plnm.html
+[[http://combustion.berkeley.edu/gri_mech/data/nasa_plnm.html]]
 
-https://www.grc.nasa.gov/www/CEAWeb/RP-1311.pdf p20
+[[https://www.grc.nasa.gov/www/CEAWeb/RP-1311.pdf]] p20
 
-The NASA polynomials have the form:
+* The NASA polynomials have the form:
 
     Cp/R = a1 + a2 T + a3 T^2 + a4 T^3 + a5 T^4                                                      (4.6)
     (defun Cp/R-old (TT a1 a2 a3 a4 a5 a6 a7)
@@ -34,7 +34,7 @@ The NASA polynomials have the form:
 	 (* a5 TT TT TT TT 1/4)
 	 a7))
 
-The NASA polynomials have the form:
+* The NASA polynomials have the form:
 
     Cp/R = a1 T^-2 + a2 T^-1 + a3 + a4 T + a5 T^2 + a6 T^3 + a7 T^4                                  (4.9)
     (defun Cp/R-new (TT a1 a2 a3 a4 a5 a6 a7 a8 a9)
@@ -78,7 +78,15 @@ H in the above equation is defined as
 so that, in general, H(T) is not equal to Delta Hf(T) and one needs to have the data for the reference elements to calculate Delta Hf(T).
 
 |See GRI-Mech thermodynamic values|
-To find out more about NASA polynomials you can consult the report by Alex Burcat 'Thermochemical Data for Combustion Calculations', Chapter 8 of Combustion Chemistry, W.C. Gardiner, Ed, Springer-Verlag, New York, 1984; '1994 Ideal Gas Thermodynamic Data for Combustion and Air- Pollution Use', Technion Report TAE 697, December 1993, by A. Burcat and B. McBride; or 'Coefficients for Calculating Thermodynamic and Transport Properties of Individual Species', NASA Report TM-4513, by B.J. McBride, S. Gordon and M.A. Reno, October 1993. Alex can be contacted by Internet at aer0201@technion.technion.ac.il. If you use the Sandia data base usually supplied with Chemkin you may get output that is significantly different. 
+To find out more about NASA polynomials you can consult the report by Alex Burcat
+'Thermochemical Data for Combustion Calculations', Chapter 8 of Combustion Chemistry,
+W.C. Gardiner, Ed, Springer-Verlag, New York, 1984; '1994 Ideal Gas Thermodynamic
+Data for Combustion and Air- Pollution Use', Technion Report TAE 697, December 1993,
+by A. Burcat and B. McBride; or 'Coefficients for Calculating Thermodynamic and 
+Transport Properties of Individual Species', NASA Report TM-4513, by B.J. McBride,
+S. Gordon and M.A. Reno, October 1993. Alex can be contacted by Internet at 
+aer0201@technion.technion.ac.il. If you use the Sandia data base usually 
+supplied with Chemkin you may get output that is significantly different. 
 
 
 thermo                                                                          
@@ -103,4 +111,4 @@ END PRODUCTS
 END REACTANTS 
 
 
-https://cearun.grc.nasa.gov/cea/index_ds.html 
+[[https://cearun.grc.nasa.gov/cea/index_ds.html]] 
