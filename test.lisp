@@ -14,6 +14,51 @@
 	(molar-entropy  sp tt)
 	(adiabatic-index sp tt)))
 
+(type-of (make-instance-composition '(("N2" 0.78) ("O2" 0.22))))
+
+(molar-enthalpy  (make-instance-composition '(("N2" 0.78) ("O2" 0.22)))
+		 (+ 273.15 25))
+
+(format
+ t "~{~{~9F ~}~%~}"
+ (let ((xx (gethash "Air" *sp-db*))
+       (rez nil))
+   (setf rez 
+	 (mapcar
+	  #'(lambda (el)
+	      (list el
+		    (/ (molar-isobaric-heat-capacity  xx (+ 273.15 el)) *kal*)
+ 		    (/ (molar-isochoric-heat-capacity xx (+ 273.15 el)) *kal*)
+		    (/ (molar-isobaric-heat-capacity  xx (+ 273.15 el))
+		       *kal* (sp-molar-mass xx) 1/1000)	      
+		    (/ (molar-isochoric-heat-capacity xx (+ 273.15 el))
+		       *kal* (sp-molar-mass xx) 1/1000)
+		    (/ (+ (molar-enthalpy xx (+ 273.15 el))
+			  (- (molar-enthalpy xx 298.15) (molar-enthalpy xx 273.15))) 
+		       *kal*)
+		    (/ (+ (molar-enthalpy xx (+ 273.15 el))
+			  (- (molar-enthalpy xx 298.15) (molar-enthalpy xx 273.15))) 
+		       *kal*
+		       (sp-molar-mass xx)
+		       1/1000)
+		    ))
+	  (loop :for i :from 0.0 :to 2500 :by 100.0 :collect i)))
+   (push '("  °C" "kal/K*mol" "kal/K*mol" "kal/K*kg" "kal/K*kg" " kal/mol" " kal/kg") rez)
+   (push '("   t" " μcp"      " μcv"      "  cp"     "  cv"     "  μi"     "   i"  ) rez)
+   rez))
+
+
+(let ((xx (gethash "O2" *sp-db*))
+      (el 0.0))
+  (/
+   (+ (molar-enthalpy xx (+ 273.15 el))
+      (- (molar-enthalpy xx 298.15) (molar-enthalpy xx 273.15))) 
+   *kal*))
+
+(gethash "Air" *sp-db*)
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (apply #'+

@@ -2,12 +2,11 @@
 
 (in-package :gases)
 
+(annot:enable-annot-syntax)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-mass                                                                              ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defgeneric molar-mass (species)
-    (:documentation "Возвращает молекулярную массу, [g/mol]"))
 
 (defmethod molar-mass ((x <molecule>))
   "Возвращает молекулярную массу, [g/mol]
@@ -64,18 +63,13 @@
 ;;;;    molar-isobaric-heat-capacity                                                            ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgeneric molar-isobaric-heat-capacity (species temperature)
-  (:documentation "Возвращает мольную изобарную теплоемкость 
-- для класса species
-- в зависимости от температуры (temperature), [K]"))
-
 (defmethod molar-isobaric-heat-capacity ((x <sp-rec>) temperature)
   "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]"
   (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7)  (values-list (sp-rec-coefficients x))
     (* *Rμ* (Cp/R-new temperature a1 a2 a3 a4 a5 a6 a7))))
 
 (defmethod molar-isobaric-heat-capacity ((x <sp>) temperature)
-  "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]"
+  "Возвращает мольную изобарную теплоемкость muCp, [kJ/(mol*K)]"
   (molar-isobaric-heat-capacity
    (find-if
     #'(lambda (el)
@@ -85,49 +79,52 @@
    temperature))
 
 (defmethod molar-isobaric-heat-capacity ((x <component>) temperature)
-  (* (component-mole-fraction  x) (molar-isobaric-heat-capacity (component-species x) temperature)))
+  "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]"  
+  (* (component-mole-fraction  x)
+     (molar-isobaric-heat-capacity
+      (component-species x)
+      temperature)))
 
 (defmethod molar-isobaric-heat-capacity ((x <composition>) temperature)
-  (apply #'+ (mapcar #'(lambda (el) (molar-isobaric-heat-capacity el  temperature ) ) (composition-components x))))
+  "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]" 
+  (apply #'+
+	 (mapcar
+	  #'(lambda (el)
+	      (molar-isobaric-heat-capacity el  temperature ))
+	  (composition-components x))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-isochoric-heat-capacity                                                           ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defgeneric molar-isochoric-heat-capacity (species temperature)
-  (:documentation "Возвращает мольную изохорую теплоемкость 
-- для класса species
-- в зависимости от температуры (temperature), [K]"))
 
 (defmethod molar-isochoric-heat-capacity ((x <sp-rec>) temperature)
   "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
   (- (molar-isobaric-heat-capacity x temperature) *Rμ*))
 
 (defmethod molar-isochoric-heat-capacity ((x <sp>) temperature)
-  "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
-  (- (molar-isobaric-heat-capacity x temperature) *Rμ*))
-
-(defmethod molar-isochoric-heat-capacity ((x <sp>) temperature)
-  "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
+  "Возвращает мольную изохорную теплоемкость muCv, [kJ/(mol*K)]"
   (- (molar-isobaric-heat-capacity x temperature) *Rμ*))
 
 (defmethod molar-isochoric-heat-capacity ((x <component>) temperature)
-  (* (component-mole-fraction x) (molar-isochoric-heat-capacity (component-species x) temperature)))
+  "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"  
+  (* (component-mole-fraction x)
+     (molar-isochoric-heat-capacity
+      (component-species x)
+      temperature)))
 
 (defmethod molar-isochoric-heat-capacity ((x <composition>) temperature)
-  (apply #'+ (mapcar #'(lambda (el) (molar-isochoric-heat-capacity el temperature ) ) (composition-components x))))
+  "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
+  (apply #'+
+	 (mapcar #'(lambda (el)
+		     (molar-isochoric-heat-capacity el temperature ) )
+		 (composition-components x))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-enthalpy                                                                          ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgeneric molar-enthalpy (species temperature)
-  (:documentation "Возвращает мольную энтальпию 
-- для класса species
-- в зависимости от температуры (temperature), [K]"))
-
 (defmethod molar-enthalpy ((x <sp-rec>) temperature)
-  "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
+  "Возвращает мольную энтальпию muΗ, [J/(mol*K)]"
   (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7 a8)
       (values-list
        (concatenate
@@ -146,17 +143,26 @@
     (sp-reccords x))
    temperature))
 
+(defmethod molar-enthalpy ((x <component>) temperature)
+  "Возвращает мольную энтальпию muΗ, [J/(mol*K)]"  
+  (* (component-mole-fraction x)
+     (molar-enthalpy
+      (component-species x)
+      temperature)))
+
+(defmethod molar-enthalpy ((x <composition>) temperature)
+  "Возвращает мольную энтальпию muΗ, [J/(mol*K)]"
+  (apply #'+
+	 (mapcar
+	  #'(lambda (el) (molar-enthalpy el temperature))
+	  (composition-components x))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-entropy                                                                           ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defgeneric molar-entropy (species temperature)
-  (:documentation "Возвращает мольную энтальпию 
-- для класса species
-- в зависимости от температуры (temperature), [K]"))
-
 (defmethod molar-entropy ((x <sp-rec>) temperature)
-  "Возвращает мольную энтропию muS, [?J/(mol*K)]"
+  "Возвращает мольную энтропию muS, [J/(mol*K)]"
   (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7 a9)
       (values-list
        (concatenate
@@ -166,7 +172,7 @@
     (* *Rμ* (S/R-new temperature a1 a2 a3 a4 a5 a6 a7 a9))))
 
 (defmethod molar-entropy ((x <sp>) temperature)
-  "Возвращает мольную энтропию muS, [?J/(mol*K)]"
+  "Возвращает мольную энтропию muS, [J/(mol*K)]"
   (molar-entropy
    (find-if
     #'(lambda (el)
@@ -178,11 +184,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    adiabatic-index                                                                         ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defgeneric adiabatic-index (species temperature)
-  (:documentation "Возвращает показатель адиабаты
-- для класса species
-- в зависимости от температуры (temperature), [K]"))
 
 (defmethod adiabatic-index ((x <sp-rec>) temperature)
   "Возвращает показатель адиабаты
@@ -199,12 +200,12 @@
      (molar-isochoric-heat-capacity x temperature)))
 
 (defmethod adiabatic-index ((x <component>) temperature)
-    (/ (molar-isobaric-heat-capacity x temperature)
+  (/ (molar-isobaric-heat-capacity x temperature)
      (molar-isochoric-heat-capacity x temperature)))
 
 (defmethod adiabatic-index ((x <composition>) temperature)
-      (/ (molar-isobaric-heat-capacity x temperature)
-	 (molar-isochoric-heat-capacity x temperature)))
+  (/ (molar-isobaric-heat-capacity x temperature)
+     (molar-isochoric-heat-capacity x temperature)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

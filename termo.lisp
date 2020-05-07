@@ -2,6 +2,7 @@
 
 (in-package :gases)
 
+(annot:enable-annot-syntax)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    make-instance                                                                           ;;;;
@@ -35,17 +36,38 @@
    :heat-formation               (nth 16 lst)
    :reccords               (mapcar #'make-instance-sp-rec (car(last lst)))))
 
+@export
+@annot.doc:doc
+"@b(Описание:) функция @b(make-instance-component) возвращает компонент
+газовой смеси, заданной мольными долями.
 
+@b(Переменые:)
+@begin(list)
+@item(component-name - имя компонента;)
+@item(mole-fraction  - мольная доля компонента.)
+@end(list)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (make-instance-component \"N2\" 0.78)
+ (make-instance-component \"O2\" 0.22)
+@end(code)
+"
 (defun make-instance-component (component-name mole-fraction)
-  (make-instance 'component 
+  (make-instance '<component>
 		 :species (gethash component-name *sp-db*)
 		 :mole-fraction mole-fraction))
 
+@export
+@annot.doc:doc
+"@b(Описание:) функция @b(make-instance-composition) возвращает 
+газовую смесь, заданную мольными долями.
 
-;;;; (make-instance-component "N2" 0.78)
-
-;;;; (make-instance-component "N2" 0.21)
-
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (make-instance-composition '((\"N2\" 0.78) (\"O2\" 0.22)))
+@end(code)
+"
 (defun make-instance-composition (lst)
   (make-instance '<composition> 
 		 :components (mapcar
@@ -53,8 +75,6 @@
 				  (make-instance-component (first el)(second el)))
 			      lst)))
 
-;;;; (make-instance-composition '(("N2" 0.78) ("O2" 0.20)))
- 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;read-formated-data
 
@@ -136,6 +156,7 @@
 
 (clean-termo-inp)
 
+@export
 (defparameter *sp-db* (make-hash-table :test #'equal)
   "База данных компонентов")
 

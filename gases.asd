@@ -9,6 +9,7 @@
 			((:file "package")
 			 (:file "gases")
 			 (:file "classes")
+ 			 (:file "defgenerics")
 			 (:file "defmethods")
 			 (:file "termo")
 			 (:file "air")
