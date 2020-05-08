@@ -5,22 +5,37 @@
 ;;; "gases" goes here. Hacks and glory await!
 
 (defparameter *running-gas*
-  (list
-    (list *N2*	          0.0003)
-    (list *CO2*	          0.0022)
-    (list *C1*	          0.7374)
-    (list *C2*	          0.0593)
-    (list *C3*	          0.1179)
-    (list *iC4*	          0.0131)
-    (list *nC4*	          0.0379)
-    (list *iC5*	          0.0130)
-    (list *nC5*	          0.0139)
-    (list *nC6*	          0.0017)
-    (list *Mcyclo_C5*	  0.0004)
-    (list *Cyclo_C6*	  0.0002)
-    (list *nC7*	          0.0001)
-    (list *Mcyclo_C6*	  0.0001)
-    (list *H2O*	          0.0027)))
+  (make-instance-composition
+   '(("N2"              0.0003)
+     ("CO2"             0.0022)
+     ("CH4"             0.7374)
+     ("C2H6"            0.0593)
+     ("C3H8"            0.1179)
+     ("C4H10,isobutane" 0.0131)
+     ("C4H10,n-butane"  0.0379)
+     ("C5H12,i-pentane" 0.0130)
+     ("C5H12,n-pentane" 0.0139)
+     ("C6H14,n-hexane"  0.0017)
+     ("C5H10,cyclo-"    0.0004)
+     ("C6H12,cyclo-"    0.0002)
+     ("C7H16,n-heptane" 0.0001)
+     ("C6H12,cyclo-"    0.0001)
+     ("H2O"             0.0025))))
+
+(molar-fraction-summ *running-gas*)
+
+(defparameter *Air*
+  (make-instance-composition
+   `(("N2" ,(/ 78.084 100))
+     ("O2" ,(/ 20.9476 100))
+     ("Ar" ,(/ .9365 100))
+     ("CO2",(/ .0319 100)))))
+
+(molar-fraction-summ *Air*)
+
+(mix-composition *Air* 1.0 *running-gas* 1.0)
+
+(maphash #'(lambda (key value) (format t "~A~%" key)) *sp-db*)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

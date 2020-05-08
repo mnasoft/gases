@@ -16,7 +16,6 @@
 - в зависимости от температуры (temperature), [K]."
 (defgeneric molar-isobaric-heat-capacity (species temperature))
 
-
 @export
 @annot.doc:doc
 "Возвращает мольную изохорую теплоемкость 
@@ -44,3 +43,16 @@
 - для класса species
 - в зависимости от температуры (temperature), [K]"
 (defgeneric adiabatic-index (species temperature))
+
+@export
+@annot.doc:doc
+"Возвращает сумму мольных долей смеси газов <composition>.
+Значение должно равняться единице."
+(defgeneric molar-fraction-summ (species))
+
+@export
+@annot.doc:doc
+"Возвращает композицию газов как результат смешения 2-х составов с массовыми расходами."
+(defgeneric mix-composition (composition-1 mfr-1 composition-1 mfr-2))
+
+
