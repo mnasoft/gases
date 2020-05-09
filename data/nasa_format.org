@@ -6,7 +6,7 @@
 
 [[https://www.grc.nasa.gov/www/CEAWeb/RP-1311.pdf]] p20
 
-* The NASA polynomials have the form:
+* The NASA polynomials have the old "form":
 
     Cp/R = a1 + a2 T + a3 T^2 + a4 T^3 + a5 T^4                                                      (4.6)
     (defun Cp/R-old (TT a1 a2 a3 a4 a5 a6 a7)
@@ -34,7 +34,7 @@
 	 (* a5 TT TT TT TT 1/4)
 	 a7))
 
-* The NASA polynomials have the form:
+* The NASA polynomials have the new "form":
 
     Cp/R = a1 T^-2 + a2 T^-1 + a3 + a4 T + a5 T^2 + a6 T^3 + a7 T^4                                  (4.9)
     (defun Cp/R-new (TT a1 a2 a3 a4 a5 a6 a7 a8 a9)
@@ -69,7 +69,12 @@
 	 (* a7 TT TT TT TT 1/4)
 	 a9))
 
-where a1, a2, a3, a4, a5, a6, and a7 are the numerical coefficients supplied in NASA thermodynamic files. The first 7 numbers starting on the second line of each species entry (five of the second line and the first two of the third line) are the seven coefficients (a1 through a7, respectively) for the high-temperature range (above 1000 K, the upper boundary is specified on the first line of the species entry). The following seven numbers are the coefficients (a1 through a7, respectively) for the low-temperature range (below 1000 K, the lower boundary is specified on the first line of the species entry).
+where a1, a2, a3, a4, a5, a6, and a7 are the numerical coefficients supplied in NASA thermodynamic files. 
+The first 7 numbers starting on the second line of each species entry (five of the second line and the 
+first two of the third line) are the seven coefficients (a1 through a7, respectively) for the high-temperature
+range (above 1000 K, the upper boundary is specified on the first line of the species entry). The following 
+seven numbers are the coefficients (a1 through a7, respectively) for the low-temperature range (below 1000 K,
+the lower boundary is specified on the first line of the species entry).
 
 H in the above equation is defined as
 
