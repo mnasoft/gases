@@ -93,12 +93,6 @@
 
 \[ \begin{equation} J = 1.005 t + ( 2500 + 1.8 t) \frac{d}{1000} \text{, [кДж/кг]} \end{equation} \]
 
-
-
-
-
-
-
 * Формулы для воды
 
 [[file:IAPWS95-2018.pdf][IAPWS95-2018.pdf]]
