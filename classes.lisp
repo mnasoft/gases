@@ -253,10 +253,10 @@ In the case of condensed species this is actually an assigned enthalpy
 
 (defmethod print-object :before ((x <composition>) s)
   (format s
-	  "#<composition>(~S" (composition-components x))
+	  "#<composition>(")
   (maphash #'(lambda (key value)
 	       (declare (ignore key))
-	       (format s "~S~%" value))
+	       (format s "~%~S" value))
 	   (composition-components x)))
 
 (defmethod print-object ((x <composition>) s)
