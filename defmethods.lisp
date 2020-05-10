@@ -61,11 +61,16 @@
 	 (make-instance '<component> :species (gethash \"H2O\"             *sp-db*) :mole-fraction 0.0027 )))
 "
 (defmethod molar-mass ((x <composition>))
-  (apply #'+ (mapcar #'molar-mass  (composition-components x))))
+  (let ((rez nil))
+    (maphash #'(lambda (key value)
+		 (declare (ignore key))
+		 (push (molar-mass value) rez))
+	     (composition-components x))
+    (apply #'+ rez)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;    molar-isobaric-heat-capacity                                                            ;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;    molar-isobaric-heat-capacity
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 @annot.doc:doc
 "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]"
@@ -95,11 +100,12 @@
 @annot.doc:doc
 "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]" 
 (defmethod molar-isobaric-heat-capacity ((x <composition>) temperature)
-  (apply #'+
-	 (mapcar
-	  #'(lambda (el)
-	      (molar-isobaric-heat-capacity el  temperature ))
-	  (composition-components x))))
+  (let ((rez nil))
+    (maphash #'(lambda (key value)
+		 (declare (ignore key))
+		 (push (molar-isobaric-heat-capacity value temperature) rez))
+	     (composition-components x))
+    (apply #'+ rez)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-isochoric-heat-capacity                                                           ;;;;
@@ -126,10 +132,12 @@
 @annot.doc:doc
 "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
 (defmethod molar-isochoric-heat-capacity ((x <composition>) temperature)
-  (apply #'+
-	 (mapcar #'(lambda (el)
-		     (molar-isochoric-heat-capacity el temperature ) )
-		 (composition-components x))))
+  (let ((rez nil))
+    (maphash #'(lambda (key value)
+		 (declare (ignore key))
+		 (push (molar-isochoric-heat-capacity value temperature) rez))
+	     (composition-components x))
+    (apply #'+ rez)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-enthalpy                                                                          ;;;;
@@ -168,10 +176,12 @@
 @annot.doc:doc
 "Возвращает мольную энтальпию muΗ, [J/(mol*K)]"
 (defmethod molar-enthalpy ((x <composition>) temperature)
-  (apply #'+
-	 (mapcar
-	  #'(lambda (el) (molar-enthalpy el temperature))
-	  (composition-components x))))
+  (let ((rez nil))
+    (maphash #'(lambda (key value)
+		 (declare (ignore key))
+		 (push (molar-enthalpy value temperature) rez))
+	     (composition-components x))
+    (apply #'+ rez)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-entropy                                                                           ;;;;
@@ -198,6 +208,24 @@
 	  (<= a temperature b)))
     (sp-reccords x))
    temperature))
+
+@annot.doc:doc
+"Возвращает мольную энтропию muS, [J/(mol*K)]"
+(defmethod molar-entropy ((x <component>) temperature)
+  (* (component-mole-fraction x)
+     (molar-entropy
+      (component-species x)
+      temperature)))
+
+@annot.doc:doc
+"Возвращает мольную энтропию muS, [J/(mol*K)]"
+(defmethod molar-entropy ((x <composition>) temperature)
+  (let ((rez nil))
+    (maphash #'(lambda (key value)
+		 (declare (ignore key))
+		 (push (molar-entropy value temperature) rez))
+	     (composition-components x))
+    (apply #'+ rez)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    adiabatic-index                                                                         ;;;;
@@ -239,24 +267,76 @@
 "Возвращает сумму мольных долей смеси газов <composition>.
 Значение должно равняться единице."
 (defmethod molar-fraction-summ ((x <composition>))
-    (apply #'+
-	 (mapcar
-	  #'(lambda (el) (component-mole-fraction el))
-	  (composition-components x))))
+  (let ((rez nil))
+    (maphash #'(lambda (key value)
+		 (declare (ignore key))
+		 (push (component-mole-fraction value) rez))
+	     (composition-components x))
+    (apply #'+ rez)))
 
+@annot.doc:doc
+"Возвращает сумму мольных долей смеси газов <composition>.
+Значение должно равняться единице."
+(defmethod mass-fraction-summ ((x <composition>))
+  (let ((rez nil))
+    (maphash #'(lambda (key value)
+		 (declare (ignore key))
+		 (push (component-mass-fraction value) rez))
+	     (composition-components x))
+    (apply #'+ rez)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+@annot.doc:doc
+"@b(Описание:) метод @b(mix-composition) возвращает список, состоящий из
+компонентного состава, выраженного в мольных долях, и массового расхода.
+"
 (defmethod mix-composition ((cmp-1 <composition>) (mfr-1 number)
 			    (cmp-2 <composition>) (mfr-2 number))
   (mapcar
    #'(lambda (el)
-       ;; (sp-molar-mass (component-species el))
-       (component-mole-fraction el)
-       )
+       (list 
+	(sp-name (component-species el))
+	(component-mole-fraction el)))
    (composition-components cmp-1)))
 
-(mix-composition *Air* 1.0 *running-gas* 1.0)
 
-(sp-molar-mass (component-species
-		(component-mole-fraction
-		(first (composition-components *Air*))))
+;;(mix-composition *Air* 1.0 *running-gas* 1.0)
+
+;; (sp-molar-mass (component-species (component-mole-fraction (first (composition-components *Air*))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+@export
+@annot.doc:doc
+"@b(Описание:) функция @b(dump-spices-db)
+"
+(defun dump-spices-db (&key (func #'(lambda (key value)
+				      (format t "~S~%" key)
+				      )))
+  (maphash func *sp-db*))
+
+;; (first (composition-components *air*))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+@export
+@annot.doc:doc
+"@b(Описание:) метод @b(culc-mass-fractions) вычисляет массовые доли компонентов
+композиции газов на основании мольного состава.
+"
+(defmethod culc-mass-fractions ((cmp <composition>))
+  (let ((mm (molar-mass cmp)))
+    (maphash 
+     #'(lambda (key value)
+	 (declare (ignore key))
+	 (setf (component-mass-fraction value)
+	       (/ (molar-mass value) mm)))
+     (composition-components cmp))
+    cmp))
+	
+(defmethod culc-molar-fractions ((cmp <composition>))
+  )
+
+;; (mapcar #'(lambda (el) (list (sp-name (component-species el)) (component-mole-fraction el))) (composition-components cmp-1))
 

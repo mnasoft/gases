@@ -2,7 +2,12 @@
 
 (in-package :gases)
 
-;;; "gases" goes here. Hacks and glory await!
+(defparameter *Air*
+  (make-instance-composition
+   `(("N2" ,(/ 78.084 100))
+     ("O2" ,(/ 20.9476 100))
+     ("Ar" ,(/ .9365 100))
+     ("CO2",(/ .0319 100)))))
 
 (defparameter *running-gas*
   (make-instance-composition
@@ -22,30 +27,20 @@
      ("C6H12,cyclo-"    0.0001)
      ("H2O"             0.0025))))
 
-(molar-fraction-summ *running-gas*)
-
-(defparameter *Air*
+(defparameter *stopping-gas*
   (make-instance-composition
-   `(("N2" ,(/ 78.084 100))
-     ("O2" ,(/ 20.9476 100))
-     ("Ar" ,(/ .9365 100))
-     ("CO2",(/ .0319 100)))))
-
-(molar-fraction-summ *Air*)
-
-(mix-composition *Air* 1.0 *running-gas* 1.0)
-
-(maphash #'(lambda (key value) (format t "~A~%" key)) *sp-db*)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(progn
-  (format t "<table>~%")
-  (mapcar
-   #'(lambda (el)
-       (format t "<tr><td>~A</td><td>~A</td><td>~A</td></tr>~%"
-	       (molecule-name-ru (first el))
-	       (molecule-name-en-short (first el))
-	       (second el)))
-   *running-gas*)
-  (format t "</table>~%~%~%"))
+   '(( "N2"	          0.0002)
+     ( "CO2"	          0.0030)
+     ( "CH4"	          0.4042)
+     ( "C2H6"	          0.0658)
+     ( "C3H8"*	          0.2469)
+     ( "C4H10,isobutane"  0.0506)
+     ( "C4H10,n-butane"   0.1621)
+     ( "C5H12,i-pentane"  0.0359)
+     ( "C5H12,n-pentane"  0.0277)
+     ( "C6H14,n-hexane"   0.0009)
+     ( "C5H10,cyclo-"     0.0002)
+     ( "C6H12,cyclo-"     0.0001)
+     ( "C7H16,n-heptane"  0.0000)
+     ( "C6H12,cyclo-"     0.0000)
+     ( "H2O"	          0.0024))))

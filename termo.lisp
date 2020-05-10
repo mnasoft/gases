@@ -69,11 +69,13 @@
 @end(code)
 "
 (defun make-instance-composition (lst)
-  (make-instance '<composition> 
-		 :components (mapcar
-			      #'(lambda(el)
-				  (make-instance-component (first el)(second el)))
-			      lst)))
+  (let ((cpm-s (make-hash-table :test #'equal)))
+    (mapcar #'(lambda(el)
+		(setf
+		 (gethash (first el) cpm-s)
+		 (make-instance-component (first el)(second el))))
+	    lst)
+    (make-instance '<composition> :components cpm-s)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;read-formated-data

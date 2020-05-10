@@ -53,6 +53,6 @@
 @export
 @annot.doc:doc
 "Возвращает композицию газов как результат смешения 2-х составов с массовыми расходами."
-(defgeneric mix-composition (composition-1 mfr-1 composition-1 mfr-2))
+(defgeneric mix-composition (composition-1 mfr-1 composition-2 mfr-2))
 
 

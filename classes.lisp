@@ -222,14 +222,18 @@ In the case of condensed species this is actually an assigned enthalpy
    (component-mole-fraction
     :accessor component-mole-fraction :initarg
     :mole-fraction :initform 0.0 :documentation
-    "Содежит мольную долю компонета в смеси."))
+    "Содежит мольную долю компонета в смеси.")
+      (component-mass-fraction
+    :accessor component-mass-fraction :initarg
+    :mass-fraction :initform 0.0 :documentation
+    "Содежит массовую долю компонета в смеси."))
   (:documentation
    "Представляет компонент смеси, заданной мольными долями."))
 
 (defmethod print-object :before ((x <component>) s)
   (format s
-	  "#<component>(component-species=~S~%component-mole-fraction=~S"
-	  (component-species x) (component-mole-fraction x)))
+	  "#<component>(name=~S mole-fraction=~S mass-fraction=~S"
+	  (sp-name (component-species x)) (component-mole-fraction x) (component-mass-fraction x)))
 
 (defmethod print-object         ((x <component>) s) (format s "" ))
 
@@ -240,8 +244,8 @@ In the case of condensed species this is actually an assigned enthalpy
 @annot.class:export-class
 (defclass <composition> nil
   ((composition-components
-    :accessor composition-components :initarg
-    :components :documentation
+    :accessor composition-components :initarg :components
+    :documentation
     "Содержит список компонентов. 
 Элементами этого списка д.б. данные типа <component>"))
   (:documentation
@@ -249,8 +253,11 @@ In the case of condensed species this is actually an assigned enthalpy
 
 (defmethod print-object :before ((x <composition>) s)
   (format s
-	  "#<composition>(composition-components=~S"
-	  (composition-components x)))
+	  "#<composition>(~S" (composition-components x))
+  (maphash #'(lambda (key value)
+	       (declare (ignore key))
+	       (format s "~S~%" value))
+	   (composition-components x)))
 
 (defmethod print-object ((x <composition>) s)
   (format s "" ))

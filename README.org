@@ -105,3 +105,9 @@
 
 [[file:IF97-Rev.pdf][IF97-Rev.pdf]]
 
+
+* [0/1] Что сделать
+- [ ] Слот composition-components класса <composition> содержит список <component>.
+  + Переделать так, чтобы он содержал hashtable <component>.
+  + При этом облегчится доступ к элементам по ключу.
+- [ ] sdd
