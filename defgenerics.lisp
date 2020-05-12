@@ -52,7 +52,22 @@
 
 @export
 @annot.doc:doc
+"Возвращает сумму ммассовых долей смеси газов <composition>.
+Значение должно равняться единице."
+(defgeneric mass-fraction-summ  (species))
+
+@export
+@annot.doc:doc
 "Возвращает композицию газов как результат смешения 2-х составов с массовыми расходами."
 (defgeneric mix-composition (composition-1 mfr-1 composition-2 mfr-2))
 
 
+@export
+@annot.doc:doc
+"Проверка правильности задания мольных долей."
+(defgeneric check-mole-fraction (species) )
+
+@export
+@annot.doc:doc
+"Проверка правильности задания массовых долей."
+(defgeneric check-mass-fraction (species) )

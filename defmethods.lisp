@@ -263,6 +263,7 @@
 ;;;; molar-fraction-summ ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+@export
 @annot.doc:doc
 "Возвращает сумму мольных долей смеси газов <composition>.
 Значение должно равняться единице."
@@ -274,6 +275,7 @@
 	     (composition-components x))
     (apply #'+ rez)))
 
+@export
 @annot.doc:doc
 "Возвращает сумму мольных долей смеси газов <composition>.
 Значение должно равняться единице."
@@ -334,9 +336,50 @@
 	       (/ (molar-mass value) mm)))
      (composition-components cmp))
     cmp))
-	
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+@annot.doc:doc
+"@b(Описание:) метод @b(mass-molar) вспомогательный.
+Используется в @b(culc-molar-fractions).
+"
+(defmethod mass-molar ((x <composition>))
+  (let ((rez nil))
+    (maphash #'(lambda (key value)
+		 (declare (ignore key))
+		 (push (/ (component-mass-fraction value)
+			  (sp-molar-mass (component-species value)))
+		       rez))
+	     (composition-components x))
+    (apply #'+ rez)))
+
+@export
+@annot.doc:doc
+"@b(Описание:) метод @b(culc-molar-fractions) вычисляет массовые доли компонентов
+композиции газов на основании мольного состава.
+"
 (defmethod culc-molar-fractions ((cmp <composition>))
-  )
+  (let ((mm (mass-molar cmp)))
+    (maphash 
+     #'(lambda (key value)
+	 (declare (ignore key))
+	 (setf (component-mole-fraction value)
+	       (/ (component-mass-fraction value)
+		  (sp-molar-mass (component-species value))
+		  mm)))
+     (composition-components cmp))
+    cmp))
 
-;; (mapcar #'(lambda (el) (list (sp-name (component-species el)) (component-mole-fraction el))) (composition-components cmp-1))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+@export
+@annot.doc:doc
+"Проверка правильности задания мольных долей."
+(defmethod check-mole-fraction ((cmp <composition>))
+  (math:semi-equal (molar-fraction-summ cmp) 1.0))
+
+@export
+@annot.doc:doc
+"Проверка правильности задания массовых долей."
+(defmethod check-mass-fraction ((cmp <composition>))
+  (math:semi-equal (mass-fraction-summ cmp) 1.0))

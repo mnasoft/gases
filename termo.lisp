@@ -69,6 +69,10 @@
 @end(code)
 "
 (defun make-instance-composition (lst)
+  (unless (check-spices-is-unique lst)
+    (error "check-spices-is-unique=~S" (check-spices-is-unique lst) ))
+  (unless (check-spices-exist-in-db lst)
+    (error "check-spices-exist-in-db=~S" (check-spices-exist-in-db lst) ))
   (let ((cpm-s (make-hash-table :test #'equal)))
     (mapcar #'(lambda(el)
 		(setf

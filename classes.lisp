@@ -215,18 +215,15 @@ In the case of condensed species this is actually an assigned enthalpy
 
 @annot.class:export-class
 (defclass <component> nil
-  ((component-species
-    :accessor component-species :initarg :species
-    :documentation
-    "Должен содержать объект типа <sp>.")
-   (component-mole-fraction
-    :accessor component-mole-fraction :initarg
-    :mole-fraction :initform 0.0 :documentation
-    "Содежит мольную долю компонета в смеси.")
-      (component-mass-fraction
-    :accessor component-mass-fraction :initarg
-    :mass-fraction :initform 0.0 :documentation
-    "Содежит массовую долю компонета в смеси."))
+  ((component-species :accessor component-species :initarg :species
+		      :documentation
+		      "Должен содержать объект типа <sp>.")
+   (component-mole-fraction :accessor component-mole-fraction :initarg
+			    :mole-fraction :initform 0.0 :documentation
+			    "Содежит мольную долю компонета в смеси.")
+   (component-mass-fraction :accessor component-mass-fraction :initarg :mass-fraction :initform 0.0
+			    :documentation
+			    "Содежит массовую долю компонета в смеси."))
   (:documentation
    "Представляет компонент смеси, заданной мольными долями."))
 
@@ -243,13 +240,35 @@ In the case of condensed species this is actually an assigned enthalpy
 
 @annot.class:export-class
 (defclass <composition> nil
-  ((composition-components
-    :accessor composition-components :initarg :components
-    :documentation
-    "Содержит список компонентов. 
+  ((composition-components :accessor composition-components :initarg :components
+			   :documentation
+			   "Содержит список компонентов. 
 Элементами этого списка д.б. данные типа <component>"))
+
   (:documentation
    "Представляет смесь, состоящую из объектов класса <component>."))
+
+(defun check-spices-exist-in-db (lst)
+  (reduce
+   #'(lambda (el1 el2)
+       (and el1 (gethash (first el2) *sp-db*)))
+   lst
+   :initial-value t))
+
+(defun check-spices-is-unique (lst)
+  (= (length lst)
+     (length
+      (remove-duplicates
+       (mapcar #'first lst)
+       :test #'string=))))
+
+(defmethod initialize-instance :after ((cmp <composition>) &key )
+  ;;  (setf (composition-components cmp) components)
+  (unless (check-mole-fraction cmp)
+    (error "check-mole-fraction=~S" (check-mole-fraction cmp) ))
+  (culc-mass-fractions cmp)
+  (unless (check-mass-fraction cmp)
+    (error "check-mass-fraction=~S" (check-mass-fraction cmp))))
 
 (defmethod print-object :before ((x <composition>) s)
   (format s

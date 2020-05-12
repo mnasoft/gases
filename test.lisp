@@ -4,6 +4,18 @@
 
 (in-package :gases)
 
+
+
+
+(composition-mole-fraction-initalized :accessor composition-mole-fraction-initalized :initarg :mole-fraction-initalized
+					 :documentation
+					 "Содержит t если мольные доли проинициализированы и их сумма примерно равна 1.0.")
+   (composition-mass-fraction-initalized :accessor composition-mass-fraction-initalized :initarg :mass-fraction-initalized
+					 :documentation
+					 "Содержит t если массовые доли проинициализированы и их сумма примерно равна 1.0.")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;; "gases" goes here. Hacks and glory await!
 
 (let ((sp (gethash (first '("H2O" "CH4" "N2" "O2" "Air")) *sp-db*))
