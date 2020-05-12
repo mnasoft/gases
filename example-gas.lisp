@@ -9,6 +9,26 @@
      ("Ar" ,(/ .9365 100))
      ("CO2",(/ .0319 100)))))
 
+(defparameter *N2*
+  (make-instance-composition
+   `(("N2" ,(/ 100. 100)))))
+
+(defparameter *O2*
+  (make-instance-composition
+   `(("O2" ,(/ 100. 100)))))
+
+(defparameter *H2*
+  (make-instance-composition
+   `(("H2" ,(/ 100. 100)))))
+
+(defparameter *Ar*
+  (make-instance-composition
+   `(("Ar" ,(/ 100. 100)))))
+
+(defparameter *CO2*
+  (make-instance-composition
+   `(("CO2" ,(/ 100. 100)))))
+
 (defparameter *running-gas*
   (make-instance-composition
    '(("N2"              0.0003)

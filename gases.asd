@@ -4,7 +4,7 @@
   :version "0.2.0"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on (#:mnas-defclass #:half-div)
+  :depends-on (#:mnas-defclass #:half-div #:math)
   :components
 			((:file "package")
 			 (:file "gases")

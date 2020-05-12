@@ -79,7 +79,13 @@
 		 (gethash (first el) cpm-s)
 		 (make-instance-component (first el)(second el))))
 	    lst)
-    (make-instance '<composition> :components cpm-s)))
+    (let ((cmp (make-instance '<composition> :components cpm-s)))
+      (unless (check-mole-fraction cmp)
+	(error "check-mole-fraction=~S" (check-mole-fraction cmp) ))
+      (culc-mass-fractions cmp)
+      (unless (check-mass-fraction cmp)
+	(error "check-mass-fraction=~S" (check-mass-fraction cmp)))
+      cmp)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;read-formated-data

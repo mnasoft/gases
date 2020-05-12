@@ -295,17 +295,44 @@
 "
 (defmethod mix-composition ((cmp-1 <composition>) (mfr-1 number)
 			    (cmp-2 <composition>) (mfr-2 number))
-  (mapcar
-   #'(lambda (el)
-       (list 
-	(sp-name (component-species el))
-	(component-mole-fraction el)))
-   (composition-components cmp-1)))
-
-
-;;(mix-composition *Air* 1.0 *running-gas* 1.0)
-
-;; (sp-molar-mass (component-species (component-mole-fraction (first (composition-components *Air*))))
+  (let ((cmp-keys nil)
+	(cmp (make-instance '<composition>)))
+    (maphash #'(lambda (key value) (push key cmp-keys))(composition-components cmp-1))
+    (maphash #'(lambda (key value) (push key cmp-keys))(composition-components cmp-2))
+    (mapcar
+     #'(lambda (el)
+	 (let ((el-1 (gethash el (composition-components cmp-1)))
+	       (el-2 (gethash el (composition-components cmp-2))))
+	   (cond
+	     ((and el-1 el-2)
+	      (setf (gethash el (composition-components cmp))
+		    (make-instance '<component>
+				   :mass-fraction
+				   (/ (+ (* (component-mass-fraction el-1) mfr-1)
+					 (* (component-mass-fraction el-2) mfr-2))
+				      (+ mfr-1 mfr-2))
+				   :species (gethash el *sp-db*))))
+	     ((and el-1 (null el-2))
+	      (setf (gethash el (composition-components cmp))
+		    (make-instance '<component>
+				   :mass-fraction
+				   (/ (+ (* (component-mass-fraction el-1) mfr-1)
+					 0.0)
+				      (+ mfr-1 mfr-2))
+				   :species (gethash el *sp-db*)))
+	      )
+	     ((and el-2 (null el-1))
+	      (setf (gethash el (composition-components cmp))
+		    (make-instance '<component>
+				   :mass-fraction
+				   (/ (+ (* (component-mass-fraction el-2) mfr-2)
+					 0.0)
+				      (+ mfr-1 mfr-2))
+				   :species (gethash el *sp-db*)))
+	      )
+	     (t (error "Что-то пошло не так!!!")))))
+     (sort (remove-duplicates cmp-keys :test #'string= ) #'string<))
+    (values (culc-molar-fractions cmp) (+ mfr-1 mfr-2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -383,3 +410,11 @@
 "Проверка правильности задания массовых долей."
 (defmethod check-mass-fraction ((cmp <composition>))
   (math:semi-equal (mass-fraction-summ cmp) 1.0))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+@export
+@annot.doc:doc
+"Получает ссылку на элемент, находящийся в конлейнере по ключу."
+(defmethod reference ((key string) (cmp <composition>))
+  (gethash key (composition-components cmp)))

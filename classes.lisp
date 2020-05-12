@@ -248,6 +248,8 @@ In the case of condensed species this is actually an assigned enthalpy
   (:documentation
    "Представляет смесь, состоящую из объектов класса <component>."))
 
+@annot.doc:doc
+"Проверка на то, что заданные компоненты имеются в базе данных."
 (defun check-spices-exist-in-db (lst)
   (reduce
    #'(lambda (el1 el2)
@@ -255,6 +257,8 @@ In the case of condensed species this is actually an assigned enthalpy
    lst
    :initial-value t))
 
+@annot.doc:doc
+"Проверка на неповторяемость компопнентов, передаваемых в конструктор."
 (defun check-spices-is-unique (lst)
   (= (length lst)
      (length
@@ -262,13 +266,11 @@ In the case of condensed species this is actually an assigned enthalpy
        (mapcar #'first lst)
        :test #'string=))))
 
-(defmethod initialize-instance :after ((cmp <composition>) &key )
-  ;;  (setf (composition-components cmp) components)
-  (unless (check-mole-fraction cmp)
-    (error "check-mole-fraction=~S" (check-mole-fraction cmp) ))
-  (culc-mass-fractions cmp)
-  (unless (check-mass-fraction cmp)
-    (error "check-mass-fraction=~S" (check-mass-fraction cmp))))
+
+(defmethod initialize-instance :after ((cmp <composition>)
+				       &key (components (make-hash-table :test #'equal)))
+  (setf (composition-components cmp) components)
+  )
 
 (defmethod print-object :before ((x <composition>) s)
   (format s

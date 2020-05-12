@@ -71,3 +71,9 @@
 @annot.doc:doc
 "Проверка правильности задания массовых долей."
 (defgeneric check-mass-fraction (species) )
+
+
+@export
+@annot.doc:doc
+"Получает ссылку на элемент, находящийся в конлейнере по ключу."
+(defgeneric reference (key container))
