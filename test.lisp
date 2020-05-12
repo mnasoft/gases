@@ -4,9 +4,6 @@
 
 (in-package :gases)
 
-
-
-
 (composition-mole-fraction-initalized :accessor composition-mole-fraction-initalized :initarg :mole-fraction-initalized
 					 :documentation
 					 "Содержит t если мольные доли проинициализированы и их сумма примерно равна 1.0.")

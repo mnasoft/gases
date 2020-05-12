@@ -13,10 +13,9 @@
 			 (:file "defmethods")
 			 (:file "termo")
 			 (:file "air")
-			 (:file "running-gas")
+			 (:file "example-gas")
 			 
 			 ;; (:file "elements")
-			 ;; (:file "stopping-gas")			 
 			 )
 
 ;  :components ((:module "src"

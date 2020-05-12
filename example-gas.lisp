@@ -1,4 +1,4 @@
-;;;; running-gas.lisp
+;;;; example-gas.lisp
 
 (in-package :gases)
 
@@ -8,18 +8,6 @@
      ("O2" ,(/ 20.9476 100))
      ("Ar" ,(/ .9365 100))
      ("CO2",(/ .0319 100)))))
-
-(check-spices-exist-in-db
- `(("N2" ,(/ 78.0840 100))
-   ("O2" ,(/ 20.9476 100))
-   ("Ar" ,(/ 00.9365 100))
-   ("CO2",(/ 00.0319 100))))
-
-(check-spices-is-unique
- `(("N2" ,(/ 78.0840 100))
-   ("O2" ,(/ 20.9476 100))
-   ("Ar" ,(/ 00.9365 100))
-   ("CO2",(/ 00.0319 100))))
 
 (defparameter *running-gas*
   (make-instance-composition
