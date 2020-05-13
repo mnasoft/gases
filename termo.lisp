@@ -27,10 +27,10 @@
    :number-temperature-intervals (third lst)
    :reference-date-code (fourth lst)         
    :chemical-formula (list (list (nth  4 lst) (nth  5 lst))
-			      (list (nth  6 lst) (nth  7 lst))
-			      (list (nth  8 lst) (nth  9 lst))
-			      (list (nth 10 lst) (nth 11 lst))
-			      (list (nth 12 lst) (nth 13 lst)))            
+			   (list (nth  6 lst) (nth  7 lst))
+			   (list (nth  8 lst) (nth  9 lst))
+			   (list (nth 10 lst) (nth 11 lst))
+			   (list (nth 12 lst) (nth 13 lst)))            
    :phase                        (nth 14 lst)
    :molar-mass                   (nth 15 lst)
    :heat-formation               (nth 16 lst)
@@ -116,22 +116,27 @@
 	 (r-2 (read-record rec-2 (read-line is)))
 	 (n-row (first r-2))
 	 (t-int nil))
-    (dotimes (i n-row)
-      (push 
-       (append (read-record rec-3 (read-line is))
-	       (read-record rec-4 (read-line is))
-	       (read-record rec-5 (read-line is)))
-       t-int))
+    (when (< 0 n-row)
+      (dotimes (i n-row)
+	(push 
+	 (append (read-record rec-3 (read-line is))
+		 (read-record rec-4 (read-line is))
+		 (read-record rec-5 (read-line is)))
+	 t-int)))
+    (when (= 0 n-row)
+      (push (read-record rec-3 (read-line is)) t-int))
     (append r-1 r-2 (list (reverse t-int)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
 (defun clean-termo-inp ()
-  "Выполняет очистку формата ввода данных от комментариев
-Пример использования:
-(clean-termo-inp)
+  "@b(Описание:) функция @b(clean-termo-inp) выполняет очистку формата
+ввода данных от комментариев.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (clean-termo-inp)
+@end(code)
 "
   (with-open-file (os (namestring (asdf:system-relative-pathname :gases "data/termo.inp.clean")) :direction :output :if-exists :supersede)
     (with-open-file (is (namestring (asdf:system-relative-pathname :gases "data/termo.inp"))     :direction :input)
@@ -149,10 +154,15 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun make-element-table()
-  "Пример использования:
-(make-element-table)
+@annot.doc:doc
+"@b(Описание:) функция @b(make-element-table)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (make-element-table)
+@end(code)
 "
+(defun make-element-table ()
   (let ((rez nil)
 	(rez-lst nil))
     (with-open-file (is (namestring (asdf:system-relative-pathname :gases "data/termo.inp.clean")) :direction :input)
@@ -164,18 +174,34 @@
 	(push rez rez-lst)))
     rez-lst))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (clean-termo-inp)
+(make-element-table)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 @export
 (defparameter *sp-db* (make-hash-table :test #'equal)
   "База данных компонентов")
 
-(mapc #'(lambda (el)
-	  (let ((sp-elem (make-instance-sp el)))
-	    (setf (gethash (sp-name sp-elem) *sp-db*) sp-elem)))
-      (make-element-table))
+@export
+(defun clear-db ()
+  (clrhash *sp-db*))
+
+@export
+(defun init-db ()
+  (clean-termo-inp)
+  (clear-db)
+  (mapc #'(lambda (el)
+	    (let ((sp-elem (make-instance-sp el)))
+	      (setf (gethash (sp-name sp-elem) *sp-db*) sp-elem)))
+	(make-element-table)))
+
+(length (init-db))
+
+(make-instance-sp )
+
+(mapcar #'make-instance-sp-rec (car (last (first (make-element-table)))))
+
+   :reccords               (mapcar #'make-instance-sp-rec (car(last lst)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

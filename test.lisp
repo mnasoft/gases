@@ -1,15 +1,26 @@
 ;;;; test.lisp
 
-(annot:enable-annot-syntax)
-
 (in-package :gases)
 
-(composition-mole-fraction-initalized :accessor composition-mole-fraction-initalized :initarg :mole-fraction-initalized
-					 :documentation
-					 "Содержит t если мольные доли проинициализированы и их сумма примерно равна 1.0.")
-   (composition-mass-fraction-initalized :accessor composition-mass-fraction-initalized :initarg :mass-fraction-initalized
-					 :documentation
-					 "Содержит t если массовые доли проинициализированы и их сумма примерно равна 1.0.")
+(annot:enable-annot-syntax)
+
+(clean-termo-inp)
+(make-element-table)
+
+@export
+@annot.doc:doc
+"@b(Описание:) функция @b(...) 
+вычисляет массовые доли элементарного состава (поатомного) смеси."
+(defmethod elemental-mass-fraction ((cmp <composition>))
+  cmp
+  )
+
+(reduce #(lambda (lst y))
+	'(("H" 2.0) ("O" 1.0) ("" 0.0) ("" 0.0) ("" 0.0)))
+
+
+	:initial-value nil)
+(sp-chemical-formula (component-species (reference "H2O" *running-gas* )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
