@@ -195,13 +195,6 @@
 	      (setf (gethash (sp-name sp-elem) *sp-db*) sp-elem)))
 	(make-element-table)))
 
-(length (init-db))
-
-(make-instance-sp )
-
-(mapcar #'make-instance-sp-rec (car (last (first (make-element-table)))))
-
-   :reccords               (mapcar #'make-instance-sp-rec (car(last lst)))))
+(init-db)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
