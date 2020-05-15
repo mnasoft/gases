@@ -55,7 +55,7 @@
 "
 (defun make-instance-component (component-name mole-fraction)
   (make-instance '<component>
-		 :species (gethash component-name *sp-db*)
+		 :species (get-sp component-name)
 		 :mole-fraction mole-fraction))
 
 @export
@@ -187,12 +187,20 @@
   (clrhash *sp-db*))
 
 @export
+@annot.doc:doc
+"Возвращает компонент по имени."
+(defun get-sp (name) (gethash name *sp-db*))
+
+(defun (setf get-sp) (value name)
+  (setf (gethash name *sp-db*) value))
+
+@export
 (defun init-db ()
   (clean-termo-inp)
   (clear-db)
   (mapc #'(lambda (el)
 	    (let ((sp-elem (make-instance-sp el)))
-	      (setf (gethash (sp-name sp-elem) *sp-db*) sp-elem)))
+	      (setf (get-sp (sp-name sp-elem)) sp-elem)))
 	(make-element-table)))
 
 (init-db)

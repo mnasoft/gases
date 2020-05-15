@@ -4,62 +4,85 @@
 
 (annot:enable-annot-syntax)
 
-(clean-termo-inp)
-(make-element-table)
+(defparameter *equation*
+  (list (elements (get-sp "C2H5OH"))
+	(elements (get-sp "O2"    ))
+	(minus
+	 (elements (get-sp "CO2"  )))
+	(minus
+	 (elements (get-sp "H2O"  )))))
+
+(defun minus (lst)
+  (mapcar
+   #'(lambda (el)
+       (setf (second el) (- (second el)))
+       el)
+   lst))
+
+(defun make-reaction (reactants products)
+  (equation-koeffitients
+   (append
+	  (mapcar #'(lambda (el) (elements (get-sp el))) reactants)
+	  (mapcar #'(lambda (el) (minus (elements (get-sp el)))) products)))
+)
+
+(make-reaction '("C2H5OH" "O2") '("CO2" "H2O"))
+
 
 @export
 @annot.doc:doc
-"@b(Описание:) функция @b(...) 
-вычисляет массовые доли элементарного состава (поатомного) смеси."
-(defmethod elemental-mass-fraction ((cmp <composition>))
-  (let ((rez nil))
-    (maphash
-     #'(lambda (key value)
-	 (declare (ignore key))
-	 (push (elemental-mass-fraction value) rez))  
-     (composition-components cmp))
-    (values-list
-     (reduce
-      #'(lambda (x y)
-	  (multiple-value-list 
-	   (mix-composition (first x) (second x) (first y) (second y))))
-      rez
-      :initial-value (list (make-instance '<composition>) 0.0)))))
+"@b(Описание:) функция @b(...)
 
-(defmethod elemental-mass-fraction ((ref <component>))
-  (let ((cmp (make-instance '<composition>)))
-    (map nil
-	 #'(lambda (el)
-	     (setf (component-mass-fraction el)
-		   (/
-		    (* (sp-molar-mass (component-species el))
-		       (component-mass-fraction el))
-		    (sp-molar-mass (component-species ref))))
-	     (setf (gethash
-		    (sp-name (component-species el))
-		    (composition-components cmp))
-		   el))
-	 (mapcar
-	  #'(lambda (el)
-	      (setf (first el)
-		    (string-capitalize (first el)))
-	      (make-instance '<component>
-			     :species (gethash (first el) *sp-db*)
-			     :mass-fraction (second el)))
-	  (remove-if
-	   #'(lambda (el)
-	       (or (and (numberp (second el)) (= 0.0 (second el)))
-		   (and (stringp (first el)) (string= "" (first el)))))
-	   (sp-chemical-formula (component-species ref)))))
-    (list cmp (component-mass-fraction ref))))
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (atoms *equation*) => (\"C\" \"H\" \"O\")
+@end(code)
+"
+(defun atoms (equation)
+  (sort
+   (remove-duplicates
+    (mapcar #'first (apply #'append equation))
+    :test #'string=)
+   #'string<))
 
-(elemental-mass-fraction (reference "CO2" *running-gas*))
+(defun equation-koeffitients (equation)
+  (let ((matr (math:convert-to-triangular 
+	       (make-instance
+		'math:<matrix>
+		:initial-contents 
+		(mapcar
+		 #'(lambda (el)
+		     (nreverse (cons 0 (nreverse el))))
+		 (mapcar
+		  #'(lambda (el)
+		      (mapcar
+		       #'(lambda (el1)
+			   (if (assoc el el1 :test #'string=)
+			       (second (assoc el el1 :test #'string=))
+			       0))
+		       equation))
+		  (atoms equation)))))))
+    (when (= 2 (- (math:cols matr) (math:rows matr)))
+      (do ((num 2 (1+ num))
+	   (denum 1 (1+ denum))
+	   (eq (math:row
+		(math:solve-linear-system-gauss-backward-run 
+		 (make-instance
+		  'math:<matrix>
+		  :initial-contents
+		  (nreverse
+		   (cons
+		    (loop :for i :downfrom (math:cols matr) :to 1 :collect (if (< i 3) 1 0))
+		    (nreverse (math:matrix->2d-list matr))))))
+		0)
+	       (mapcar #'(lambda (el) (/ (* el num) denum)) eq)))
+	  ((every #'integerp eq) eq)))))
+
+(foo *equation*)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; "gases" goes here. Hacks and glory await!
-
-(let ((sp (gethash (first '("H2O" "CH4" "N2" "O2" "Air")) *sp-db*))
+(let ((sp (get-sp (first '("H2O" "CH4" "N2" "O2" "Air")) ))
       (tt 2500.d0))
   (list (molar-isobaric-heat-capacity sp tt)
 	(molar-isochoric-heat-capacity sp tt)
@@ -79,7 +102,7 @@
 
 (format
  t "~{~{~9F ~}~%~}"
- (let ((xx *air*) ;; (gethash "Air" *sp-db*)
+ (let ((xx *air*) ;; (get-sp "Air" )
        (rez nil))
    (setf rez 
 	 (mapcar
@@ -117,14 +140,14 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(let ((xx (gethash "O2" *sp-db*))
+(let ((xx (get-sp "O2" ))
       (el 0.0))
   (/
    (+ (molar-enthalpy xx (+ *C-0* el))
       (- (molar-enthalpy xx 298.15) (molar-enthalpy xx *C-0*))) 
    *kal*))
 
-(gethash "Air" *sp-db*)
+(get-sp "Air" )
 
 
 
@@ -132,7 +155,7 @@
 
 (apply #'+
        (mapcar #'(lambda (el)
-		   (let ((elm (gethash (first el) *sp-db*)))
+		   (let ((elm (get-sp (first el) )))
 ;;;;	      (break "~S" elm)
 		     (* (sp-molar-mass elm ) (second el))))
 	       '(("N2"	                0.0003)
@@ -153,7 +176,7 @@
 
 (apply #'+
        (mapcar #'(lambda (el)
-		   (let ((elm (gethash (first el) *sp-db*)))
+		   (let ((elm (get-sp (first el) )))
 		     (* (sp-molar-mass elm ) (second el))))
 	       '(
 		 ("CO2"	                0.0739)
@@ -173,15 +196,15 @@
 ;;;;		 ("H2O"	                0.0025)
 		 )))
 
-(gethash "N2" *sp-db*)
+(get-sp "N2" )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod molar-mass ((x <molecule>))
   "Возвращает молекулярную массу, [g/mol]
 Пример использования
-(molar-mass (gethash \"N2\" *sp-db*)) => 28.0134
-(molar-mass (gethash \"CH4\" *sp-db*)) => 16.04246
+(molar-mass (get-sp \"N2\" )) => 28.0134
+(molar-mass (get-sp \"CH4\" )) => 16.04246
 "
   (molecule-mass x))
 
@@ -192,23 +215,22 @@
 
 (let ((test (make-instance
 	      'composition :components
-	      (list (make-instance 'component :species (gethash "N2"              *sp-db*) :mole-fraction 0.0003 )
-		    (make-instance 'component :species (gethash "CO2"             *sp-db*) :mole-fraction 0.0022 )
-		    (make-instance 'component :species (gethash "CH4"             *sp-db*) :mole-fraction 0.7374 )
-		    (make-instance 'component :species (gethash "C2H6"            *sp-db*) :mole-fraction 0.0593 )
-		    (make-instance 'component :species (gethash "C3H8"            *sp-db*) :mole-fraction 0.1179 )
-		    (make-instance 'component :species (gethash "C4H10,isobutane" *sp-db*) :mole-fraction 0.0131 )
-		    (make-instance 'component :species (gethash "C4H10,n-butane"  *sp-db*) :mole-fraction 0.0379 )
-		    (make-instance 'component :species (gethash "C5H12,i-pentane" *sp-db*) :mole-fraction 0.0130 )
-		    (make-instance 'component :species (gethash "C5H12,n-pentane" *sp-db*) :mole-fraction 0.0139 )
-		    (make-instance 'component :species (gethash "C6H14,n-hexane"  *sp-db*) :mole-fraction 0.0017 )
-		    (make-instance 'component :species (gethash "C6H10,cyclo-"    *sp-db*) :mole-fraction 0.0004 )
-		    (make-instance 'component :species (gethash "C6H10,cyclo-"    *sp-db*) :mole-fraction 0.0002 )
-		    (make-instance 'component :species (gethash "C7H16,n-heptane" *sp-db*) :mole-fraction 0.0001 )
-		    (make-instance 'component :species (gethash "C6H10,cyclo-"    *sp-db*) :mole-fraction 0.0001 )
-		    (make-instance 'component :species (gethash "H2O"             *sp-db*) :mole-fraction 0.0027 )))))
+	      (list (make-instance 'component :species (get-sp "N2"              ) :mole-fraction 0.0003 )
+		    (make-instance 'component :species (get-sp "CO2"             ) :mole-fraction 0.0022 )
+		    (make-instance 'component :species (get-sp "CH4"             ) :mole-fraction 0.7374 )
+		    (make-instance 'component :species (get-sp "C2H6"            ) :mole-fraction 0.0593 )
+		    (make-instance 'component :species (get-sp "C3H8"            ) :mole-fraction 0.1179 )
+		    (make-instance 'component :species (get-sp "C4H10,isobutane" ) :mole-fraction 0.0131 )
+		    (make-instance 'component :species (get-sp "C4H10,n-butane"  ) :mole-fraction 0.0379 )
+		    (make-instance 'component :species (get-sp "C5H12,i-pentane" ) :mole-fraction 0.0130 )
+		    (make-instance 'component :species (get-sp "C5H12,n-pentane" ) :mole-fraction 0.0139 )
+		    (make-instance 'component :species (get-sp "C6H14,n-hexane"  ) :mole-fraction 0.0017 )
+		    (make-instance 'component :species (get-sp "C6H10,cyclo-"    ) :mole-fraction 0.0004 )
+		    (make-instance 'component :species (get-sp "C6H10,cyclo-"    ) :mole-fraction 0.0002 )
+		    (make-instance 'component :species (get-sp "C7H16,n-heptane" ) :mole-fraction 0.0001 )
+		    (make-instance 'component :species (get-sp "C6H10,cyclo-"    ) :mole-fraction 0.0001 )
+		    (make-instance 'component :species (get-sp "H2O"             ) :mole-fraction 0.0027 )))))
   (adiabatic-index test 473))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

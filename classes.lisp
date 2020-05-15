@@ -253,7 +253,7 @@ In the case of condensed species this is actually an assigned enthalpy
 (defun check-spices-exist-in-db (lst)
   (reduce
    #'(lambda (el1 el2)
-       (and el1 (gethash (first el2) *sp-db*)))
+       (and el1 (get-sp (first el2))))
    lst
    :initial-value t))
 
