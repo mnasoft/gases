@@ -12,15 +12,48 @@
 "@b(Описание:) функция @b(...) 
 вычисляет массовые доли элементарного состава (поатомного) смеси."
 (defmethod elemental-mass-fraction ((cmp <composition>))
-  cmp
-  )
+  (let ((rez nil))
+    (maphash
+     #'(lambda (key value)
+	 (declare (ignore key))
+	 (push (elemental-mass-fraction value) rez))  
+     (composition-components cmp))
+    (values-list
+     (reduce
+      #'(lambda (x y)
+	  (multiple-value-list 
+	   (mix-composition (first x) (second x) (first y) (second y))))
+      rez
+      :initial-value (list (make-instance '<composition>) 0.0)))))
 
-(reduce #(lambda (lst y))
-	'(("H" 2.0) ("O" 1.0) ("" 0.0) ("" 0.0) ("" 0.0)))
+(defmethod elemental-mass-fraction ((ref <component>))
+  (let ((cmp (make-instance '<composition>)))
+    (map nil
+	 #'(lambda (el)
+	     (setf (component-mass-fraction el)
+		   (/
+		    (* (sp-molar-mass (component-species el))
+		       (component-mass-fraction el))
+		    (sp-molar-mass (component-species ref))))
+	     (setf (gethash
+		    (sp-name (component-species el))
+		    (composition-components cmp))
+		   el))
+	 (mapcar
+	  #'(lambda (el)
+	      (setf (first el)
+		    (string-capitalize (first el)))
+	      (make-instance '<component>
+			     :species (gethash (first el) *sp-db*)
+			     :mass-fraction (second el)))
+	  (remove-if
+	   #'(lambda (el)
+	       (or (and (numberp (second el)) (= 0.0 (second el)))
+		   (and (stringp (first el)) (string= "" (first el)))))
+	   (sp-chemical-formula (component-species ref)))))
+    (list cmp (component-mass-fraction ref))))
 
-
-	:initial-value nil)
-(sp-chemical-formula (component-species (reference "H2O" *running-gas* )))
+(elemental-mass-fraction (reference "CO2" *running-gas*))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
