@@ -152,15 +152,15 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
     :reference-date-code :initform ""
     :documentation
     "Reference-Date code (cols 4-9, 6str). This includes a character 
-indicating a general reference followed by a date (e.g. g indicates 
-that NASA Glenn was the source of significant work in deriving the data 
-and 10/96 indicates the month/year).")
+ indicating a general reference followed by a date (e.g. g indicates 
+ that NASA Glenn was the source of significant work in deriving the data 
+ and 10/96 indicates the month/year).")
    (sp-chemical-formula
     :accessor sp-chemical-formula :initarg
     :chemical-formula :initform "" :documentation
     "Chemical formula (cols 11-50, 2str + 6.2f). This is a set of 5 element/atom, 
-number pairs. In the vast majority of cases the numbers are integers but
-in some cases they are non-integer, so floats are used.")
+ number pairs. In the vast majority of cases the numbers are integers but
+ in some cases they are non-integer, so floats are used.")
    (sp-phase
     :accessor sp-phase :initarg :phase :initform ""
     :documentation
@@ -169,21 +169,21 @@ in some cases they are non-integer, so floats are used.")
     :accessor sp-molar-mass :initarg :molar-mass
     :initform "" :documentation
     "Molar mass (cols 53-65, 13.5f). Originally labelled molecular weight 
-(in units g/mol).")
+ (in units g/mol).")
    (sp-heat-formation
     :accessor sp-heat-formation :initarg :heat-formation :initform ""
     :documentation
     "Heat of formation (cols 66-80, 13.5f). 
-In the case of condensed species this is actually an assigned enthalpy 
-(equivalent to the heat of formation at 298.15 K). Units J/mol.")
+ In the case of condensed species this is actually an assigned enthalpy 
+ (equivalent to the heat of formation at 298.15 K). Units J/mol.")
    (sp-reccords
     :accessor sp-reccords :initarg :reccords :initform ""
     :documentation
     "Список из нескольких элементов класса sp-rec"))
   (:documentation
    "Представляет молекулу вещества (Species name/Formula). 
-Данные для элементов взяты из базы данных NASA 
-(см. https://www.grc.nasa.gov/www/CEAWeb/)"))
+ Данные для элементов взяты из базы данных NASA 
+ (см. https://www.grc.nasa.gov/www/CEAWeb/)"))
 
 (defmethod print-object :before ((x <sp>) s)
   (format s
@@ -285,3 +285,119 @@ In the case of condensed species this is actually an assigned enthalpy
 
 (defmethod print-object :after ((x <composition>) s)
   (format s ")" ))
+
+@annot.class:export-class
+(defclass <reactant> ()
+  ((reactant-species :accessor reactant-species :initarg :species
+		      :documentation
+		      "Должен содержать объект типа <sp>.")
+   (moles-number :accessor moles-number :initarg :mole :initform nil
+		 :documentation "Количество молей реактанта, участвующих в химической реакции."))
+  (:documentation
+   "Представляет реактант химической реакции."))
+
+(defmethod print-object ((rt <reactant>) s)
+  (format s "~A*~A" (moles-number rt) (sp-name (reactant-species rt))))
+
+(defmethod elements ((rt <reactant>))
+  (elements (reactant-species rt)))
+
+(defclass <product> ()
+  ((product-species :accessor product-species :initarg :species
+		      :documentation
+		      "Должен содержать объект типа <sp>.")
+   (moles-number :accessor moles-number :initarg :mole :initform nil
+		 :documentation "Количество молей продукта, получаемого а результате химической реакции."))
+  (:documentation
+   "Представляет продукт химической реакции."))
+
+(defmethod print-object ((pt <product>) s)
+  (format s "~A*~A" (moles-number pt) (sp-name (product-species pt))))
+
+(defmethod elements ((pt <product>))
+  (labels ((minus (lst)
+	     (mapcar
+	      #'(lambda (el) (list (first el) (- (second el))))
+	      lst)))
+    (minus (elements (product-species pt)))))
+
+(defclass <reaction> ()
+  ((reaction-reactants :accessor reaction-reactants :initform nil
+		       :documentation "Список реактантов химической реакции.")
+   (reaction-products  :accessor reaction-products :initform nil
+   		       :documentation "Список реактантов химической реакции."))
+  (:documentation
+   "Представляет продукт химической реакции."))
+
+(defmethod initialize-instance :after ((react <reaction>)
+				       &key (reactant-names nil)
+					 (product-names nil))
+  (when reactant-names
+    (setf (reaction-reactants react)
+	  (mapcar #'(lambda (el) (make-instance '<reactant> :species (get-sp el)))
+	   reactant-names)))
+  (when product-names
+    (setf (reaction-products react)
+	  (mapcar #'(lambda (el) (make-instance '<product> :species (get-sp el)))
+		  product-names)))
+  (culc-koeffitients react)
+  react)
+
+(defmethod print-object ((reac <reaction>) s)
+  (format s "~{~A~^ + ~} => ~{~A~^ + ~}"
+	  (reaction-reactants reac) (reaction-products  reac)))
+
+(defmethod culc-koeffitients ((reac <reaction>))
+  (labels ((atoms (equation)
+	     "@b(Описание:) функция @b(atoms) возвращает список элементов,
+ из которых состоит молекула.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (atoms *equation*) => (\"C\" \"H\" \"O\")
+@end(code)
+"
+	     (sort
+	      (remove-duplicates
+	       (mapcar #'first (apply #'append equation))
+	       :test #'string=)
+	      #'string<))
+	   (equation-koeffitients (equation)
+	     (let ((matr (math:convert-to-triangular 
+			  (make-instance
+			   'math:<matrix>
+			   :initial-contents 
+			   (mapcar
+			    #'(lambda (el)
+				(nreverse (cons 0 (nreverse el))))
+			    (mapcar
+			     #'(lambda (el)
+				 (mapcar
+				  #'(lambda (el1)
+				      (if (assoc el el1 :test #'string=)
+					  (second (assoc el el1 :test #'string=))
+					  0))
+				  equation))
+			     (atoms equation)))))))
+	       (when (= 2 (- (math:cols matr) (math:rows matr)))
+		 (do ((num 2 (1+ num))
+		      (denum 1 (1+ denum))
+		      (eq (math:row
+			   (math:solve-linear-system-gauss-backward-run 
+			    (make-instance
+			     'math:<matrix>
+			     :initial-contents
+			     (nreverse
+			      (cons
+			       (loop :for i :downfrom (math:cols matr) :to 1 :collect (if (< i 3) 1 0))
+			       (nreverse (math:matrix->2d-list matr))))))
+			   0)
+			  (mapcar #'(lambda (el) (/ (* el num) denum)) eq)))
+		     ((every #'integerp eq) eq)))))
+	   )
+    (mapcar #'(lambda (moles sp) (setf (moles-number sp) moles))
+	    (equation-koeffitients 
+	     (append (mapcar #'elements (reaction-reactants reac))
+		     (mapcar #'elements (reaction-products  reac))))
+	    (append (reaction-reactants reac)(reaction-products reac)))
+    reac))

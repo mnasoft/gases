@@ -4,81 +4,59 @@
 
 (annot:enable-annot-syntax)
 
-(defparameter *equation*
-  (list (elements (get-sp "C2H5OH"))
-	(elements (get-sp "O2"    ))
-	(minus
-	 (elements (get-sp "CO2"  )))
-	(minus
-	 (elements (get-sp "H2O"  )))))
+(defmethod molar-mass ((rt <reactant>))
+  (* (moles-number rt) (sp-molar-mass (reactant-species rt))))
 
-(defun minus (lst)
-  (mapcar
-   #'(lambda (el)
-       (setf (second el) (- (second el)))
-       el)
-   lst))
+(defmethod molar-mass ((pt <product>))
+  (* (moles-number pt) (sp-molar-mass (product-species pt))))
+
+(defparameter *rt*  
+  (make-instance '<reactant> :species (get-sp "H2O") :mole 2))
+
+(molar-mass *rt*)
+
+(thermal-effect *rt*)
+
+(sp-heat-formation (reactant-species *rt*))
+
+(defmethod thermal-effect ((rt <reactant>))
+  (* -1
+     (moles-number rt)
+     (sp-heat-formation (reactant-species rt))))
+
+(defmethod thermal-effect ((rt <product>))
+  (* (moles-number rt)
+     (sp-heat-formation (product-species rt))))
+
+
+(defmethod thermal-effect ((reac <reaction>))
+  (apply #'+
+   (mapcar #'thermal-effect
+   (append (reaction-reactants reac) (reaction-products reac)))))
+
+(defparameter *reac*
+  (make-instance '<reaction> :reactant-names '("C2H5OH" "O2") :product-names '("H2O" "CO2")))
+
+(defparameter *reac*
+  (make-instance '<reaction> :reactant-names '("C2H5OH" "O2") :product-names '("H2O(L)" "CO2")))
+
+(defparameter *reac*
+  (make-instance '<reaction> :reactant-names '("H2" "O2") :product-names '("H2O")))
+
+(defparameter *reac*
+  (make-instance '<reaction> :reactant-names '("CH4" "O2") :product-names '("H2O(L)" "CO2")))
+
+(thermal-effect *reac*)
+
+(culc-koeffitients *reac*)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun make-reaction (reactants products)
   (equation-koeffitients
-   (append
+      (append
 	  (mapcar #'(lambda (el) (elements (get-sp el))) reactants)
-	  (mapcar #'(lambda (el) (minus (elements (get-sp el)))) products)))
-)
-
-(make-reaction '("C2H5OH" "O2") '("CO2" "H2O"))
-
-
-@export
-@annot.doc:doc
-"@b(Описание:) функция @b(...)
-
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (atoms *equation*) => (\"C\" \"H\" \"O\")
-@end(code)
-"
-(defun atoms (equation)
-  (sort
-   (remove-duplicates
-    (mapcar #'first (apply #'append equation))
-    :test #'string=)
-   #'string<))
-
-(defun equation-koeffitients (equation)
-  (let ((matr (math:convert-to-triangular 
-	       (make-instance
-		'math:<matrix>
-		:initial-contents 
-		(mapcar
-		 #'(lambda (el)
-		     (nreverse (cons 0 (nreverse el))))
-		 (mapcar
-		  #'(lambda (el)
-		      (mapcar
-		       #'(lambda (el1)
-			   (if (assoc el el1 :test #'string=)
-			       (second (assoc el el1 :test #'string=))
-			       0))
-		       equation))
-		  (atoms equation)))))))
-    (when (= 2 (- (math:cols matr) (math:rows matr)))
-      (do ((num 2 (1+ num))
-	   (denum 1 (1+ denum))
-	   (eq (math:row
-		(math:solve-linear-system-gauss-backward-run 
-		 (make-instance
-		  'math:<matrix>
-		  :initial-contents
-		  (nreverse
-		   (cons
-		    (loop :for i :downfrom (math:cols matr) :to 1 :collect (if (< i 3) 1 0))
-		    (nreverse (math:matrix->2d-list matr))))))
-		0)
-	       (mapcar #'(lambda (el) (/ (* el num) denum)) eq)))
-	  ((every #'integerp eq) eq)))))
-
-(foo *equation*)
+	  (mapcar #'(lambda (el) (minus (elements (get-sp el)))) products))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

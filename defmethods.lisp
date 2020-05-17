@@ -540,9 +540,8 @@
 "
 (defmethod elements ((ref <sp>))
   (mapcar
-   #'(lambda (el)
-       (setf (second el) (round (second el)))
-       el)
+   #'(lambda (el-1)
+       (list (first el-1) (round (second el-1))))
    (remove-if
    #'(lambda (el)
        (or (and (numberp (second el)) (= 0.0 (second el)))

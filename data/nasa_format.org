@@ -2,6 +2,8 @@
 
 [[https://www.grc.nasa.gov/www/CEAWeb/ceaThermoBuild.htm]]
 
+https://cearun.grc.nasa.gov/cea/index_ds.html
+
 [[http://combustion.berkeley.edu/gri_mech/data/nasa_plnm.html]]
 
 [[https://www.grc.nasa.gov/www/CEAWeb/RP-1311.pdf]] p20
