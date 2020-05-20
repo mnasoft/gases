@@ -119,3 +119,32 @@ END REACTANTS
 
 
 [[https://cearun.grc.nasa.gov/cea/index_ds.html]] 
+
+* Data format
+
+#+Caption: General format for NASA 9-Constant coefficient record
+| Record | Contents                                              | Fortran    | Columns  |
+|        |                                                       | format     |          |
+|--------+-------------------------------------------------------+------------+----------|
+|      1 | Speciesname or formula                                | A16        | 1 to 16  |
+|        | Comments and data source                              | A62        | 19 to 80 |
+|--------+-------------------------------------------------------+------------+----------|
+|      2 | Number of T intervals                                 | I2         | 1 to 2   |
+|        | Optional identification code                          | A6         | 4 to 9   |
+|        | Chemical formula - symbols and numbers (all capitals) | 5(A2,F6.2) | 11 to 50 |
+|        | Zero for gas, nonzero for condensed                   | I2         | 51 to 52 |
+|        | Molecular weight                                      | F13.7      | 53 to 65 |
+|        | Heat of formation at 298.15 K, J/mol                  | F15.5      | 66 to 80 |
+|--------+-------------------------------------------------------+------------+----------|
+|      3 | Temperature range                                     | 2F11.3     | 1 to 22  |
+|        | Number of coefficients for C^0_P(T)/R                 | I1         | 23       |
+|        | T exponents in empirical equations for C^0_P(T)/R     | 8F5.1      | 24 to 63 |
+|        | [H^0(298.15)-H^0], J/mol                              | F15.3      | 66 to 80 |
+|--------+-------------------------------------------------------+------------+----------|
+|      4 | First five coefficients for C^0_P(T)/R                | 5D16.9     | 1 to 80  |
+|--------+-------------------------------------------------------+------------+----------|
+|        | Last two coefficients for C^0_P(T)/R                  | 2D16.9     | 1 to 32  |
+|        | Integration constants b_1 b_2                         | 2D16.9     | 49 to 80 |
+|--------+-------------------------------------------------------+------------+----------|
+| --//-- | Repeat 3, 4, and 5 for each interval                  | --//--     | --//--   |
+

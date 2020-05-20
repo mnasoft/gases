@@ -4,11 +4,61 @@
 
 (annot:enable-annot-syntax)
 
-(defmethod molar-mass ((rt <reactant>))
-  (* (moles-number rt) (sp-molar-mass (reactant-species rt))))
+(with-open-file (fl "/home/namatv/quicklisp/local-projects/clisp/gases/data/termo.inp"
+		    :direction :output :if-exists :supersede)
+  (dump (get-db) fl))
 
-(defmethod molar-mass ((pt <product>))
-  (* (moles-number pt) (sp-molar-mass (product-species pt))))
+
+
+(dump (get-sp "KNO2(I)"))
+(dump (get-sp "C2HCL") t)
+(dump (get-sp "H2O") t)
+
+(check-sp (get-sp "H2O"))
+
+(check-sp "H2O")
+(check-sp "KNO2(I)")
+(check-sp "C2HCL")
+
+("THDCPD,endo" "N2O" "C11H21" "Air" "PF5" "THDCPD,exo")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun check-db ()
+  (let ((rezult t)
+	(bad-keys nil))
+    (maphash
+     #'(lambda (key value)
+	 (let ((o-str (make-string-output-stream)))
+	   (when (null
+		   (substringp
+		    (progn
+		      (dump value o-str)
+		      (get-output-stream-string o-str))
+		    (get-db-as-string)))
+	     (setf rezult nil)
+	     (push key bad-keys))))
+     (get-db))
+    (values rezult bad-keys )))
+
+(defun check-db ()
+  (let ((rezult t)
+	(bad-keys nil))
+    (maphash
+     #'(lambda (key value)
+	 (unless (check-sp value)
+	   (setf rezult nil)
+	   (push key bad-keys)))
+     (get-db))
+    (when bad-keys (format t "~&~S~%" bad-keys))
+    (values rezult bad-keys)))
+
+(check-db)
+(length (init-db))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (defparameter *rt*  
   (make-instance '<reactant> :species (get-sp "H2O") :mole 2))
@@ -19,20 +69,7 @@
 
 (sp-heat-formation (reactant-species *rt*))
 
-(defmethod thermal-effect ((rt <reactant>))
-  (* -1
-     (moles-number rt)
-     (sp-heat-formation (reactant-species rt))))
 
-(defmethod thermal-effect ((rt <product>))
-  (* (moles-number rt)
-     (sp-heat-formation (product-species rt))))
-
-
-(defmethod thermal-effect ((reac <reaction>))
-  (apply #'+
-   (mapcar #'thermal-effect
-   (append (reaction-reactants reac) (reaction-products reac)))))
 
 (defparameter *reac*
   (make-instance '<reaction> :reactant-names '("C2H5OH" "O2") :product-names '("H2O" "CO2")))

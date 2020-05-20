@@ -4,10 +4,11 @@
   :version "0.2.0"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on (#:mnas-defclass #:half-div #:math)
+  :depends-on (#:cl-annot #:cl-utilities #:half-div #:math ) ;; #:mnas-defclass CL-UTILITIES
   :components
 			((:file "package")
 			 (:file "gases")
+			 (:file "defparameters")
 			 (:file "classes")
  			 (:file "defgenerics")
 			 (:file "defmethods")

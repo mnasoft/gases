@@ -16,7 +16,7 @@
    :polynomial-exponents  (subseq lst 3 (+ 3 (nth  2 lst)))
    :H_298.15-H-0          (nth  11 lst)
    :coefficients          (subseq lst 12 (+ 12 (nth  2 lst)))
-   :integration-constants (list (nth  20 lst) (nth  21 lst))))
+   :integration-constants (list (nth  19 lst)  (nth  20 lst))))
 
 (defun make-instance-sp (lst)
   "Создает оъект <sp> "
@@ -94,24 +94,35 @@
   (cond
     ((or (eq ft 'f) (eq ft 'e) (eq ft 'd) (eq ft 'g) (eq ft 'i))
      (if (string= "" str) 0.0 (read (make-string-input-stream str))))
-    ((eq ft 's) str)
+    ((eq ft 's)    str)
+    ((eq ft '_)    nil)
+    ((eq ft 'f->d)
+     (if (string= "" str) 0.0d0
+	 (read (make-string-input-stream
+		(concatenate 'string str "d0")))))
     (t (break "Format error!"))))
 
 (defun read-record (ln-str-format str)
   (let ((st 0))
-    (mapcar
-     #'(lambda (el)
-	 (let ((rez (string-trim " " (subseq str st (+ (second el) st)))))
-	   (setf st (+ st (second el)))
-	   (read-string rez (first el))))
-     ln-str-format)))
+    (remove-if #'null
+	       (mapcar
+		#'(lambda (el)
+		    (let ((rez (string-trim " " (subseq str st (+ (second el) st)))))
+		      (setf st (+ st (second el)))
+		      (read-string rez (first el))))
+		ln-str-format))))
 
 (defun read-el-header (is str-1)
-  (let* ((rec-1 '((s 18) (s 62)))
-	 (rec-2 '((i  2) (s  8) (s  2) (f  6) (s 2) (f 6) (s 2) (f 6) (s 2) (f 6) (s 2) (f 6) (i 2) (f 13) (f 15)))
-	 (rec-3 '((f 11) (f 11) (i  1) (f  5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 17)))
-	 (rec-4 '((f 16) (f 16) (f 16) (f 16) (f 16)))
-	 (rec-5 '((f 16) (f 16) (f 16) (f 16) (f 16)))
+  (let* ((rec-1 '((s 16) (_ 2) (s 62)))
+	 (rec-2 '((i  2) (_ 1) (s  6) (_ 1)
+		  (s 2) (f 6)
+		  (s 2) (f 6)
+		  (s 2) (f 6)
+		  (s 2) (f 6)
+		  (s 2) (f 6) (i 2) (f->d 13) (f->d 15)))
+	 (rec-3 '((f 11) (f 11) (i  1) (f  5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 5) (f 5) (_ 2) (f->d 15)))
+	 (rec-4 '((d 16) (d 16) (d 16) (d 16) (d 16)))
+	 (rec-5 '((d 16) (d 16) (_ 16) (d 16) (d 16)))
 	 (r-1 (read-record rec-1 str-1))
 	 (r-2 (read-record rec-2 (read-line is)))
 	 (n-row (first r-2))
@@ -179,12 +190,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 @export
-(defparameter *sp-db* (make-hash-table :test #'equal)
-  "База данных компонентов")
-
-@export
 (defun clear-db ()
   (clrhash *sp-db*))
+
+@export
+@annot.doc:doc
+"Возвращает базу данных компонентов."
+(defun get-db () *sp-db*)
+
 
 @export
 @annot.doc:doc

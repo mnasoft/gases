@@ -547,3 +547,174 @@
        (or (and (numberp (second el)) (= 0.0 (second el)))
 	   (and (stringp (first el)) (string= "" (first el)))))
    (sp-chemical-formula ref))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+@export
+(defmethod molar-mass ((rt <reactant>))
+  (* (moles-number rt) (sp-molar-mass (reactant-species rt))))
+
+@export
+(defmethod molar-mass ((pt <product>))
+  (* (moles-number pt) (sp-molar-mass (product-species pt))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+@export
+(defmethod thermal-effect ((rt <reactant>))
+  (* -1
+     (moles-number rt)
+     (sp-heat-formation (reactant-species rt))))
+
+@export
+(defmethod thermal-effect ((rt <product>))
+  (* (moles-number rt)
+     (sp-heat-formation (product-species rt))))
+
+@export
+(defmethod thermal-effect ((reac <reaction>))
+  (apply #'+
+   (mapcar #'thermal-effect
+   (append (reaction-reactants reac) (reaction-products reac)))))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun append-some-value-to-length (new-len value lst)
+  (loop :for i :from 0 :below new-len
+	:collect
+	(let ((l (nth i lst)))
+	  (if  l l value))))
+
+@annot.doc:doc
+"@b(Описание:) метод @b(dump) выполняет вывод объекта sp в поток s.
+ Вывод должен осуществляться в форме пригодной для последующего считывания 
+ в формате TermoBuild.
+"
+(defmethod dump ((sp <sp>) s)
+  (labels ((rec () (first (sp-reccords sp))))
+    (format s "~16A  ~62A~%" (sp-name sp) (sp-comments sp))
+    (format s "~2D ~6A ~{~2A~6,2F~}~2D~13,7f~15,3f~%"
+	    (sp-number-temperature-intervals sp)
+	    (sp-reference-date-code sp) 
+	    (apply #'append (sp-chemical-formula sp))
+	    (sp-phase sp) 
+	    (sp-molar-mass sp) 
+	    (sp-heat-formation sp))
+    (when (/= 0 (sp-number-temperature-intervals sp))
+      (map nil #'(lambda (el)(dump el s))
+	   (sp-reccords sp)))
+    (when (= 0 (sp-number-temperature-intervals sp))
+      (format s "~{~11,3f~}~1D~{~5,1F~}  ~15,3F~%" ;
+	      (sp-rec-temperature-range (rec))
+	      (sp-rec-number-coeff (rec))
+	      (append-some-value-to-length
+	       8 0.0 (sp-rec-polynomial-exponents (rec))) ;; Проверить считыватель
+	      (sp-rec-h_298.15-h-0 (rec))))))
+
+(defmethod dump+ ((sp <sp>) s)
+  (labels ((rec () (first (sp-reccords sp))))
+    (format s "~16A  ~62A~%" (sp-name sp) (sp-comments sp))
+    (format s "~2D ~6A ~{~2A~6,2F~}~2D~13,7f~15,3f~%"
+	    (sp-number-temperature-intervals sp)
+	    (sp-reference-date-code sp) 
+	    (apply #'append (sp-chemical-formula sp))
+	    (sp-phase sp) 
+	    (sp-molar-mass sp) 
+	    (sp-heat-formation sp))
+    (when (/= 0 (sp-number-temperature-intervals sp))
+      (map nil #'(lambda (el) (dump+ el s))
+	   (sp-reccords sp)))
+    (when (= 0 (sp-number-temperature-intervals sp))
+      (format s "~{~11,3f~}~1D~{~5,1F~}  ~15,3F~%" ;
+	      (sp-rec-temperature-range (rec))
+	      (sp-rec-number-coeff (rec))
+	      (append-some-value-to-length
+	       8 0.0 (sp-rec-polynomial-exponents (rec))) ;; Проверить считыватель
+	      (sp-rec-h_298.15-h-0 (rec))))))
+
+(defmethod dump ((rec <sp-rec>) s)
+  (labels ((fmt-16-9 (lst)
+	     (mapcar
+	      #'(lambda (el)
+		  (if (= el 0.0d0) " 0.000000000D+00" el))
+	      lst)))
+    (format s "~{~11,3f~}~1D~{~5,1F~}  ~15,3F~%"
+	    (sp-rec-temperature-range rec)
+	    (sp-rec-number-coeff rec)
+	    (append-some-value-to-length
+	     8 0.0 (sp-rec-polynomial-exponents rec)) ;; Проверить считыватель
+	    (sp-rec-h_298.15-h-0 rec))
+    (format s "~{~16,9,2E~}~%"
+	    (fmt-16-9 (reverse (cddr (reverse (sp-rec-coefficients rec))))))
+    (format s "~{~16,9,2E~}~16A~{~16,9,2E~}~%"
+	    (fmt-16-9 (nthcdr 5  (sp-rec-coefficients rec)))
+	    ""
+	    (fmt-16-9 (sp-rec-integration-constants rec)))))
+
+(defmethod dump+ ((rec <sp-rec>) s)
+  (labels ((fmt-16-9 (lst)
+	     (mapcar
+	      #'(lambda (el)
+		  (if (= el 0.0d0) " 0.000000000D+00" el))
+	      lst)))
+    (format s " ~{~10,3f~} ~1D~{~5,1F~}  ~15,3F~%"
+	    (sp-rec-temperature-range rec)
+	    (sp-rec-number-coeff rec)
+	    (append-some-value-to-length
+	     8 0.0 (sp-rec-polynomial-exponents rec)) ;; Проверить считыватель
+	    (sp-rec-h_298.15-h-0 rec))
+    (format s "~{~16,9,2E~}~%"
+	    (fmt-16-9 (reverse (cddr (reverse (sp-rec-coefficients rec))))))
+    (format s "~{~16,9,2E~}~16A~{~16,9,2E~}~%"
+	    (fmt-16-9 (nthcdr 5  (sp-rec-coefficients rec)))
+	    " 0.000000000D+00"
+	    (fmt-16-9 (sp-rec-integration-constants rec)))))
+
+
+(defmethod dump ((ht hash-table) s)
+  (maphash
+   #'(lambda (key value)
+       (declare (ignore key))
+       (dump value s))
+   ht))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun file-get-contents (filename)
+  (with-open-file (stream filename)
+    (let ((contents (make-string (file-length stream))))
+      (read-sequence contents stream)
+      contents)))
+
+(defun substringp (needle haystack &key (test #'char=))
+  "Returns the index of the first occurrence of the string designated
+by NEEDLE within the string designated by HAYSTACK, or NIL if it does
+not occur.  Characters within the string are compared by TEST, which
+defaults to CHAR= (for case-sensitive comparison)."
+  (search (string needle)
+          (string haystack)
+          :test test))
+
+
+(defun get-db-as-string ()
+  (when (null *str-db*)
+    (setf *str-db*
+	  (file-get-contents
+	   (namestring (asdf:system-relative-pathname :gases "data/termo.inp")))))
+  *str-db*)
+
+
+(defmethod check-sp ((sp <sp>))
+  (let* ((o-str (make-string-output-stream ))
+	 (sp-str (progn
+		   (dump sp o-str)
+		   (get-output-stream-string o-str)))
+	 (sp-str+ (progn
+		    (dump+ sp o-str)
+		    (get-output-stream-string o-str))))
+    (if (or (substringp sp-str  (get-db-as-string))
+	    (substringp sp-str+ (get-db-as-string)))
+	t
+	(progn (format t "~S~%~%~S~%" sp-str sp-str+) nil))))
+
+(defmethod check-sp ((sp-name string))
+  (check-sp (get-sp sp-name)))
