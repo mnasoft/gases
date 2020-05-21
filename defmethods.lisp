@@ -333,20 +333,7 @@
      (sort (remove-duplicates cmp-keys :test #'string= ) #'string<))
     (values (culc-molar-fractions cmp) (+ mfr-1 mfr-2))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-@export
-@annot.doc:doc
-"@b(Описание:) функция @b(dump-spices-db)
-"
-(defun dump-spices-db (&key (func #'(lambda (key value)
-				      (format t "~S~%" key)
-				      )))
-  (maphash func *sp-db*))
-
-;; (first (composition-components *air*))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 @export
 @annot.doc:doc
@@ -631,11 +618,43 @@
 	       8 0.0 (sp-rec-polynomial-exponents (rec))) ;; Проверить считыватель
 	      (sp-rec-h_298.15-h-0 (rec))))))
 
+(defmethod dump+d->e ((sp <sp>) s)
+  (labels ((rec () (first (sp-reccords sp))))
+    (format s "~16A  ~62A~%" (sp-name sp) (sp-comments sp))
+    (format s "~2D ~6A ~{~2A~6,2F~}~2D~13,7f~15,3f~%"
+	    (sp-number-temperature-intervals sp)
+	    (sp-reference-date-code sp) 
+	    (apply #'append (sp-chemical-formula sp))
+	    (sp-phase sp) 
+	    (sp-molar-mass sp) 
+	    (sp-heat-formation sp))
+    (when (/= 0 (sp-number-temperature-intervals sp))
+      (map nil #'(lambda (el)(dump+d->e el s))
+	   (sp-reccords sp)))
+    (when (= 0 (sp-number-temperature-intervals sp))
+      (format s "~{~11,3f~}~1D~{~5,1F~}  ~15,3F~%" ;
+	      (sp-rec-temperature-range (rec))
+	      (sp-rec-number-coeff (rec))
+	      (append-some-value-to-length
+	       8 0.0 (sp-rec-polynomial-exponents (rec))) ;; Проверить считыватель
+	      (sp-rec-h_298.15-h-0 (rec))))))
+
+(defun lst-from-below (from below replace-nil-with lst)
+  "Пример использования:
+ (lst-from-below 0 5 0d0 '( 1 2 3 4 5 6 7 ))
+ (lst-from-below 5 8 (make-string 16 :initial-element #\Space) '( 1 2 3 4 5 6 7 ))
+"
+    (substitute
+     replace-nil-with nil 
+     (loop :for i :from from :below below
+	   :collect
+	   (nth i lst))))
+
 (defmethod dump ((rec <sp-rec>) s)
   (labels ((fmt-16-9 (lst)
 	     (mapcar
 	      #'(lambda (el)
-		  (if (= el 0.0d0) " 0.000000000D+00" el))
+		  (if (and (numberp el)(= el 0.0d0)) " 0.000000000D+00" el))
 	      lst)))
     (format s "~{~11,3f~}~1D~{~5,1F~}  ~15,3F~%"
 	    (sp-rec-temperature-range rec)
@@ -644,17 +663,22 @@
 	     8 0.0 (sp-rec-polynomial-exponents rec)) ;; Проверить считыватель
 	    (sp-rec-h_298.15-h-0 rec))
     (format s "~{~16,9,2E~}~%"
-	    (fmt-16-9 (reverse (cddr (reverse (sp-rec-coefficients rec))))))
-    (format s "~{~16,9,2E~}~16A~{~16,9,2E~}~%"
-	    (fmt-16-9 (nthcdr 5  (sp-rec-coefficients rec)))
-	    ""
+	    (fmt-16-9
+	     (lst-from-below 0 5
+			     (make-string 16 :initial-element #\Space)
+			     (sp-rec-coefficients rec))))
+    (format s "~{~16,9,2E~}~{~16,9,2E~}~%"
+	    (fmt-16-9
+	     (lst-from-below 5 8
+			     (make-string 16 :initial-element #\Space)
+			     (sp-rec-coefficients rec)))
 	    (fmt-16-9 (sp-rec-integration-constants rec)))))
 
 (defmethod dump+ ((rec <sp-rec>) s)
   (labels ((fmt-16-9 (lst)
 	     (mapcar
 	      #'(lambda (el)
-		  (if (= el 0.0d0) " 0.000000000D+00" el))
+		  (if (and (numberp el)(= el 0.0d0)) " 0.000000000D+00" el))
 	      lst)))
     (format s " ~{~10,3f~} ~1D~{~5,1F~}  ~15,3F~%"
 	    (sp-rec-temperature-range rec)
@@ -663,13 +687,40 @@
 	     8 0.0 (sp-rec-polynomial-exponents rec)) ;; Проверить считыватель
 	    (sp-rec-h_298.15-h-0 rec))
     (format s "~{~16,9,2E~}~%"
-	    (fmt-16-9 (reverse (cddr (reverse (sp-rec-coefficients rec))))))
-    (format s "~{~16,9,2E~}~16A~{~16,9,2E~}~%"
-	    (fmt-16-9 (nthcdr 5  (sp-rec-coefficients rec)))
-	    " 0.000000000D+00"
+	    (fmt-16-9
+	     (lst-from-below 0 5 0.0d0
+			     (sp-rec-coefficients rec))))
+    (format s "~{~16,9,2E~}~{~16,9,2E~}~%"
+	    (fmt-16-9
+	     (lst-from-below 5 8 0.0d0
+			     (sp-rec-coefficients rec)))
 	    (fmt-16-9 (sp-rec-integration-constants rec)))))
 
+(defmethod dump+d->e ((rec <sp-rec>) s)
+  (labels ((fmt-16-9 (lst)
+	     (mapcar
+	      #'(lambda (el)
+		  (if (and (numberp el)(= el 0.0d0)) " 0.000000000E+00" el))
+	      lst)))
+    (format s " ~{~10,3f~} ~1D~{~5,1F~}  ~15,3F~%"
+	    (sp-rec-temperature-range rec)
+	    (sp-rec-number-coeff rec)
+	    (append-some-value-to-length
+	     8 0.0 (sp-rec-polynomial-exponents rec)) ;; Проверить считыватель
+	    (sp-rec-h_298.15-h-0 rec))
+    (format s "~{~16,9,2,,,,'EE~}~%"
+	    (fmt-16-9
+	     (lst-from-below 0 5 0.0d0
+			     (sp-rec-coefficients rec))))
+    (format s "~{~16,9,2,,,,'EE~}~{~16,9,2,,,,'EE~}~%"
+	    (fmt-16-9
+	     (lst-from-below 5 8 0.0d0
+			     (sp-rec-coefficients rec)))
+	    (fmt-16-9 (sp-rec-integration-constants rec)))))
 
+@export
+@annot.doc:doc
+"Сброс БД, загруженной в хештаблицу, в поток s."
 (defmethod dump ((ht hash-table) s)
   (maphash
    #'(lambda (key value)
@@ -710,11 +761,125 @@ defaults to CHAR= (for case-sensitive comparison)."
 		   (get-output-stream-string o-str)))
 	 (sp-str+ (progn
 		    (dump+ sp o-str)
-		    (get-output-stream-string o-str))))
-    (if (or (substringp sp-str  (get-db-as-string))
-	    (substringp sp-str+ (get-db-as-string)))
+		    (get-output-stream-string o-str)))
+	 (sp-str+d->e (progn
+			(dump+d->e sp o-str)
+			(get-output-stream-string o-str))))
+    (if (or (substringp sp-str      (get-db-as-string))
+	    (substringp sp-str+     (get-db-as-string))
+	    (substringp sp-str+d->e (get-db-as-string)))
 	t
-	(progn (format t "~S~%~%~S~%" sp-str sp-str+) nil))))
+	(progn (format t "~S~%~%~S~%~%~S~%"
+		       sp-str sp-str+ sp-str+d->e)
+	       nil))))
 
 (defmethod check-sp ((sp-name string))
   (check-sp (get-sp sp-name)))
+
+(defun check-db ()
+  (let ((rezult t)
+	(bad-keys nil))
+    (maphash
+     #'(lambda (key value)
+	 (unless (check-sp value)
+	   (setf rezult nil)
+	   (push key bad-keys))
+	 (format t "."))
+     (get-db))
+    (when bad-keys (format t "~&~S~%" bad-keys))
+    (values rezult bad-keys)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun property-table (xx)
+  (let ((rez nil))
+     (setf rez 
+	   (mapcar
+	    #'(lambda (el)
+		(list el
+		      (/ (molar-isobaric-heat-capacity  xx (+ *C-0* el)) *kal*)
+ 		      (/ (molar-isochoric-heat-capacity xx (+ *C-0* el)) *kal*)
+;;;;		    
+		      (/ (molar-isobaric-heat-capacity  xx (+ *C-0* el))
+			 *kal* (molar-mass xx))	      
+		      (/ (molar-isochoric-heat-capacity xx (+ *C-0* el))
+			 *kal* (molar-mass xx))
+;;;;		    
+		      (/ (- (molar-enthalpy xx (+ *C-0* el)) (molar-enthalpy xx *C-0*)) 
+			 *kal*)
+		      (/ (- (molar-enthalpy xx (+ *C-0* el)) (molar-enthalpy xx *C-0*))
+			 *kal* (molar-mass xx))
+;;;;		    
+		      (/ (- (molar-entropy xx (+ *C-0* el)) (molar-entropy xx *C-0*)) 
+			 *kal*)
+		      (/ (- (molar-entropy xx (+ *C-0* el)) (molar-entropy xx *C-0*))
+			 *kal* (molar-mass xx))
+		      ))
+	    (loop :for i :from 0.0 :to 2500 :by 100.0 :collect i)))
+     (push '("  °C" "kal/K*mol" "kal/K*mol"
+	     "kkal/K*kg" "kkal/K*kg"
+	     " kal/mol"  "kkal/kg"
+             "kal/mol*K" "kkal/kg*K")
+	   rez)
+     (push '("   t" " μcp"      " μcv"
+	     "  cp"     "  cv"     "  μi"     "   i"
+	     "  μs" "  s"  )
+	   rez)
+     rez))
+
+@export
+(defun print-table (xx &key (stream t) (output-fortmat :text))
+  "Пример использования:
+ (print-table *air* :output-fortmat :text)
+"
+  (assert (member output-fortmat '(:text :org)))
+  (let ((tbl (property-table xx)))
+    (format stream "~A~%" xx)
+    (when (eq output-fortmat :text)
+      (format stream "~{~{~9F ~}~%~}" tbl))
+    (when (eq output-fortmat :org)
+      (format stream "~{~{| ~9F ~}|~%~}" tbl))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod insert ((c <component>) (cmp <composition>))
+  (setf (gethash (sp-name (component-species c)) (composition-components cmp)) c)
+  cmp)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; adapt
+
+@export
+@annot.doc:doc
+"@b(Описание:) метод @b(adapt-mass-fractions) выполняет подгонку 
+состава смеси, заданной ммольными долями.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (progn
+  (defparameter *cmp* (make-instance '<composition>))
+  (insert (make-instance-component  \"N2\" 0.5) *cmp*)
+  (insert (make-instance-component  \"O2\" 0.4) *cmp*))
+@end(code)
+"
+(defmethod adapt-mole-fractions ((cmp <composition>))
+  (culc-molar-fractions (culc-mass-fractions cmp)))
+
+@export
+@annot.doc:doc
+"@b(Описание:) метод @b(adapt-mass-fractions) выполняет подгонку 
+состава смеси, заданной массовыми долями.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (progn
+  (defparameter *cmp* (make-instance '<composition>))
+  (insert (make-instance-component  \"N2\" 0.51 :mass) *cmp*)
+  (insert (make-instance '<component> :species (get-sp \"O2\") :mass-fraction 0.4) *cmp*)
+  (insert (make-instance '<component> :species (get-sp \"H2\") :mass-fraction 0.1) *cmp*)
+  (adapt-mass-fractions *cmp*))
+@end(code)
+"
+(defmethod  adapt-mass-fractions ((cmp <composition>))
+  (culc-mass-fractions (culc-molar-fractions cmp)))
+

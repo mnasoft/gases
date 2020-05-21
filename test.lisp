@@ -4,59 +4,15 @@
 
 (annot:enable-annot-syntax)
 
+
+;;;; (remove-method #'ADAPT-MOLE-FRACTIONS (find-method #'ADAPT-MOLE-FRACTIONS '() (mapcar #'find-class '(t t))))
+
 (with-open-file (fl "/home/namatv/quicklisp/local-projects/clisp/gases/data/termo.inp"
 		    :direction :output :if-exists :supersede)
   (dump (get-db) fl))
 
-
-
-(dump (get-sp "KNO2(I)"))
-(dump (get-sp "C2HCL") t)
-(dump (get-sp "H2O") t)
-
-(check-sp (get-sp "H2O"))
-
-(check-sp "H2O")
-(check-sp "KNO2(I)")
-(check-sp "C2HCL")
-
-("THDCPD,endo" "N2O" "C11H21" "Air" "PF5" "THDCPD,exo")
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defun check-db ()
-  (let ((rezult t)
-	(bad-keys nil))
-    (maphash
-     #'(lambda (key value)
-	 (let ((o-str (make-string-output-stream)))
-	   (when (null
-		   (substringp
-		    (progn
-		      (dump value o-str)
-		      (get-output-stream-string o-str))
-		    (get-db-as-string)))
-	     (setf rezult nil)
-	     (push key bad-keys))))
-     (get-db))
-    (values rezult bad-keys )))
-
-(defun check-db ()
-  (let ((rezult t)
-	(bad-keys nil))
-    (maphash
-     #'(lambda (key value)
-	 (unless (check-sp value)
-	   (setf rezult nil)
-	   (push key bad-keys)))
-     (get-db))
-    (when bad-keys (format t "~&~S~%" bad-keys))
-    (values rezult bad-keys)))
-
-(check-db)
-(length (init-db))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(check-sp "Air")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -89,12 +45,6 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun make-reaction (reactants products)
-  (equation-koeffitients
-      (append
-	  (mapcar #'(lambda (el) (elements (get-sp el))) reactants)
-	  (mapcar #'(lambda (el) (minus (elements (get-sp el)))) products))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (let ((sp (get-sp (first '("H2O" "CH4" "N2" "O2" "Air")) ))
@@ -104,67 +54,6 @@
 	(molar-enthalpy sp tt)
 	(molar-entropy  sp tt)
 	(adiabatic-index sp tt)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defparameter *cmp-1* (make-instance-composition '(("N2" 0.78) ("O2" 0.22))))
-
-(molar-mass *cmp-1*)
-(composition-components *cmp-1*)
-
-(molar-enthalpy *cmp-1* (+ *C-0* 25))
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(format
- t "~{~{~9F ~}~%~}"
- (let ((xx *air*) ;; (get-sp "Air" )
-       (rez nil))
-   (setf rez 
-	 (mapcar
-	  #'(lambda (el)
-	      (list el
-		    (/ (molar-isobaric-heat-capacity  xx (+ *C-0* el)) *kal*)
- 		    (/ (molar-isochoric-heat-capacity xx (+ *C-0* el)) *kal*)
-;;;;		    
-		    (/ (molar-isobaric-heat-capacity  xx (+ *C-0* el))
-		       *kal* (molar-mass xx))	      
-		    (/ (molar-isochoric-heat-capacity xx (+ *C-0* el))
-		       *kal* (molar-mass xx))
-;;;;		    
-		    (/ (- (molar-enthalpy xx (+ *C-0* el)) (molar-enthalpy xx *C-0*)) 
-		       *kal*)
-		    (/ (- (molar-enthalpy xx (+ *C-0* el)) (molar-enthalpy xx *C-0*))
-		       *kal* (molar-mass xx))
-;;;;		    
-		    (/ (- (molar-entropy xx (+ *C-0* el)) (molar-entropy xx *C-0*)) 
-		       *kal*)
-		    (/ (- (molar-entropy xx (+ *C-0* el)) (molar-entropy xx *C-0*))
-		       *kal* (molar-mass xx))
-		    ))
-	  (loop :for i :from 0.0 :to 2500 :by 100.0 :collect i)))
-   (push '("  °C" "kal/K*mol" "kal/K*mol"
-	   "kkal/K*kg" "kkal/K*kg"
-	   " kal/mol"  "kkal/kg"
-           "kal/mol*K" "kkal/kg*K")
-	 rez)
-   (push '("   t" " μcp"      " μcv"
-	   "  cp"     "  cv"     "  μi"     "   i"
-	   "  μs" "  s"  )
-	 rez)
-   rez))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(let ((xx (get-sp "O2" ))
-      (el 0.0))
-  (/
-   (+ (molar-enthalpy xx (+ *C-0* el))
-      (- (molar-enthalpy xx 298.15) (molar-enthalpy xx *C-0*))) 
-   *kal*))
-
-(get-sp "Air" )
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

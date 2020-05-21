@@ -62,3 +62,18 @@
      ( "C6H12,cyclo-"     0.0001)
      ( "C7H16,n-heptane"  0.0000)
      ( "H2O"	          0.0024))))
+
+(defparameter *pick-bel-gas*
+  (make-instance-composition
+   '(("CH4"	         0.9684) 
+     ("C2H6"	         0.0179)
+     ("C3H8"	         0.00365)
+     ("C4H10,isobutane"  0.00063)
+     ("C4H10,n-butane"   0.00054)
+     ("CH3C(CH3)2CH3"    0.000019) ;; неопентан
+     ("C5H12,i-pentane"  0.000094)
+     ("C5H12,n-pentane"  0.00069)
+     ("C6H14,n-hexane"   0.000119)
+     ("CO2"	         0.000128)
+     ("N2"	         0.0070)
+     ("O2"	         0.00083))))

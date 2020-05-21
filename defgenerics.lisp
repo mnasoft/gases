@@ -77,3 +77,35 @@
 @annot.doc:doc
 "Получает ссылку на элемент, находящийся в конлейнере по ключу."
 (defgeneric reference (key container))
+
+
+@export
+@annot.doc:doc
+"@b(Описание:) метод @b(elemental-mass-fraction) возвращает 
+ атомарный состав reference."
+(defgeneric elemental-mass-fraction (reference))
+
+@export
+@annot.doc:doc
+"@b(Описание:) метод @b(dump) сбравывает символьное представление
+ reference в символьный поток stream."
+(defgeneric dump (reference stream))
+
+
+@export
+@annot.doc:doc
+"@b(Описание:) метод @b(dump) сбравывает символьное представление
+ reference в символьный поток stream."
+(defgeneric adapt-mole-fractions (reference))
+
+@export
+@annot.doc:doc
+"@b(Описание:) метод @b(adapt-mass-fractions) сбравывает символьное представление
+ reference в символьный поток stream."
+(defgeneric  adapt-mass-fractions (reference))
+
+@export
+(defgeneric insert (obj collection))
+
+
+

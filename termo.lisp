@@ -39,24 +39,32 @@
 @export
 @annot.doc:doc
 "@b(Описание:) функция @b(make-instance-component) возвращает компонент
-газовой смеси, заданной мольными долями.
+газовой смеси, заданной мольными или массовыми долями. По умолчанию
+поределяется через мольную долю.
 
 @b(Переменые:)
 @begin(list)
 @item(component-name - имя компонента;)
-@item(mole-fraction  - мольная доля компонента.)
+@item(fraction - доля компонента мольная или массовая;)
+@item(fraction-type - тип доли. :mole задает мольную долю; :mass - массовую.
 @end(list)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (make-instance-component \"N2\" 0.78)
  (make-instance-component \"O2\" 0.22)
+ (make-instance-component \"N2\" 0.78 :mass)
+ (make-instance-component \"O2\" 0.78 :mass)
 @end(code)
 "
-(defun make-instance-component (component-name mole-fraction)
-  (make-instance '<component>
+(defun make-instance-component (component-name fraction &optional (fraction-type :mole))
+  (ecase fraction-type
+  (:mole (make-instance '<component>
 		 :species (get-sp component-name)
-		 :mole-fraction mole-fraction))
+		 :mole-fraction fraction))
+  (:mass (make-instance '<component>
+		 :species (get-sp component-name)
+		 :mass-fraction fraction))))
 
 @export
 @annot.doc:doc
@@ -81,7 +89,9 @@
 	    lst)
     (let ((cmp (make-instance '<composition> :components cpm-s)))
       (unless (check-mole-fraction cmp)
-	(error "check-mole-fraction=~S" (check-mole-fraction cmp) ))
+	(error "check-mole-fraction=~S mol.fr.summ=~S"
+	       (check-mole-fraction cmp)
+	       (molar-fraction-summ cmp)))
       (culc-mass-fractions cmp)
       (unless (check-mass-fraction cmp)
 	(error "check-mass-fraction=~S" (check-mass-fraction cmp)))
@@ -92,8 +102,13 @@
 
 (defun read-string (str &optional (ft 's))
   (cond
-    ((or (eq ft 'f) (eq ft 'e) (eq ft 'd) (eq ft 'g) (eq ft 'i))
+    ((or (eq ft 'f) (eq ft 'e) (eq ft 'g) (eq ft 'i))
      (if (string= "" str) 0.0 (read (make-string-input-stream str))))
+    ((eq ft 'd)
+     (if (string= "" str) 0.0d0
+	 (read
+	  (make-string-input-stream
+	   (substitute #\D #\E str)))))
     ((eq ft 's)    str)
     ((eq ft '_)    nil)
     ((eq ft 'f->d)
