@@ -4,12 +4,16 @@
 
 (annot:enable-annot-syntax)
 
-
 ;;;; (remove-method #'ADAPT-MOLE-FRACTIONS (find-method #'ADAPT-MOLE-FRACTIONS '() (mapcar #'find-class '(t t))))
 
 (with-open-file (fl "/home/namatv/quicklisp/local-projects/clisp/gases/data/termo.inp"
 		    :direction :output :if-exists :supersede)
   (dump (get-db) fl))
+
+
+
+
+(defparameter *sp* (get-sp "CH4"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (check-sp "Air")

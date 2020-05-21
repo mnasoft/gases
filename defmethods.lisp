@@ -883,3 +883,61 @@ defaults to CHAR= (for case-sensitive comparison)."
 (defmethod  adapt-mass-fractions ((cmp <composition>))
   (culc-mass-fractions (culc-molar-fractions cmp)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+@export
+@annot.doc:doc
+"@b(Описание:) функция|метод|обобщенная_функция| @b(...)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (combustion-reaction (get-sp \"CO\")) => 2*CO + 1*O2 => 2*CO2
+@end(code)
+"
+(defmethod combustion-reaction ((sp <sp>))
+  (let ((cmp (first (elemental-mass-fraction sp)))
+	(good-combasted nil)
+	(combasted-elem '("H" "C" "S"))
+	(good-fuel      t)
+	(fuel-elem '("H" "C" "S" "O" "N"))
+	(reactants nil)
+	(products  nil))
+    (maphash
+     #'(lambda (key value)
+	 (declare (ignore value))
+	 (block good-combasted-elements
+	   (if (member key combasted-elem :test #'string=) 
+	       (setf good-combasted (or good-combasted t))
+	       (setf good-combasted (or good-combasted nil))))
+	 (block good-combasted-elems
+	   (if (member key fuel-elem  :test #'string=)  
+	       (setf good-fuel (and good-fuel t))
+	       (setf good-fuel (and good-fuel nil)))))
+     (composition-components cmp))
+    (block stop-error-block
+      (unless good-combasted
+	(error "Bad combasted elements present in fuel~%Топливо ~S~%В топливе присутствуют горючие элементы кроме ~S"
+	       sp combasted-elem))
+      (unless good-fuel
+	(error "Bad elements present in fuel~%Топливо ~S~%В топливе элементы кроме ~S"
+	       sp fuel-elem)))
+    (block compose-reaction
+      (block compose-reactants
+	(push "O2" reactants)
+	(push (sp-name sp) reactants))
+      (block compose-products
+	(when (reference "N" cmp) (push "N2" products ))
+	(when (reference "S" cmp) (push "SO2" products ))
+	(when (reference "C" cmp) (push "CO2" products ))
+	(when (reference "H" cmp) (push "H2O" products )))
+      (make-instance '<reaction> :reactant-names reactants :product-names products))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod relativ-air-mass-for-burning ((sp <sp>))
+  (/ (relativ-oxigen-mass-for-burning sp)
+     (component-mass-fraction (reference "O2" *air*))))
+
+(defmethod relativ-oxigen-mass-for-burning ((sp <sp>))
+  (let ((reactants (reaction-reactants (combustion-reaction sp))))
+    (/ (molar-mass (second reactants)) (molar-mass (first reactants)))))

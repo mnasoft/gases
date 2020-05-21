@@ -74,28 +74,34 @@
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (make-instance-composition '((\"N2\" 0.78) (\"O2\" 0.22)))
+ (make-instance-composition '((\"N2\" 0.78) (\"O2\" 0.22)) :mole)
+ (make-instance-composition '((\"N2\" 0.78) (\"O2\" 0.22)) :mass)
 @end(code)
 "
-(defun make-instance-composition (lst)
+(defun make-instance-composition (lst &optional (fraction-type :mole))
   (unless (check-spices-is-unique lst)
-    (error "check-spices-is-unique=~S" (check-spices-is-unique lst) ))
+    (error "Spices is not unique=~S" (check-spices-is-unique lst) ))
   (unless (check-spices-exist-in-db lst)
-    (error "check-spices-exist-in-db=~S" (check-spices-exist-in-db lst) ))
+    (error "Some spices is not exist in db=~S" (check-spices-exist-in-db lst) ))
   (let ((cpm-s (make-hash-table :test #'equal)))
     (mapcar #'(lambda(el)
 		(setf
 		 (gethash (first el) cpm-s)
-		 (make-instance-component (first el)(second el))))
+		 (make-instance-component (first el)(second el) fraction-type)))
 	    lst)
     (let ((cmp (make-instance '<composition> :components cpm-s)))
-      (unless (check-mole-fraction cmp)
-	(error "check-mole-fraction=~S mol.fr.summ=~S"
-	       (check-mole-fraction cmp)
-	       (molar-fraction-summ cmp)))
-      (culc-mass-fractions cmp)
-      (unless (check-mass-fraction cmp)
-	(error "check-mass-fraction=~S" (check-mass-fraction cmp)))
-      cmp)))
+      (ecase fraction-type
+	(:mole
+	 (unless (check-mole-fraction cmp)
+	   (error "Mole fraction summ=~S not equal 1.0"
+		  (molar-fraction-summ cmp)))
+	 (culc-mass-fractions cmp))
+	(:mass
+	 (unless (check-mass-fraction cmp)
+	   (error "Mass fraction summ=~S not equal 1.0"
+		  (mass-fraction-summ cmp)))
+	 (culc-molar-fractions cmp)))
+    cmp)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;read-formated-data
