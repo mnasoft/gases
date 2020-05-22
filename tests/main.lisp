@@ -16,6 +16,7 @@
 (defun test-gases ()
   (run! 'all-tests))
 
+;;;; (test-gases)
 
 (def-fixture fix-gases ()
   (let ((+Air+ (gases:make-instance-composition
@@ -75,11 +76,26 @@
 (def-test component-mole-fraction-test ()
   "Проверка молярного состава."
   (with-fixture fix-gases ()
-    (is-true (math:semi-equal (gases:component-mole-fraction (gethash "N2"  (gases:composition-components +air+))) 0.780840))
-    (is-true (math:semi-equal (gases:component-mole-fraction (gethash "O2"  (gases:composition-components +air+))) 0.209476))
-    (is-true (math:semi-equal (gases:component-mole-fraction (gethash "CO2" (gases:composition-components +air+))) 0.000319))
-    (is-true (math:semi-equal (gases:component-mole-fraction (gethash "Ar"  (gases:composition-components +air+))) 0.009365))
-    ))
+    (is-true (math:semi-equal
+	      (gases:component-mole-fraction
+	       (gethash "N2"
+			(gases:composition-components +air+)))
+	      0.780840))
+    (is-true (math:semi-equal
+	      (gases:component-mole-fraction
+	       (gethash "O2"
+			(gases:composition-components +air+)))
+	      0.209476))
+    (is-true (math:semi-equal
+	      (gases:component-mole-fraction
+	       (gethash "CO2"
+			(gases:composition-components +air+)))
+	      0.000319))
+    (is-true (math:semi-equal
+	      (gases:component-mole-fraction
+	       (gethash "Ar"
+			(gases:composition-components +air+)))
+	      0.009365))))
 
 (def-test molar-fraction-summ-test ()
   (with-fixture fix-gases ()
@@ -104,8 +120,7 @@
       (is-true (math:semi-equal (gases:component-mole-fraction (gases:reference "N2" +air+))
 				(gases:component-mole-fraction (gases:reference "N2" cmp)))))))
 
-(test-gases)
-
-
 (def-test combustion-reaction-test ()
-  (is-true (eq 'gases::<reaction> (type-of (gases:combustion-reaction (gases:get-sp "H2"))))
+  (is-true (eq 'gases::<reaction>
+	       (type-of
+		(gases:combustion-reaction (gases:get-sp "H2"))))))

@@ -237,6 +237,11 @@
 	      (setf (get-sp (sp-name sp-elem)) sp-elem)))
 	(make-element-table)))
 
-(init-db)
+(block init-db
+  (init-db)
+  (map nil
+       #'(lambda (el)
+	   (setf (gethash el *not-combasted-sp*) (get-sp el)))
+       *not-combasted-sp-names*))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

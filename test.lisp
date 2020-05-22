@@ -4,6 +4,48 @@
 
 (annot:enable-annot-syntax)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setf (gases:get-sp "Na2WO4")
+       (make-instance 'gases:<sp>
+	       :name "Na2WO4"
+	       :chemical-formula '(("NA" 2.0) ("W" 1.0) ("O" 4.0) ("" 0.0) ("" 0.0))))
+
+(setf (gases:get-sp "WF6")
+       (make-instance 'gases:<sp>
+	       :name "WF6"
+	       :chemical-formula '(("W" 1.0) ("F" 6.0) ("" 0.0) ("" 0.0) ("" 0.0))))
+
+(setf  (gases:get-sp "WOF4")
+       (make-instance 'gases:<sp>
+	       :name "WOF4"
+	       :chemical-formula '(("W" 1.0) ("O" 1.0) ("F" 4.0) ("" 0.0) ("" 0.0))))
+
+(gases:get-sp "HF") (gases:get-sp "HNO3") (gases:get-sp "H2O")
+(gases:get-sp "NaOH") (gases:get-sp "NaNO3") (gases:get-sp "NaNO2")
+(gases:get-sp "Na2WO4") (gases:get-sp "O2") (gases:get-sp "WF6")
+(gases:get-sp "WOF4") (gases:get-sp "W")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(make-instance 'gases:<reaction>
+	       :reactant-names (list "W" "HNO3" "HF")
+	       :product-names(list "WF6" "WOF4" "NO" "H2O"))
+
+(make-instance 'gases:<reaction>
+	       :reactant-names (list "W" "NaOH" "O2")
+	       :product-names(list "Na2WO4" "H2O"))
+
+(make-instance 'gases:<reaction>
+		 :reactant-names (list "W" "NaOH" "NaNO3")
+		 :product-names  (list "Na2WO4" "NaNO2" "H2O"))
+
+(make-instance 'gases:<reaction>
+	       :reactant-names (list "H2" "O2")
+	       :product-names  (list "H2O"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;;; (remove-method #'ADAPT-MOLE-FRACTIONS (find-method #'ADAPT-MOLE-FRACTIONS '() (mapcar #'find-class '(t t))))
 
 (with-open-file (fl "/home/namatv/quicklisp/local-projects/clisp/gases/data/termo.inp"

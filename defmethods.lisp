@@ -886,14 +886,6 @@ defaults to CHAR= (for case-sensitive comparison)."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; combustion-reaction
 
-(block nil
-  (defparameter *not-combasted-sp-names* '("N2" "O2" "H2O" "CO2" "SO2" "SO3" "He" "Ar" "Kr" "Xe" "Rd"))
-  (defparameter *not-combasted-sp* (make-hash-table :test #'equal))
-  (map nil
-       #'(lambda (el)
-	   (setf (gethash el *not-combasted-sp*) (get-sp el)))
-       *not-combasted-sp-names*))
-
 @export
 @annot.doc:doc
 "@b(Описание:) функция|метод|обобщенная_функция| @b(...)
@@ -912,7 +904,7 @@ defaults to CHAR= (for case-sensitive comparison)."
 	(reactants nil)
 	(products  nil))
     (block not-combastor-sp
-      (when (gethash (sp-name sp))
+      (when (gethash (sp-name sp) *not-combasted-sp*)
 	(return-from not-combastor-sp nil)))
     (block check-and-make-reaction
       (maphash

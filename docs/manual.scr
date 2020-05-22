@@ -35,4 +35,11 @@ learn how to do this.
   )
 @end(section)
 
+@begin(section)
+ @title(Классы)
+ @cl:with-package[name="gases"](
+  @cl:doc(class <sp>)
+  )
+@end(section)
+
 

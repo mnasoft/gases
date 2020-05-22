@@ -348,9 +348,10 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
   (format s "~{~A~^ + ~} => ~{~A~^ + ~}"
 	  (reaction-reactants reac) (reaction-products  reac)))
 
-(defmethod culc-koeffitients ((reac <reaction>))
-  (labels ((atoms (equation)
-	     "@b(Описание:) функция @b(atoms) возвращает список элементов,
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+@annot.doc:doc
+  "@b(Описание:) функция @b(atoms) возвращает список элементов,
  из которых состоит молекула.
 
  @b(Пример использования:)
@@ -358,47 +359,104 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
  (atoms *equation*) => (\"C\" \"H\" \"O\")
 @end(code)
 "
-	     (sort
-	      (remove-duplicates
-	       (mapcar #'first (apply #'append equation))
-	       :test #'string=)
-	      #'string<))
-	   (equation-koeffitients (equation)
-	     (let ((matr (math:convert-to-triangular 
-			  (make-instance
-			   'math:<matrix>
-			   :initial-contents 
-			   (mapcar
-			    #'(lambda (el)
-				(nreverse (cons 0 (nreverse el))))
-			    (mapcar
-			     #'(lambda (el)
-				 (mapcar
-				  #'(lambda (el1)
-				      (if (assoc el el1 :test #'string=)
-					  (second (assoc el el1 :test #'string=))
-					  0))
-				  equation))
-			     (atoms equation)))))))
-	       (when (= 2 (- (math:cols matr) (math:rows matr)))
-		 (do ((num 2 (1+ num))
-		      (denum 1 (1+ denum))
-		      (eq (math:row
-			   (math:solve-linear-system-gauss-backward-run 
-			    (make-instance
-			     'math:<matrix>
-			     :initial-contents
-			     (nreverse
-			      (cons
-			       (loop :for i :downfrom (math:cols matr) :to 1 :collect (if (< i 3) 1 0))
-			       (nreverse (math:matrix->2d-list matr))))))
-			   0)
-			  (mapcar #'(lambda (el) (/ (* el num) denum)) eq)))
-		     ((every #'integerp eq) eq)))))
-	   )
-    (mapcar #'(lambda (moles sp) (setf (moles-number sp) moles))
+(defun atoms (equation)
+  (sort
+   (remove-duplicates
+    (mapcar #'first (apply #'append equation))
+    :test #'string=)
+   #'string<))
+
+(defun make-linear-index-set ( &key (max-index 1000))
+  (loop :for i :from 1 :to max-index :collect `(,i)))
+
+(defun diagonal-index ( x )
+  (loop :for i :from 1 :below x
+	:collect (list i (- x i))))
+
+(defun make-diagonal-index-set ( &key (max-index 1000))
+    (apply #'append (loop :for i :from 2 :to max-index
+			  :collect (diagonal-index i))))
+
+(defun m-mk (lst)
+  (make-instance 'math:<matrix> :initial-contents lst))
+
+
+(defun make-matrix-m-1xm (mm)
+  "Добавляет к матрице mm такое количество строк, чтобы их число
+ стало на единицу меньше столбцов. Возвращет новую матрицу.
+ Заполняет главную диагональ новой матрицы единицами."
+  (setf
+     (math:main-diagonal
+      (m-mk
+       (nreverse
+	(append 
+	 (loop :for j :from 0 :to (- (math:cols mm) (math:rows mm) 2)
+	       :collect
+	       (loop :for i :from 0 :below (math:cols mm) :collect 0))
+	 (nreverse (math:matrix->2d-list mm))))))
+     1))
+
+(defun set-last-col-values (m1 lst)
+  (loop
+    :for i
+    :downfrom (1- (math:rows m1))
+    :downto   (1- (- (math:rows m1)
+		     (length lst)))
+    :for j :in lst
+    :do  (setf (math:mref m1 i (1- (math:cols m1))) j)
+    )
+  m1)
+
+(defmethod matr-col-row=2 ((matr math:<matrix>))
+  (dolist (lst-of-1 (make-linear-index-set))
+      (let ((koeff (math:row
+		    (math:solve-linear-system-gauss-backward-run 
+		     (set-last-col-values (make-matrix-m-1xm matr) lst-of-1))
+		    0)))
+	(when (every
+	       #'(lambda (el) (and (integerp el) (plusp el) ))
+	       koeff)
+	  (return koeff)))))
+
+@annot.doc:doc
+"Подбор решения расширенной однородной матрицых в целых коэффициентах с двумя произвольными."
+(defmethod matr-col-row=3 ((matr math:<matrix>))
+  (dolist (lst-of-2 (make-diagonal-index-set))
+      (let ((koeff (math:row
+		    (math:solve-linear-system-gauss-backward-run 
+		     (set-last-col-values (make-matrix-m-1xm matr) lst-of-2))
+		    0)))
+	(when (every
+	       #'(lambda (el) (and (integerp el) (plusp el) ))
+	       koeff)
+	  (return koeff)))))
+
+(defun equation-koeffitients (equation)
+  (let ((matr (math:convert-to-triangular
+	       (m-mk
+		(mapcar
+		 #'(lambda (el)
+		     (nreverse (cons 0 (nreverse el))))
+		 (mapcar
+		  #'(lambda (el)
+		      (mapcar
+		       #'(lambda (el1)
+			   (if (assoc el el1 :test #'string=)
+			       (second (assoc el el1 :test #'string=))
+			       0))
+		       equation))
+		  (atoms equation)))))))
+    (format t "~S~%" matr)
+    (cond
+      ((= 2 (- (math:cols matr) (math:rows matr)))
+       (matr-col-row=2 matr))
+      ((= 3 (- (math:cols matr) (math:rows matr)))
+       (matr-col-row=3 matr)))))
+
+(defmethod culc-koeffitients ((reac <reaction>))
+  (mapcar #'(lambda (moles sp) (setf (moles-number sp) moles))
 	    (equation-koeffitients 
 	     (append (mapcar #'elements (reaction-reactants reac))
 		     (mapcar #'elements (reaction-products  reac))))
 	    (append (reaction-reactants reac)(reaction-products reac)))
-    reac))
+  reac)
