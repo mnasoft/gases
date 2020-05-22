@@ -884,6 +884,15 @@ defaults to CHAR= (for case-sensitive comparison)."
   (culc-mass-fractions (culc-molar-fractions cmp)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; combustion-reaction
+
+(block nil
+  (defparameter *not-combasted-sp-names* '("N2" "O2" "H2O" "CO2" "SO2" "SO3" "He" "Ar" "Kr" "Xe" "Rd"))
+  (defparameter *not-combasted-sp* (make-hash-table :test #'equal))
+  (map nil
+       #'(lambda (el)
+	   (setf (gethash el *not-combasted-sp*) (get-sp el)))
+       *not-combasted-sp-names*))
 
 @export
 @annot.doc:doc
@@ -902,42 +911,79 @@ defaults to CHAR= (for case-sensitive comparison)."
 	(fuel-elem '("H" "C" "S" "O" "N"))
 	(reactants nil)
 	(products  nil))
-    (maphash
-     #'(lambda (key value)
-	 (declare (ignore value))
-	 (block good-combasted-elements
-	   (if (member key combasted-elem :test #'string=) 
-	       (setf good-combasted (or good-combasted t))
-	       (setf good-combasted (or good-combasted nil))))
-	 (block good-combasted-elems
-	   (if (member key fuel-elem  :test #'string=)  
-	       (setf good-fuel (and good-fuel t))
-	       (setf good-fuel (and good-fuel nil)))))
-     (composition-components cmp))
-    (block stop-error-block
-      (unless good-combasted
-	(error "Bad combasted elements present in fuel~%Топливо ~S~%В топливе присутствуют горючие элементы кроме ~S"
-	       sp combasted-elem))
-      (unless good-fuel
-	(error "Bad elements present in fuel~%Топливо ~S~%В топливе элементы кроме ~S"
-	       sp fuel-elem)))
-    (block compose-reaction
-      (block compose-reactants
-	(push "O2" reactants)
-	(push (sp-name sp) reactants))
-      (block compose-products
-	(when (reference "N" cmp) (push "N2" products ))
-	(when (reference "S" cmp) (push "SO2" products ))
-	(when (reference "C" cmp) (push "CO2" products ))
-	(when (reference "H" cmp) (push "H2O" products )))
-      (make-instance '<reaction> :reactant-names reactants :product-names products))))
+    (block not-combastor-sp
+      (when (gethash (sp-name sp))
+	(return-from not-combastor-sp nil)))
+    (block check-and-make-reaction
+      (maphash
+       #'(lambda (key value)
+	   (declare (ignore value))
+	   (block good-combasted-elements
+	     (if (member key combasted-elem :test #'string=) 
+		 (setf good-combasted (or good-combasted t))
+		 (setf good-combasted (or good-combasted nil))))
+	   (block good-combasted-elems
+	     (if (member key fuel-elem  :test #'string=)  
+		 (setf good-fuel (and good-fuel t))
+		 (setf good-fuel (and good-fuel nil)))))
+       (composition-components cmp))
+      (block stop-error-block
+	(unless good-combasted
+	  (error "Bad combasted elements present in fuel~%Топливо ~S~%В топливе присутствуют горючие элементы кроме ~S"
+		 sp combasted-elem))
+	(unless good-fuel
+	  (error "Bad elements present in fuel~%Топливо ~S~%В топливе элементы кроме ~S"
+		 sp fuel-elem)))
+      (block compose-reaction
+	(block compose-reactants
+	  (push "O2" reactants)
+	  (push (sp-name sp) reactants))
+	(block compose-products
+	  (when (reference "N" cmp) (push "N2" products ))
+	  (when (reference "S" cmp) (push "SO2" products ))
+	  (when (reference "C" cmp) (push "CO2" products ))
+	  (when (reference "H" cmp) (push "H2O" products )))
+	(make-instance '<reaction>
+		       :reactant-names reactants
+		       :product-names products)))))
+
+@export
+(defmethod combustion-reaction ((cmp <component>))
+  (combustion-reaction (component-species cmp)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; relativ-oxigen-mass-for-burning
+
+(defmethod relativ-oxigen-mass-for-burning ((sp <sp>))
+  (let ((reactants (reaction-reactants (combustion-reaction sp))))
+    (/ (molar-mass (second reactants)) (molar-mass (first reactants)))))
+
+(defmethod relativ-oxigen-mass-for-burning ((cmp <component>))
+  (let ((reactants (reaction-reactants (combustion-reaction cmp))))
+    (* (component-mass-fraction cmp)
+       (/ (molar-mass (second reactants)) (molar-mass (first reactants))))))
+
+(defmethod relativ-oxigen-mass-for-burning ((cmp <composition>))
+  (let ((components (composition-components cmp))
+	(rez nil))
+    (maphash
+     #'(lambda (key value)
+	 (declare (ignore key))
+	 (push (relativ-oxigen-mass-for-burning value) rez))
+     components)
+    (apply #'+ rez)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; relativ-air-mass-for-burning
 
 (defmethod relativ-air-mass-for-burning ((sp <sp>))
   (/ (relativ-oxigen-mass-for-burning sp)
      (component-mass-fraction (reference "O2" *air*))))
 
-(defmethod relativ-oxigen-mass-for-burning ((sp <sp>))
-  (let ((reactants (reaction-reactants (combustion-reaction sp))))
-    (/ (molar-mass (second reactants)) (molar-mass (first reactants)))))
+(defmethod relativ-air-mass-for-burning ((cmp <component>))
+  (/ (relativ-oxigen-mass-for-burning cmp)
+     (component-mass-fraction (reference "O2" *air*))))
+
+(defmethod relativ-air-mass-for-burning ((cmp <composition>))
+  (/ (relativ-oxigen-mass-for-burning cmp)
+     (component-mass-fraction (reference "O2" *air*))))

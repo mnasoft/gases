@@ -321,6 +321,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 	      lst)))
     (minus (elements (product-species pt)))))
 
+@export
 (defclass <reaction> ()
   ((reaction-reactants :accessor reaction-reactants :initform nil
 		       :documentation "Список реактантов химической реакции.")

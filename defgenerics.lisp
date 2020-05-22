@@ -107,5 +107,8 @@
 @export
 (defgeneric insert (obj collection))
 
-
-
+@export
+@annot.doc:doc
+"@b(Описание:) функция|метод|обобщенная_функция| @b(...)
+@b(Описание:) метод @b(adapt-mass-fractions) сбравывает символьное представлени"
+(defgeneric combustion-reaction (species))

@@ -12,6 +12,8 @@
 
 
 
+(relativ-air-mass-for-burning (make-instance-composition '(("CH4" 0.1) ("C6H6" 0.9)) :mass))
+
 
 (defparameter *sp* (get-sp "CH4"))
 

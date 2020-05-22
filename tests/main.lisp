@@ -107,4 +107,5 @@
 (test-gases)
 
 
-
+(def-test combustion-reaction-test ()
+  (is-true (eq 'gases::<reaction> (type-of (gases:combustion-reaction (gases:get-sp "H2"))))
