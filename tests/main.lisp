@@ -124,3 +124,136 @@
   (is-true (eq 'gases::<reaction>
 	       (type-of
 		(gases:combustion-reaction (gases:get-sp "H2"))))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(def-suite reaction-tests
+  :description "Проверка составления химических уравнений ."
+  :in all-tests)
+
+(in-suite reaction-tests)
+
+(def-fixture fix-wolfram-species ()
+  (setf (gases:get-sp "Na2WO4")
+	(make-instance 'gases:<sp>
+		       :name "Na2WO4"
+		       :chemical-formula '(("NA" 2.0) ("W" 1.0) ("O" 4.0) ("" 0.0) ("" 0.0))))
+
+  (setf (gases:get-sp "WF6")
+	(make-instance 'gases:<sp>
+		       :name "WF6"
+		       :chemical-formula '(("W" 1.0) ("F" 6.0) ("" 0.0) ("" 0.0) ("" 0.0))))
+
+  (setf  (gases:get-sp "WOF4")
+	 (make-instance 'gases:<sp>
+			:name "WOF4"
+			:chemical-formula '(("W" 1.0) ("O" 1.0) ("F" 4.0) ("" 0.0) ("" 0.0))))
+  (&body))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(def-test 2*W+4*HNO3+10*HF=>1*WF6+1*WOF4+4*NO+7*H2O-test ()
+  "  2*W + 4*HNO3 + 10*HF => 1*WF6 + 1*WOF4 + 4*NO + 7*H2O  "
+  (with-fixture fix-wolfram-species ()
+    (let ((reac (make-instance 'gases:<reaction>
+			       :reactant-names (list "W" "HNO3" "HF")
+			       :product-names(list "WF6" "WOF4" "NO" "H2O"))))
+      (is-true
+       (and
+	(= 2  (gases:moles-number (first  (gases:reaction-reactants reac))))
+	(= 4  (gases:moles-number (second (gases:reaction-reactants reac))))
+	(= 10 (gases:moles-number (third  (gases:reaction-reactants reac))))
+	(= 1  (gases:moles-number (first  (gases:reaction-products  reac))))
+	(= 1  (gases:moles-number (second (gases:reaction-products  reac))))
+	(= 4  (gases:moles-number (third  (gases:reaction-products  reac))))
+	(= 7  (gases:moles-number (fourth (gases:reaction-products  reac)))))))))
+
+(def-test 2*W+4*NaOH+3*O2=>2*Na2WO4+2*H2O-test ()
+  "  2*W + 4*NaOH + 3*O2 => 2*Na2WO4 + 2*H2O  "
+  (with-fixture fix-wolfram-species ()
+    (let ((reac (make-instance 'gases:<reaction>
+			       :reactant-names (list "W" "NaOH" "O2")
+			       :product-names (list "Na2WO4" "H2O"))))
+      (is-true
+       (and
+	(= 2  (gases:moles-number (first  (gases:reaction-reactants reac))))
+	(= 4  (gases:moles-number (second (gases:reaction-reactants reac))))
+	(= 3  (gases:moles-number (third  (gases:reaction-reactants reac))))
+	(= 2  (gases:moles-number (first  (gases:reaction-products  reac))))
+	(= 2  (gases:moles-number (second (gases:reaction-products  reac)))))))))
+
+(def-test 1*W+2*NaOH+3*NaNO3=>1*Na2WO4+3*NaNO2+1*H2O-test ()
+  "  1*W + 2*NaOH + 3*NaNO3 => 1*Na2WO4 + 3*NaNO2 + 1*H2O  "
+  (with-fixture fix-wolfram-species ()
+    (let ((reac (make-instance 'gases:<reaction>
+			       :reactant-names (list "W" "NaOH" "NaNO3")
+			       :product-names  (list "Na2WO4" "NaNO2" "H2O"))))
+      (is-true
+       (and
+	(= 1  (gases:moles-number (first  (gases:reaction-reactants reac))))
+	(= 2  (gases:moles-number (second (gases:reaction-reactants reac))))
+	(= 3  (gases:moles-number (third  (gases:reaction-reactants reac))))
+	(= 1  (gases:moles-number (first  (gases:reaction-products  reac))))
+	(= 3  (gases:moles-number (second (gases:reaction-products  reac))))
+	(= 1  (gases:moles-number (third  (gases:reaction-products  reac)))))))))
+
+(def-test 2*H2+1*O2=>2*H2O-test ()
+  "  2*H2 + 1*O2 => 2*H2O  "
+  (with-fixture fix-wolfram-species ()
+    (let ((reac (make-instance 'gases:<reaction>
+			       :reactant-names (list "H2" "O2")
+			       :product-names  (list "H2O"))))
+      (is-true
+       (and
+	(= 2  (gases:moles-number (first  (gases:reaction-reactants reac))))
+	(= 1  (gases:moles-number (second (gases:reaction-reactants reac))))
+	(= 2  (gases:moles-number (first  (gases:reaction-products  reac)))))))))
+
+(def-test 2*KMnO4+H2O2+3*H2SO4=>3*O2+4*H2O+2*MnSO4+K2SO4-test ()
+  " 2*KMnO4+H2O2+3*H2SO4=>3*O2+4*H2O+2*MnSO4+K2SO4  "
+  (setf (gases:get-sp "KMnO4")
+	(make-instance 'gases:<sp>
+		       :name "KMnO4"
+		       :chemical-formula '(("K" 1.0) ("MN" 1.0) ("O" 4.0) ("" 0.0) ("" 0.0))))
+
+  (setf (gases:get-sp "MnSO4")
+	(make-instance 'gases:<sp>
+		       :name "MnSO4"
+		       :chemical-formula '(("MN" 1.0) ("S" 1.0) ("O" 4.0) ("" 0.0) ("" 0.0))))
+  (let ((reac (make-instance 'gases:<reaction>
+			     :reactant-names (list "KMnO4" "H2O2" "H2SO4")
+			     :product-names  (list  "O2"  "H2O" "MnSO4" "K2SO4" ))))
+    (is-true
+       (and
+	(= 2  (gases:moles-number (first  (gases:reaction-reactants reac))))
+	(= 1  (gases:moles-number (second (gases:reaction-reactants reac))))
+	(= 3  (gases:moles-number (third  (gases:reaction-reactants reac))))
+	(= 3  (gases:moles-number (first  (gases:reaction-products  reac))))
+	(= 4  (gases:moles-number (second (gases:reaction-products  reac))))
+	(= 2  (gases:moles-number (third  (gases:reaction-products  reac))))
+	(= 1  (gases:moles-number (fourth (gases:reaction-products  reac))))))))
+
+(def-test 2*KMnO4+H2O2+3*H2SO4=>3*O2+2*MnSO4+4*H2O+K2SO4-test ()
+  " 2*KMnO4+H2O2+3*H2SO4=>3*O2+2*MnSO4+4*H2O+K2SO4  "
+  (setf (gases:get-sp "KMnO4")
+	(make-instance 'gases:<sp>
+		       :name "KMnO4"
+		       :chemical-formula '(("K" 1.0) ("MN" 1.0) ("O" 4.0) ("" 0.0) ("" 0.0))))
+
+  (setf (gases:get-sp "MnSO4")
+	(make-instance 'gases:<sp>
+		       :name "MnSO4"
+		       :chemical-formula '(("MN" 1.0) ("S" 1.0) ("O" 4.0) ("" 0.0) ("" 0.0))))
+  (let ((reac (make-instance 'gases:<reaction>
+			     :reactant-names (list "KMnO4" "H2O2" "H2SO4")
+			     :product-names  (list  "O2"  "MnSO4" "H2O" "K2SO4" ))))
+    (is-true
+       (and
+	(= 2  (gases:moles-number (first  (gases:reaction-reactants reac))))
+	(= 1  (gases:moles-number (second (gases:reaction-reactants reac))))
+	(= 3  (gases:moles-number (third  (gases:reaction-reactants reac))))
+	(= 3  (gases:moles-number (first  (gases:reaction-products  reac))))
+	(= 2  (gases:moles-number (second (gases:reaction-products  reac))))
+	(= 4  (gases:moles-number (third  (gases:reaction-products  reac))))
+	(= 1  (gases:moles-number (fourth (gases:reaction-products  reac))))))))

@@ -321,7 +321,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 	      lst)))
     (minus (elements (product-species pt)))))
 
-@export
+@annot.class:export-class
 (defclass <reaction> ()
   ((reaction-reactants :accessor reaction-reactants :initform nil
 		       :documentation "Список реактантов химической реакции.")
@@ -380,56 +380,65 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 (defun m-mk (lst)
   (make-instance 'math:<matrix> :initial-contents lst))
 
-
 (defun make-matrix-m-1xm (mm)
   "Добавляет к матрице mm такое количество строк, чтобы их число
  стало на единицу меньше столбцов. Возвращет новую матрицу.
  Заполняет главную диагональ новой матрицы единицами."
-  (setf
-     (math:main-diagonal
-      (m-mk
-       (nreverse
-	(append 
-	 (loop :for j :from 0 :to (- (math:cols mm) (math:rows mm) 2)
-	       :collect
-	       (loop :for i :from 0 :below (math:cols mm) :collect 0))
-	 (nreverse (math:matrix->2d-list mm))))))
-     1))
+  (let ((rez 
+	  (make-instance
+	   'math:<matrix>
+	   :dimensions (list (1- (math:cols mm)) (math:cols mm))))
+	(index nil)
+	(skiped-rows 0))
+    (loop :for r :from 0 :below (math:rows rez) :do
+      (block cols
+	(loop :for c :from r :below (math:cols rez) :do
+	  (if (>= (- r skiped-rows ) (math:rows mm))
+	      (progn
+		(setf (math:mref rez r r) 1)
+		(push r index)
+		(return-from cols))
+	      (if (= 0 (math:mref mm (- r skiped-rows) r))
+		  (progn
+		    (incf skiped-rows)
+		    (push r index)
+		    (setf (math:mref rez r r) 1)
+		    (return-from cols))
+		  (setf (math:mref rez r c)
+			(math:mref mm (- r skiped-rows) c)))))))
+    (values rez (remove-duplicates index))))
 
-(defun set-last-col-values (m1 lst)
-  (loop
-    :for i
-    :downfrom (1- (math:rows m1))
-    :downto   (1- (- (math:rows m1)
-		     (length lst)))
-    :for j :in lst
-    :do  (setf (math:mref m1 i (1- (math:cols m1))) j)
-    )
+(defun set-last-col-values (m1 rows vals)
+  (loop :for r :in rows
+	:for v :in vals :do
+	  (setf (math:mref m1 r (1- (math:cols m1))) v))
   m1)
 
 (defmethod matr-col-row=2 ((matr math:<matrix>))
   (dolist (lst-of-1 (make-linear-index-set))
+    (multiple-value-bind (mm rows) (make-matrix-m-1xm matr)
       (let ((koeff (math:row
 		    (math:solve-linear-system-gauss-backward-run 
-		     (set-last-col-values (make-matrix-m-1xm matr) lst-of-1))
+		     (set-last-col-values mm rows lst-of-1))
 		    0)))
 	(when (every
 	       #'(lambda (el) (and (integerp el) (plusp el) ))
 	       koeff)
-	  (return koeff)))))
+	  (return koeff))))))
 
 @annot.doc:doc
 "Подбор решения расширенной однородной матрицых в целых коэффициентах с двумя произвольными."
 (defmethod matr-col-row=3 ((matr math:<matrix>))
   (dolist (lst-of-2 (make-diagonal-index-set))
+    (multiple-value-bind (mm rows) (make-matrix-m-1xm matr)
       (let ((koeff (math:row
 		    (math:solve-linear-system-gauss-backward-run 
-		     (set-last-col-values (make-matrix-m-1xm matr) lst-of-2))
+		     (set-last-col-values mm rows lst-of-2))
 		    0)))
 	(when (every
 	       #'(lambda (el) (and (integerp el) (plusp el) ))
 	       koeff)
-	  (return koeff)))))
+	  (return koeff))))))
 
 (defun equation-koeffitients (equation)
   (let ((matr (math:convert-to-triangular
@@ -446,7 +455,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 			       0))
 		       equation))
 		  (atoms equation)))))))
-    (format t "~S~%" matr)
+;;;;    (format t "~S~%" matr)
     (cond
       ((= 2 (- (math:cols matr) (math:rows matr)))
        (matr-col-row=2 matr))

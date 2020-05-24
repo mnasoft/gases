@@ -4,45 +4,39 @@
 
 (annot:enable-annot-syntax)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun foo-init (vars)
+  (make-array  `(,vars) :initial-element 1))
 
-(setf (gases:get-sp "Na2WO4")
-       (make-instance 'gases:<sp>
-	       :name "Na2WO4"
-	       :chemical-formula '(("NA" 2.0) ("W" 1.0) ("O" 4.0) ("" 0.0) ("" 0.0))))
+(foo-init 5)
 
-(setf (gases:get-sp "WF6")
-       (make-instance 'gases:<sp>
-	       :name "WF6"
-	       :chemical-formula '(("W" 1.0) ("F" 6.0) ("" 0.0) ("" 0.0) ("" 0.0))))
 
-(setf  (gases:get-sp "WOF4")
-       (make-instance 'gases:<sp>
-	       :name "WOF4"
-	       :chemical-formula '(("W" 1.0) ("O" 1.0) ("F" 4.0) ("" 0.0) ("" 0.0))))
+(let ((max-val 100)
+      (summ    100)
+      (rez     nil))
+  (loop :for i-1 :from 1 :to max-val :do
+    (loop :for i-2 :from 1 :to max-val :do
+      (loop :for i-3 :from 1 :to max-val :do
+	(loop :for i-4 :from 1 :to max-val :do
+	  (loop :for i-5 :from 1 :to max-val :do
+	    (when (= summ (+ i-1 i-2 i-3 i-4 i-5))
+	      (push (list i-1 i-2 i-3 i-4 i-5) rez)))))))
+  rez ) 
+	    
+	  
 
-(gases:get-sp "HF") (gases:get-sp "HNO3") (gases:get-sp "H2O")
-(gases:get-sp "NaOH") (gases:get-sp "NaNO3") (gases:get-sp "NaNO2")
-(gases:get-sp "Na2WO4") (gases:get-sp "O2") (gases:get-sp "WF6")
-(gases:get-sp "WOF4") (gases:get-sp "W")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(make-instance 'gases:<reaction>
-	       :reactant-names (list "W" "HNO3" "HF")
-	       :product-names(list "WF6" "WOF4" "NO" "H2O"))
-
-(make-instance 'gases:<reaction>
-	       :reactant-names (list "W" "NaOH" "O2")
-	       :product-names(list "Na2WO4" "H2O"))
-
-(make-instance 'gases:<reaction>
-		 :reactant-names (list "W" "NaOH" "NaNO3")
-		 :product-names  (list "Na2WO4" "NaNO2" "H2O"))
-
-(make-instance 'gases:<reaction>
-	       :reactant-names (list "H2" "O2")
-	       :product-names  (list "H2O"))
+1 1 1 1 1
+1 1 1 1 2
+1 1 1 2 1
+1 1 2 1 1
+1 2 1 1 1
+2 1 1 1 1
+1 1 1 1 3
+1 1 1 2 2
+1 1 1 3 1
+1 1 2 1 2
+1 1 2 2 1
+1 1 3 1 1
+1 2 1 1 1
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
