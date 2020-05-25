@@ -351,6 +351,76 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 @annot.doc:doc
+"Создает замыкание, позволяющее получать индексы эмементов куба (гиппокуба, гиперкуба)
+ по слоям в направлении роста индексов.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (let ((f (make-layer-iterator 1)))
+ (loop :for i :from 0 :to 10 :collect 
+   (funcall f))) => '((1) (2) (3) (4) (5) (6) (7) (8) (9) (10) (11))
+ (let ((f (make-layer-iterator 2)))
+ (loop :for i :from 0 :to 10 :collect 
+   (funcall f)))
+  =>  ((1 1)                    ; Первая плоскость
+       (1 2) (2 1)              ; Вторая плоскость
+       (1 3) (2 2) (3 1)        ; Третья плоскость
+       (1 4) (2 3) (3 2) (4 1) 
+       (1 5) ...)
+
+ (let ((f (make-layer-iterator 3)))
+ (loop :for i :from 0 :to 10 :collect 
+   (funcall f)))
+  => ((1 1 1)                                         ; Первая плоскость
+      (1 1 2) (1 2 1) (2 1 1)                         ; Вторая плоскость
+      (1 1 3) (1 2 2) (1 3 1) (2 1 2) (2 2 1) (3 1 1) ; Третья плоскость
+      (1 1 4) ...)
+
+@end(code)
+"
+(defun make-layer-iterator (vars)
+  (labels ((summ-values (v layer)
+	     (+ (length v ) layer -1))
+	   (grow-vector (vec layer)
+	     (let ((summ-values (summ-values vec layer))
+		   (step-summ 0)
+		   (v-rez (make-array `(,(length vec)) :initial-element nil )))
+	       (loop :for v :across vec
+		     :for i :from 0 :below (length vec) :do
+		       (setf step-summ (+ step-summ v)
+			     (svref v-rez i)
+			     (- summ-values
+				step-summ
+				(- (length vec) 1 i))))
+	       v-rez)))
+    (let ((lll 1)
+	  (vvv (make-array `(,vars) :initial-element 1)))
+      #'(lambda () 
+	  (let ((rez (coerce vvv 'list))
+		(pos (position-if #'(lambda (el) (/= 0 el))
+				  (grow-vector vvv lll) :from-end t)))
+	    (if pos
+		(if (= 0 (- (length vvv) 2 pos))
+		    (progn
+		      (decf (svref vvv (1- (length vvv))))
+		      (incf (svref vvv pos)))
+		    (progn
+		      (incf (svref vvv pos))
+		      (loop :for i :from (1+ pos) :below (length vvv) :do
+			(setf (svref vvv i) 1))
+		      (setf (svref vvv (1- (length vvv)))
+			    (- (summ-values vvv lll)
+			       (apply #'+ (cdr (nreverse (coerce vvv 'list))))))))
+		(progn
+		  (incf lll)
+		  (loop :for i :from 0 :below (length vvv) :do
+		    (setf (svref vvv i) 1))
+		  (setf (svref vvv (1- (length vvv)))
+			(- (summ-values vvv lll)
+			   (apply #'+ (cdr (nreverse (coerce vvv 'list))))))))
+	    rez)))))
+
+@annot.doc:doc
   "@b(Описание:) функция @b(atoms) возвращает список элементов,
  из которых состоит молекула.
 
