@@ -484,31 +484,17 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 	  (setf (math:mref m1 r (1- (math:cols m1))) v))
   m1)
 
-(defmethod matr-col-row=2 ((matr math:<matrix>))
-  (dolist (lst-of-1 (make-linear-index-set))
-    (multiple-value-bind (mm rows) (make-matrix-m-1xm matr)
-      (let ((koeff (math:row
-		    (math:solve-linear-system-gauss-backward-run 
-		     (set-last-col-values mm rows lst-of-1))
-		    0)))
-	(when (every
-	       #'(lambda (el) (and (integerp el) (plusp el) ))
-	       koeff)
-	  (return koeff))))))
-
-@annot.doc:doc
-"Подбор решения расширенной однородной матрицых в целых коэффициентах с двумя произвольными."
-(defmethod matr-col-row=3 ((matr math:<matrix>))
-  (dolist (lst-of-2 (make-diagonal-index-set))
-    (multiple-value-bind (mm rows) (make-matrix-m-1xm matr)
-      (let ((koeff (math:row
-		    (math:solve-linear-system-gauss-backward-run 
-		     (set-last-col-values mm rows lst-of-2))
-		    0)))
-	(when (every
-	       #'(lambda (el) (and (integerp el) (plusp el) ))
-	       koeff)
-	  (return koeff))))))
+(defmethod matr-col-row ((matr math:<matrix>))
+  (multiple-value-bind (mm rows) (make-matrix-m-1xm matr)
+    (let ((lay-iter (make-layer-iterator (length rows))))
+      (loop :for i :from 0 :to (expt 1000 (length rows)) :do
+	(let ((koeff
+		(math:row (math:solve-linear-system-gauss-backward-run 
+			   (set-last-col-values mm rows (funcall lay-iter))) 
+			  0)))
+	  (when (every #'(lambda (el) (and (integerp el) (plusp el)))
+		       koeff)
+	    (return koeff)))))))
 
 (defun equation-koeffitients (equation)
   (let ((matr (math:convert-to-triangular
@@ -525,12 +511,9 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 			       0))
 		       equation))
 		  (atoms equation)))))))
-;;;;    (format t "~S~%" matr)
-    (cond
-      ((= 2 (- (math:cols matr) (math:rows matr)))
-       (matr-col-row=2 matr))
-      ((= 3 (- (math:cols matr) (math:rows matr)))
-       (matr-col-row=3 matr)))))
+    (format t "~S~%" matr)
+    (matr-col-row matr)
+    ))
 
 (defmethod culc-koeffitients ((reac <reaction>))
   (mapcar #'(lambda (moles sp) (setf (moles-number sp) moles))

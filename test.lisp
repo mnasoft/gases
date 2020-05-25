@@ -4,86 +4,101 @@
 
 (annot:enable-annot-syntax)
 
+(setf (gases:get-sp "FeCL2")
+	(make-instance 'gases:<sp>
+		       :name "FeCL2"
+		       :chemical-formula '(("Fe" 1.0) ("CL" 2.0) ("" 0.0) ("" 0.0) ("" 0.0))))
 
+(setf (gases:get-sp "Na3PO4")
+	(make-instance 'gases:<sp>
+		       :name "Na3PO4"
+		       :chemical-formula '(("Na" 3.0) ("P" 1.0) ("O" 4.0) ("" 0.0) ("" 0.0))))
 
-@annot.doc:doc
-"Создает замыкание, позволяющее получать индексы эмементов куба (гиппокуба, гиперкуба)
- по слоям в направлении роста индексов.
+(setf (gases:get-sp "Fe3(PO4)2")
+	(make-instance 'gases:<sp>
+		       :name "Fe3(PO4)2"
+		       :chemical-formula '(("Fe" 3.0) ("P" 2.0) ("O" 8.0) ("" 0.0) ("" 0.0))))
 
- @b(Пример использования:)
-@begin[lang=lisp](code)
- (let ((f (make-layer-iterator 1)))
- (loop :for i :from 0 :to 10 :collect 
-   (funcall f))) => '((1) (2) (3) (4) (5) (6) (7) (8) (9) (10) (11))
- (let ((f (make-layer-iterator 2)))
- (loop :for i :from 0 :to 10 :collect 
-   (funcall f)))
-  =>  ((1 1)                    ; Первая плоскость
-       (1 2) (2 1)              ; Вторая плоскость
-       (1 3) (2 2) (3 1)        ; Третья плоскость
-       (1 4) (2 3) (3 2) (4 1) 
-       (1 5) ...)
+(setf (gases:get-sp "NaCL")
+	(make-instance 'gases:<sp>
+		       :name "NaCL"
+		       :chemical-formula '(("Na" 1.0) ("CL" 1.0) ("" 0.0) ("" 0.0) ("" 0.0))))
 
- (let ((f (make-layer-iterator 3)))
- (loop :for i :from 0 :to 10 :collect 
-   (funcall f)))
-  => ((1 1 1)                                         ; Первая плоскость
-      (1 1 2) (1 2 1) (2 1 1)                         ; Вторая плоскость
-      (1 1 3) (1 2 2) (1 3 1) (2 1 2) (2 2 1) (3 1 1) ; Третья плоскость
-      (1 1 4) ...)
+(make-instance 'gases:<reaction>
+			     :reactant-names (list "FeCl2"  "Na3PO4" )
+			     :product-names  (list  "Fe3(PO4)2"  "NaCL"))
 
-@end(code)
-"
-(defun make-layer-iterator (vars)
-  (labels ((summ-values (v layer)
-	     (+ (length v ) layer -1))
-	   (grow-vector (vec layer)
-	     (let ((summ-values (summ-values vec layer))
-		   (step-summ 0)
-		   (v-rez (make-array `(,(length vec)) :initial-element nil )))
-	       (loop :for v :across vec
-		     :for i :from 0 :below (length vec) :do
-		       (setf step-summ (+ step-summ v)
-			     (svref v-rez i)
-			     (- summ-values
-				step-summ
-				(- (length vec) 1 i))))
-	       v-rez)))
-    (let ((lll 1)
-	  (vvv (make-array `(,vars) :initial-element 1)))
-      #'(lambda () 
-	  (let ((rez (coerce vvv 'list))
-		(pos (position-if #'(lambda (el) (/= 0 el))
-				  (grow-vector vvv lll) :from-end t)))
-	    (if pos
-		(if (= 0 (- (length vvv) 2 pos))
-		    (progn
-		      (decf (svref vvv (1- (length vvv))))
-		      (incf (svref vvv pos)))
-		    (progn
-		      (incf (svref vvv pos))
-		      (loop :for i :from (1+ pos) :below (length vvv) :do
-			(setf (svref vvv i) 1))
-		      (setf (svref vvv (1- (length vvv)))
-			    (- (summ-values vvv lll)
-			       (apply #'+ (cdr (nreverse (coerce vvv 'list))))))))
-		(progn
-		  (incf lll)
-		  (loop :for i :from 0 :below (length vvv) :do
-		    (setf (svref vvv i) 1))
-		  (setf (svref vvv (1- (length vvv)))
-			(- (summ-values vvv lll)
-			   (apply #'+ (cdr (nreverse (coerce vvv 'list))))))))
-	    rez)))))
+ ; => 3*FeCl2 + 2*Na3PO4 => 1*Fe3(PO4)2 + 6*NaCL
 
-(defparameter *f* (make-layer-iterator 2))
-(loop :for i :from 0 :to 100 :do
-  (format t "~S~%" (funcall *f*)))
+(get-sp "O")
+(get-sp "P")
+(get-sp "Na")
+(get-sp "Fe")
+(get-sp "CL")
+(get-sp "FeCL2") 
+(get-sp "Na3PO4")
+(get-sp "H2O")
+(get-sp "Fe3(PO4)2")
+(get-sp "NaCL")
 
-(summ-values *v* *l*)
+(get-sp "C8H7N")
+(setf (gases:get-sp "C8H7N")
+	(make-instance 'gases:<sp>
+		       :name "C8H7N"
+		       :chemical-formula '(("C" 8.0) ("H" 7.0) ("N" 1.0) ("" 0.0) ("" 0.0))))
+(get-sp "C4H9NO2")
+(setf (gases:get-sp "C4H9NO2")
+	(make-instance 'gases:<sp>
+		       :name "C4H9NO2"
+		       :chemical-formula '(("C" 4.0) ("H" 9.0) ("N" 1.0) ("O" 2.0) ("" 0.0))))
+(get-sp "NaOH")
+(get-sp "H2O")
+(get-sp "C4H10O2PSCl")
+(setf (gases:get-sp "C4H10O2PSCl")
+	(make-instance 'gases:<sp>
+		       :name "C4H10O2PSCl"
+		       :chemical-formula '(("C" 4.0) ("H" 10.0) ("O" 2.0) ("P" 1.0) ("S" 1.0) ("CL" 1.0))))
 
+(get-sp "C8H5N2ONa")
+(setf (gases:get-sp "C8H5N2ONa")
+	(make-instance 'gases:<sp>
+		       :name "C8H5N2ONa"
+		       :chemical-formula '(("C" 8.0) ("H" 5.0) ("N" 2.0) ("O" 1.0) ("Na" 1.0))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(get-sp	"C12H15O3PSN2")
+(setf (gases:get-sp "C12H15O3PSN2")
+	(make-instance 'gases:<sp>
+		       :name "C12H15O3PSN2"
+		       :chemical-formula '(("C" 12.0) ("H" 15.0) ("O" 3.0) ("P" 1.0) ("S" 1.0) ("N" 2.0))))
+
+(get-sp	"NaCL")
+(get-sp	"C4H9OH")
+(setf (gases:get-sp "C4H9OH")
+	(make-instance 'gases:<sp>
+		       :name "C4H9OH"
+		       :chemical-formula '(("C" 4.0) ("H" 10.0) ("O" 1.0) ("" 0.0) ("" 0.0) ("" 0.0))))
+(get-sp	"H2O")
+
+(make-instance 'gases:<reaction>
+			     :reactant-names (list "C8H7N" "C4H9NO2" "NaOH" "C4H10O2PSCl" )
+			     :product-names  (list "C8H5N2ONa" "C12H15O3PSN2" "NaCL" "C4H9OH" "H2O"))
+
+(make-instance 'gases:<reaction>
+			     :reactant-names (list "C8H7N" "O2" )
+			     :product-names  (list "CO2" "H2O" "N2" ))
+
+(matr-col-row (m-mk 
+'(( 1         1/2       0         0         1/2       -1        -3/2      0         -1/2      0         0         0        )
+  ( 0         1         0         0         -1        -2        -1        0         1         0         -4        0        )
+  ( 0         0         1         2         12        13        1         0         -12       -2        22        0        )
+  ( 0         0         0         1         8         10        2         0         -9        -1        14        0        )
+  ( 0         0         0         0         1         7/4       3/4       0         -3/2      0         3/2       0        )
+  ( 0         0         0         0         0         1         3/7       4/7       -6/7      0         6/7       0        )
+  ( 0         0         0         0         0         0         1         -1        0         0         0         0        )
+  ( 0         0         0         0         0         0         0         0         -2        0         2         0        ))))
+
+ 
+
 
 ;;;; (remove-method #'ADAPT-MOLE-FRACTIONS (find-method #'ADAPT-MOLE-FRACTIONS '() (mapcar #'find-class '(t t))))
 
