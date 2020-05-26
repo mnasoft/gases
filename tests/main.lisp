@@ -257,3 +257,48 @@
 	(= 2  (gases:moles-number (second (gases:reaction-products  reac))))
 	(= 4  (gases:moles-number (third  (gases:reaction-products  reac))))
 	(= 1  (gases:moles-number (fourth (gases:reaction-products  reac))))))))
+
+(def-test 3*FeCl2+2*Na3PO4=>1*Fe3[PO4]2+6*NaCL-test ()
+  " 3*FeCl2+2*Na3PO4=>1*Fe3(PO4)2+6*NaCL  "
+  (setf (gases:get-sp "FeCl2")
+	(make-instance 'gases:<sp>
+		       :name "FeCl2"
+		       :chemical-formula '(("Fe" 1.0) ("CL" 2.0) ("" 0.0) ("" 0.0) ("" 0.0))))
+  (setf (gases:get-sp "Na3PO4")
+	(make-instance 'gases:<sp>
+		       :name "Na3PO4"
+		       :chemical-formula '(("Na" 3.0) ("P" 1.0) ("O" 4.0) ("" 0.0) ("" 0.0))))
+  (setf (gases:get-sp "Fe3(PO4)2")
+	(make-instance 'gases:<sp>
+		       :name "Fe3(PO4)2"
+		       :chemical-formula '(("Fe" 3.0) ("P" 2.0) ("O" 8.0) ("" 0.0) ("" 0.0))))
+  (setf (gases:get-sp "NaCL")
+	(make-instance 'gases:<sp>
+		       :name "NaCL"
+		       :chemical-formula '(("Na" 1.0) ("CL" 1.0) ("" 0.0) ("" 0.0) ("" 0.0))))
+  (let ((reac   (make-instance 'gases:<reaction>
+			       :reactant-names (list "FeCl2"     "Na3PO4" )
+			       :product-names  (list "Fe3(PO4)2" "NaCL"))))
+    (is-true
+     (and
+      (= 3  (gases:moles-number (first  (gases:reaction-reactants reac))))
+      (= 2  (gases:moles-number (second (gases:reaction-reactants reac))))
+      (= 1  (gases:moles-number (first  (gases:reaction-products  reac))))
+      (= 6  (gases:moles-number (second (gases:reaction-products  reac))))))))
+
+
+(def-test 3*FeCl2+2*Na3PO4=>1*Fe3[PO4]2+6*NaCL-test ()
+  " 4*C8H7N + 39*O2 => 32*CO2 + 14*H2O + 2*N2  "
+  (setf (gases:get-sp "C8H7N")
+	(make-instance 'gases:<sp>
+		       :name "C8H7N"
+		       :chemical-formula '(("C" 8.0) ("H" 7.0) ("N" 1.0) ("" 0.0) ("" 0.0))))
+  (let ((reac (make-instance 'gases:<reaction>
+			     :reactant-names (list "C8H7N" "O2" )
+			     :product-names  (list "CO2" "H2O" "N2"))))
+    (is-true
+     (and
+      (= 1  (gases:moles-number (first  (gases:reaction-reactants reac))))
+      (= 2  (gases:moles-number (second (gases:reaction-reactants reac))))
+      (= 1  (gases:moles-number (first  (gases:reaction-products  reac))))
+      (= 6  (gases:moles-number (second (gases:reaction-products  reac))))))))

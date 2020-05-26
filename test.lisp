@@ -4,48 +4,8 @@
 
 (annot:enable-annot-syntax)
 
-(setf (gases:get-sp "FeCL2")
-	(make-instance 'gases:<sp>
-		       :name "FeCL2"
-		       :chemical-formula '(("Fe" 1.0) ("CL" 2.0) ("" 0.0) ("" 0.0) ("" 0.0))))
-
-(setf (gases:get-sp "Na3PO4")
-	(make-instance 'gases:<sp>
-		       :name "Na3PO4"
-		       :chemical-formula '(("Na" 3.0) ("P" 1.0) ("O" 4.0) ("" 0.0) ("" 0.0))))
-
-(setf (gases:get-sp "Fe3(PO4)2")
-	(make-instance 'gases:<sp>
-		       :name "Fe3(PO4)2"
-		       :chemical-formula '(("Fe" 3.0) ("P" 2.0) ("O" 8.0) ("" 0.0) ("" 0.0))))
-
-(setf (gases:get-sp "NaCL")
-	(make-instance 'gases:<sp>
-		       :name "NaCL"
-		       :chemical-formula '(("Na" 1.0) ("CL" 1.0) ("" 0.0) ("" 0.0) ("" 0.0))))
-
-(make-instance 'gases:<reaction>
-			     :reactant-names (list "FeCl2"  "Na3PO4" )
-			     :product-names  (list  "Fe3(PO4)2"  "NaCL"))
-
- ; => 3*FeCl2 + 2*Na3PO4 => 1*Fe3(PO4)2 + 6*NaCL
-
-(get-sp "O")
-(get-sp "P")
-(get-sp "Na")
-(get-sp "Fe")
-(get-sp "CL")
-(get-sp "FeCL2") 
-(get-sp "Na3PO4")
-(get-sp "H2O")
-(get-sp "Fe3(PO4)2")
-(get-sp "NaCL")
-
 (get-sp "C8H7N")
-(setf (gases:get-sp "C8H7N")
-	(make-instance 'gases:<sp>
-		       :name "C8H7N"
-		       :chemical-formula '(("C" 8.0) ("H" 7.0) ("N" 1.0) ("" 0.0) ("" 0.0))))
+
 (get-sp "C4H9NO2")
 (setf (gases:get-sp "C4H9NO2")
 	(make-instance 'gases:<sp>
@@ -83,30 +43,15 @@
 			     :reactant-names (list "C8H7N" "C4H9NO2" "NaOH" "C4H10O2PSCl" )
 			     :product-names  (list "C8H5N2ONa" "C12H15O3PSN2" "NaCL" "C4H9OH" "H2O"))
 
-(make-instance 'gases:<reaction>
-			     :reactant-names (list "C8H7N" "O2" )
-			     :product-names  (list "CO2" "H2O" "N2" ))
 
-(matr-col-row (m-mk 
-'(( 1         1/2       0         0         1/2       -1        -3/2      0         -1/2      0         0         0        )
-  ( 0         1         0         0         -1        -2        -1        0         1         0         -4        0        )
-  ( 0         0         1         2         12        13        1         0         -12       -2        22        0        )
-  ( 0         0         0         1         8         10        2         0         -9        -1        14        0        )
-  ( 0         0         0         0         1         7/4       3/4       0         -3/2      0         3/2       0        )
-  ( 0         0         0         0         0         1         3/7       4/7       -6/7      0         6/7       0        )
-  ( 0         0         0         0         0         0         1         -1        0         0         0         0        )
-  ( 0         0         0         0         0         0         0         0         -2        0         2         0        ))))
 
- 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;;; (remove-method #'ADAPT-MOLE-FRACTIONS (find-method #'ADAPT-MOLE-FRACTIONS '() (mapcar #'find-class '(t t))))
 
 (with-open-file (fl "/home/namatv/quicklisp/local-projects/clisp/gases/data/termo.inp"
 		    :direction :output :if-exists :supersede)
   (dump (get-db) fl))
-
-
 
 (relativ-air-mass-for-burning (make-instance-composition '(("CH4" 0.1) ("C6H6" 0.9)) :mass))
 
@@ -116,7 +61,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (check-sp "Air")
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 (defparameter *rt*  
   (make-instance '<reactant> :species (get-sp "H2O") :mole 2))
