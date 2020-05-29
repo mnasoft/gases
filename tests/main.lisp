@@ -302,3 +302,6 @@
       (= 2  (gases:moles-number (second (gases:reaction-reactants reac))))
       (= 1  (gases:moles-number (first  (gases:reaction-products  reac))))
       (= 6  (gases:moles-number (second (gases:reaction-products  reac))))))))
+
+(def-test test-err-test ()
+  (is-true nil))

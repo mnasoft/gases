@@ -2,7 +2,37 @@
 
 (in-package :gases)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (annot:enable-annot-syntax)
+
+(defparameter *sp* (get-sp "H2O"))
+
+(defun foo (elem)
+  (member-if 
+   #'(lambda (el) (sp-chemical-formula elem))
+	   (sp-chemical-formula *sp*)
+	   ))
+
+*sp*
+
+@annot.doc:doc
+"
+"
+(defun select (&key atoms designation description)
+  (when atoms
+    (maphash
+     #'(lambda (key value)
+	 )
+     (get-db))
+    ))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (get-sp "C8H7N")
 
