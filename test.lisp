@@ -2,41 +2,33 @@
 
 (in-package :gases)
 
+(relativ-air-mass-for-burning (make-instance-composition '(("CH4" 0.9) ("H2" 0.1))))
+
+(molar-mass (make-instance-composition '(("CH4" 1.0) ("H2" 0.0))))
+
+(density (make-instance-component "CH4" 1.0) 101325.0 273.)
+(density (make-instance-composition '(("CH4" 0.8) ("H2" 0.2))) 101325.0 273.)
+(density (make-instance-composition '(("CH4" 0.9) ("H2" 0.1))) 101325.0 273.)
+(density (make-instance-composition '(("CH4" 0.95) ("H2" 0.05))) 101325.0 273.)
+
+
+(density (get-sp "H2") *p-normal*   *t-normal*)
+(density (get-sp "CH4") *p-normal*  293.15)
+
 (combustion-reaction (get-sp "C2H4"))
 
 
+
 (Q-work-low (get-sp "H2"))
-(Q-work-low (make-instance-component "H2" 0.1))
-(Q-work-low (make-instance-composition '(("H2" 0.2) ("CH4" 0.8))))
+(Q-work-low (make-instance-component "H2" 0.030457929595689225d0  :mass))
+(Q-work-low (make-instance-composition '(("H2" 0.2) ("CH4" 0.80))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(wobber-low (make-instance-composition '(("H2" 0.2) ("CH4" 0.80))))
 
-;;;; Число Воббе высшее
-(defmethod wobber-hight ((sp <sp>))
-  (error "Not defined")
-  )
+(density (make-instance-composition '(("H2" 0.2) ("CH4" 0.80))) 101325.0 273.15 )
+'(("H2" 0.2) ("CH4" 0.80))
 
-(defmethod wobber-hight ((c-t <component>))
-  (error "Not defined")
-  )
-
-(defmethod wobber-hight ((c-n <composition>))
-  (error "Not defined")
-  )
-
-;;;; Число Воббе низшее
-(defmethod wobber-low ((sp <sp>))
-  (error "Not defined")  
-  )
-
-(defmethod wobber-low ((c-t <component>))
-  (error "Not defined")
-  )
-
-(defmethod wobber-low ((c-n <composition>))
-  (error "Not defined")
-  )
-  
+(molar-mass (make-instance-composition '(("H2" 0.2) ("CH4" 0.80))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

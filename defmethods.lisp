@@ -900,7 +900,7 @@ defaults to CHAR= (for case-sensitive comparison)."
 
 @export
 @annot.doc:doc
-"@b(Описание:) функция|метод|обобщенная_функция| @b(...)
+"@b(Описание:) метод @b(combustion-reaction) возвращает
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -1013,13 +1013,12 @@ defaults to CHAR= (for case-sensitive comparison)."
        (moles-number fuel)
        (molar-mass (species fuel)))))
 
-
 @export
 @annot.doc:doc
 "@b(Описание:) метод @b(Q-work-low)
 "
 (defmethod Q-work-low ((c-t <component>))
-  (* (mole-fraction c-t)
+  (* (mass-fraction c-t)
      (Q-work-low (species c-t))))
 
 @export
@@ -1033,3 +1032,63 @@ defaults to CHAR= (for case-sensitive comparison)."
 		 (setf rez (+ rez (Q-work-low value))))
 	     (composition-components c-n))
     rez))
+
+(defmethod Q-volume-low ((sp <sp>) pressure temperature)
+  (* (Q-work-low sp) (density sp pressure temperature)))
+
+(defmethod Q-volume-low ((c-t <component>) pressure temperature)
+  (* (Q-work-low c-t) (density c-t pressure temperature)))
+
+(defmethod Q-volume-low ((c-n <composition>) pressure temperature)
+  (* (Q-work-low c-n) (density c-n pressure temperature)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod density ((sp <sp>) pressure temperature)
+  (/ (* (molar-mass sp) pressure)
+     (* *Rμ* temperature)
+     1000))
+
+(defmethod density ((c-t <component>) pressure temperature)
+  (/ (* (molar-mass c-t) pressure)
+     (* *Rμ* temperature)
+     1000))
+
+(defmethod density ((c-n <composition>) pressure temperature)
+  (/ (* (molar-mass c-n) pressure)
+     (* *Rμ* temperature)
+     1000))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Число Воббе низшее
+
+(defmethod wobber-low ((sp <sp>))
+  (let ((ρ-f (density sp *p-normal* *t-normal*))
+	(ρ-a (density *air* *p-normal* *t-normal*)))
+    (/ (* (Q-work-low sp) ρ-f) (sqrt (/ ρ-f ρ-a)))))
+
+(defmethod wobber-low ((c-t <component>))
+  (error "Not defined")
+  )
+
+(defmethod wobber-low ((c-n <composition>))
+  (let ((ρ-f (density c-n *p-normal* *t-normal*))
+	(ρ-a (density *air* *p-normal* *t-normal*)))
+    (/ (* (Q-work-low c-n) ρ-f) (sqrt (/ ρ-f ρ-a)))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Число Воббе высшее
+
+;;;; Число Воббе высшее
+(defmethod wobber-hight ((sp <sp>))
+    (error "Not defined yet")  
+)
+
+(defmethod wobber-hight ((c-t <component>))
+  (error "Not defined")
+  )
+
+(defmethod wobber-hight ((c-n <composition>))
+  (error "Not defined")
+  )
+

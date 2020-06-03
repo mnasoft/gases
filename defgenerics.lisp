@@ -156,3 +156,19 @@
  низшую теплотворную способность топлива кДж/кг.
 "
 (defgeneric Q-work-low (species))
+
+@export
+@annot.doc:doc
+"@b(Описание:) обобщенная_функция @b(Q-work-low) возвращает
+ плотность в кг/м3.
+"
+(defgeneric density (species pressure temperature)
+  )
+
+@export
+@annot.doc:doc
+"@b(Описание:) обобщенная_функция @b(Q-work-low) возвращает
+ относительную плотность в кг/кг.
+"
+(defgeneric density-relative (species pressure temperature &key base-species)
+  )
