@@ -109,6 +109,50 @@
 
 @export
 @annot.doc:doc
-"@b(Описание:) функция|метод|обобщенная_функция| @b(...)
-@b(Описание:) метод @b(adapt-mass-fractions) сбравывает символьное представлени"
+"@b(Описание:) обобщенная_функция @b(combustion-reaction)
+"
 (defgeneric combustion-reaction (species))
+
+@export
+@annot.doc:doc
+"@b(Описание:) обобщенная_функция @b(relativ-oxigen-mass-for-burning)
+возвращает количество килограмм кислорода (кг), необходимого для сжигания 
+одного килограмма топлива.
+"
+(defgeneric relativ-oxigen-mass-for-burning (species))
+
+@export
+@annot.doc:doc
+"@b(Описание:) обобщенная_функция @b(relativ-air-mass-for-burning)
+возвращает количество килограмм воздуха (кг), необходимого для сжигания 
+одного килограмма топлива.
+"
+(defgeneric relativ-air-mass-for-burning  (species))
+
+@export
+@annot.doc:doc
+"@b(Описание:) обобщенная_функция @b(wobber-hight) возвращает
+ число Воббе высшее относительное (по воздуху).
+"
+(defgeneric wobber-hight (species))
+
+@export
+@annot.doc:doc
+"@b(Описание:) обобщенная_функция @b(wobber-low) возвращает
+ число Воббе низшее относительное (по воздуху).
+"
+(defgeneric wobber-low (species))
+
+@export
+@annot.doc:doc
+"@b(Описание:) обобщенная_функция @b(thermal-effect) возвращает
+ тепловой эффект при создании вещества или при химической реакции.
+"
+(defgeneric thermal-effect (species))
+
+@export
+@annot.doc:doc
+"@b(Описание:) обобщенная_функция @b(Q-work-low) возвращает
+ низшую теплотворную способность топлива кДж/кг.
+"
+(defgeneric Q-work-low (species))

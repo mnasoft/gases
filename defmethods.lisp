@@ -36,7 +36,7 @@
 ;;;; (molar-mass (make-instance '<component> :mole-fraction 0.3 :species (get-sp \"CH4\"))) => 4.812738
 "
 (defmethod molar-mass ((x <component>))
-  (* (component-mole-fraction  x) (molar-mass (component-species x))))
+  (* (mole-fraction  x) (molar-mass (species x))))
 
 @annot.doc:doc
   "Возвращает молекулярную массу, [g/mol]
@@ -91,9 +91,9 @@
 @annot.doc:doc
 "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]"
 (defmethod molar-isobaric-heat-capacity ((x <component>) temperature)
-  (* (component-mole-fraction  x)
+  (* (mole-fraction  x)
      (molar-isobaric-heat-capacity
-      (component-species x)
+      (species x)
       temperature)))
 
 @annot.doc:doc
@@ -123,9 +123,9 @@
 @annot.doc:doc
 "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]" 
 (defmethod molar-isochoric-heat-capacity ((x <component>) temperature)
-  (* (component-mole-fraction x)
+  (* (mole-fraction x)
      (molar-isochoric-heat-capacity
-      (component-species x)
+      (species x)
       temperature)))
 
 @annot.doc:doc
@@ -167,9 +167,9 @@
 @annot.doc:doc
 "Возвращает мольную энтальпию muΗ, [J/(mol*K)]"  
 (defmethod molar-enthalpy ((x <component>) temperature)
-  (* (component-mole-fraction x)
+  (* (mole-fraction x)
      (molar-enthalpy
-      (component-species x)
+      (species x)
       temperature)))
 
 @annot.doc:doc
@@ -211,9 +211,9 @@
 @annot.doc:doc
 "Возвращает мольную энтропию muS, [J/(mol*K)]"
 (defmethod molar-entropy ((x <component>) temperature)
-  (* (component-mole-fraction x)
+  (* (mole-fraction x)
      (molar-entropy
-      (component-species x)
+      (species x)
       temperature)))
 
 @annot.doc:doc
@@ -270,7 +270,7 @@
   (let ((rez nil))
     (maphash #'(lambda (key value)
 		 (declare (ignore key))
-		 (push (component-mole-fraction value) rez))
+		 (push (mole-fraction value) rez))
 	     (composition-components x))
     (apply #'+ rez)))
 
@@ -282,7 +282,7 @@
   (let ((rez nil))
     (maphash #'(lambda (key value)
 		 (declare (ignore key))
-		 (push (component-mass-fraction value) rez))
+		 (push (mass-fraction value) rez))
 	     (composition-components x))
     (apply #'+ rez)))
 
@@ -307,15 +307,15 @@
 	      (setf (gethash el (composition-components cmp))
 		    (make-instance '<component>
 				   :mass-fraction
-				   (/ (+ (* (component-mass-fraction el-1) mfr-1)
-					 (* (component-mass-fraction el-2) mfr-2))
+				   (/ (+ (* (mass-fraction el-1) mfr-1)
+					 (* (mass-fraction el-2) mfr-2))
 				      (+ mfr-1 mfr-2))
 				   :species (get-sp el))))
 	     ((and el-1 (null el-2))
 	      (setf (gethash el (composition-components cmp))
 		    (make-instance '<component>
 				   :mass-fraction
-				   (/ (+ (* (component-mass-fraction el-1) mfr-1)
+				   (/ (+ (* (mass-fraction el-1) mfr-1)
 					 0.0)
 				      (+ mfr-1 mfr-2))
 				   :species (get-sp el)))
@@ -324,7 +324,7 @@
 	      (setf (gethash el (composition-components cmp))
 		    (make-instance '<component>
 				   :mass-fraction
-				   (/ (+ (* (component-mass-fraction el-2) mfr-2)
+				   (/ (+ (* (mass-fraction el-2) mfr-2)
 					 0.0)
 				      (+ mfr-1 mfr-2))
 				   :species (get-sp el)))
@@ -345,7 +345,7 @@
     (maphash 
      #'(lambda (key value)
 	 (declare (ignore key))
-	 (setf (component-mass-fraction value)
+	 (setf (mass-fraction value)
 	       (/ (molar-mass value) mm)))
      (composition-components cmp))
     cmp))
@@ -360,8 +360,8 @@
   (let ((rez nil))
     (maphash #'(lambda (key value)
 		 (declare (ignore key))
-		 (push (/ (component-mass-fraction value)
-			  (sp-molar-mass (component-species value)))
+		 (push (/ (mass-fraction value)
+			  (sp-molar-mass (species value)))
 		       rez))
 	     (composition-components x))
     (apply #'+ rez)))
@@ -376,9 +376,9 @@
     (maphash 
      #'(lambda (key value)
 	 (declare (ignore key))
-	 (setf (component-mole-fraction value)
-	       (/ (component-mass-fraction value)
-		  (sp-molar-mass (component-species value))
+	 (setf (mole-fraction value)
+	       (/ (mass-fraction value)
+		  (sp-molar-mass (species value))
 		  mm)))
      (composition-components cmp))
     cmp))
@@ -454,13 +454,13 @@
   (let ((cmp (make-instance '<composition>)))
     (map nil
 	 #'(lambda (el)
-	     (setf (component-mass-fraction el)
+	     (setf (mass-fraction el)
 		   (/
-		    (* (sp-molar-mass (component-species el))
-		       (component-mass-fraction el))
-		    (sp-molar-mass (component-species ref))))
+		    (* (sp-molar-mass (species el))
+		       (mass-fraction el))
+		    (sp-molar-mass (species ref))))
 	     (setf (gethash
-		    (sp-name (component-species el))
+		    (sp-name (species el))
 		    (composition-components cmp))
 		   el))
 	 (mapcar
@@ -474,8 +474,8 @@
 	   #'(lambda (el)
 	       (or (and (numberp (second el)) (= 0.0 (second el)))
 		   (and (stringp (first el)) (string= "" (first el)))))
-	   (sp-chemical-formula (component-species ref)))))
-    (list cmp (component-mass-fraction ref))))
+	   (sp-chemical-formula (species ref)))))
+    (list cmp (mass-fraction ref))))
 
 @export
 @annot.doc:doc
@@ -490,13 +490,13 @@
   (let ((cmp (make-instance '<composition>)))
     (map nil
 	 #'(lambda (el)
-	     (setf (component-mass-fraction el)
+	     (setf (mass-fraction el)
 		   (/
-		    (* (sp-molar-mass (component-species el))
-		       (component-mass-fraction el))
+		    (* (sp-molar-mass (species el))
+		       (mass-fraction el))
 		    (sp-molar-mass ref)))
 	     (setf (gethash
-		    (sp-name (component-species el))
+		    (sp-name (species el))
 		    (composition-components cmp))
 		   el))
 	 (mapcar
@@ -539,26 +539,38 @@
 
 @export
 (defmethod molar-mass ((rt <reactant>))
-  (* (moles-number rt) (sp-molar-mass (reactant-species rt))))
+  (* (moles-number rt) (sp-molar-mass (species rt))))
 
 @export
 (defmethod molar-mass ((pt <product>))
-  (* (moles-number pt) (sp-molar-mass (product-species pt))))
+  (* (moles-number pt) (sp-molar-mass (species pt))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 @export
+@annot.doc:doc
+"@b(Описание:) метод @b(thermal-effect) возвращает
+ тепловой эффект при реагировании реактанта.
+"
 (defmethod thermal-effect ((rt <reactant>))
   (* -1
      (moles-number rt)
-     (sp-heat-formation (reactant-species rt))))
+     (sp-heat-formation (species rt))))
 
 @export
+@annot.doc:doc
+"@b(Описание:) метод @b(thermal-effect) возвращает
+ тепловой эффект получении продукта химической реакции.
+"
 (defmethod thermal-effect ((rt <product>))
   (* (moles-number rt)
-     (sp-heat-formation (product-species rt))))
+     (sp-heat-formation (species rt))))
 
 @export
+@annot.doc:doc
+"@b(Описание:) метод @b(thermal-effect) возвращает
+ тепловой эффект химической реакции.
+"
 (defmethod thermal-effect ((reac <reaction>))
   (apply #'+
    (mapcar #'thermal-effect
@@ -843,7 +855,7 @@ defaults to CHAR= (for case-sensitive comparison)."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod insert ((c <component>) (cmp <composition>))
-  (setf (gethash (sp-name (component-species c)) (composition-components cmp)) c)
+  (setf (gethash (sp-name (species c)) (composition-components cmp)) c)
   cmp)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -941,20 +953,23 @@ defaults to CHAR= (for case-sensitive comparison)."
 
 @export
 (defmethod combustion-reaction ((cmp <component>))
-  (combustion-reaction (component-species cmp)))
+  (combustion-reaction (species cmp)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; relativ-oxigen-mass-for-burning
 
+@export
 (defmethod relativ-oxigen-mass-for-burning ((sp <sp>))
   (let ((reactants (reaction-reactants (combustion-reaction sp))))
     (/ (molar-mass (second reactants)) (molar-mass (first reactants)))))
 
+@export
 (defmethod relativ-oxigen-mass-for-burning ((cmp <component>))
   (let ((reactants (reaction-reactants (combustion-reaction cmp))))
-    (* (component-mass-fraction cmp)
+    (* (mass-fraction cmp)
        (/ (molar-mass (second reactants)) (molar-mass (first reactants))))))
 
+@export
 (defmethod relativ-oxigen-mass-for-burning ((cmp <composition>))
   (let ((components (composition-components cmp))
 	(rez nil))
@@ -968,14 +983,53 @@ defaults to CHAR= (for case-sensitive comparison)."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; relativ-air-mass-for-burning
 
+@export
 (defmethod relativ-air-mass-for-burning ((sp <sp>))
   (/ (relativ-oxigen-mass-for-burning sp)
-     (component-mass-fraction (reference "O2" *air*))))
+     (mass-fraction (reference "O2" *air*))))
 
+@export
 (defmethod relativ-air-mass-for-burning ((cmp <component>))
   (/ (relativ-oxigen-mass-for-burning cmp)
-     (component-mass-fraction (reference "O2" *air*))))
+     (mass-fraction (reference "O2" *air*))))
 
+@export
 (defmethod relativ-air-mass-for-burning ((cmp <composition>))
   (/ (relativ-oxigen-mass-for-burning cmp)
-     (component-mass-fraction (reference "O2" *air*))))
+     (mass-fraction (reference "O2" *air*))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Q-work-low
+
+@export
+@annot.doc:doc
+"@b(Описание:) метод @b(Q-work-low) 
+"
+(defmethod Q-work-low ((sp <sp>))
+  (let* ((reac-combustion (combustion-reaction sp))
+	 (reactants (reaction-reactants reac-combustion))
+	 (fuel   (first reactants)))
+    (/ (thermal-effect reac-combustion)
+       (moles-number fuel)
+       (molar-mass (species fuel)))))
+
+
+@export
+@annot.doc:doc
+"@b(Описание:) метод @b(Q-work-low)
+"
+(defmethod Q-work-low ((c-t <component>))
+  (* (mole-fraction c-t)
+     (Q-work-low (species c-t))))
+
+@export
+@annot.doc:doc
+"@b(Описание:) метод @b(Q-work-low)
+"
+(defmethod Q-work-low ((c-n <composition>))
+  (let ((rez 0.0))
+    (maphash #'(lambda (key value)
+		 (declare (ignore key))
+		 (setf rez (+ rez (Q-work-low value))))
+	     (composition-components c-n))
+    rez))

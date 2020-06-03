@@ -2,10 +2,49 @@
 
 (in-package :gases)
 
+(combustion-reaction (get-sp "C2H4"))
+
+
+(Q-work-low (get-sp "H2"))
+(Q-work-low (make-instance-component "H2" 0.1))
+(Q-work-low (make-instance-composition '(("H2" 0.2) ("CH4" 0.8))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;; Число Воббе высшее
+(defmethod wobber-hight ((sp <sp>))
+  (error "Not defined")
+  )
+
+(defmethod wobber-hight ((c-t <component>))
+  (error "Not defined")
+  )
+
+(defmethod wobber-hight ((c-n <composition>))
+  (error "Not defined")
+  )
+
+;;;; Число Воббе низшее
+(defmethod wobber-low ((sp <sp>))
+  (error "Not defined")  
+  )
+
+(defmethod wobber-low ((c-t <component>))
+  (error "Not defined")
+  )
+
+(defmethod wobber-low ((c-n <composition>))
+  (error "Not defined")
+  )
+  
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defparameter *c-n* (make-instance-composition '(("H2" 0.95) ("CH4" 0.05))))
 
 
+(relativ-air-mass-for-burning *c-n*)
+(thermal-effect )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -99,7 +138,7 @@
 
 (thermal-effect *rt*)
 
-(sp-heat-formation (reactant-species *rt*))
+(sp-heat-formation (species *rt*))
 
 
 

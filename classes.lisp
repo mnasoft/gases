@@ -215,13 +215,13 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 
 @annot.class:export-class
 (defclass <component> nil
-  ((component-species :accessor component-species :initarg :species
+  ((component-species :accessor species :initarg :species
 		      :documentation
 		      "Должен содержать объект типа <sp>.")
-   (component-mole-fraction :accessor component-mole-fraction :initarg
+   (component-mole-fraction :accessor mole-fraction :initarg
 			    :mole-fraction :initform 0.0 :documentation
 			    "Содежит мольную долю компонета в смеси.")
-   (component-mass-fraction :accessor component-mass-fraction :initarg :mass-fraction :initform 0.0
+   (component-mass-fraction :accessor mass-fraction :initarg :mass-fraction :initform 0.0
 			    :documentation
 			    "Содежит массовую долю компонета в смеси."))
   (:documentation
@@ -230,7 +230,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 (defmethod print-object :before ((x <component>) s)
   (format s
 	  "#<component>(name=~S mole-fraction=~S mass-fraction=~S"
-	  (sp-name (component-species x)) (component-mole-fraction x) (component-mass-fraction x)))
+	  (sp-name (species x)) (mole-fraction x) (mass-fraction x)))
 
 (defmethod print-object         ((x <component>) s) (format s "" ))
 
@@ -288,7 +288,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 
 @annot.class:export-class
 (defclass <reactant> ()
-  ((reactant-species :accessor reactant-species :initarg :species
+  ((reactant-species :accessor species :initarg :species
 		      :documentation
 		      "Должен содержать объект типа <sp>.")
    (moles-number :accessor moles-number :initarg :mole :initform nil
@@ -297,13 +297,13 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
    "Представляет реактант химической реакции."))
 
 (defmethod print-object ((rt <reactant>) s)
-  (format s "~A*~A" (moles-number rt) (sp-name (reactant-species rt))))
+  (format s "~A*~A" (moles-number rt) (sp-name (species rt))))
 
 (defmethod elements ((rt <reactant>))
-  (elements (reactant-species rt)))
+  (elements (species rt)))
 
 (defclass <product> ()
-  ((product-species :accessor product-species :initarg :species
+  ((product-species :accessor species :initarg :species
 		      :documentation
 		      "Должен содержать объект типа <sp>.")
    (moles-number :accessor moles-number :initarg :mole :initform nil
@@ -312,14 +312,14 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
    "Представляет продукт химической реакции."))
 
 (defmethod print-object ((pt <product>) s)
-  (format s "~A*~A" (moles-number pt) (sp-name (product-species pt))))
+  (format s "~A*~A" (moles-number pt) (sp-name (species pt))))
 
 (defmethod elements ((pt <product>))
   (labels ((minus (lst)
 	     (mapcar
 	      #'(lambda (el) (list (first el) (- (second el))))
 	      lst)))
-    (minus (elements (product-species pt)))))
+    (minus (elements (species pt)))))
 
 @annot.class:export-class
 (defclass <reaction> ()

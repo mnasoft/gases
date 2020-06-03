@@ -77,22 +77,22 @@
   "Проверка молярного состава."
   (with-fixture fix-gases ()
     (is-true (math:semi-equal
-	      (gases:component-mole-fraction
+	      (gases:mole-fraction
 	       (gethash "N2"
 			(gases:composition-components +air+)))
 	      0.780840))
     (is-true (math:semi-equal
-	      (gases:component-mole-fraction
+	      (gases:mole-fraction
 	       (gethash "O2"
 			(gases:composition-components +air+)))
 	      0.209476))
     (is-true (math:semi-equal
-	      (gases:component-mole-fraction
+	      (gases:mole-fraction
 	       (gethash "CO2"
 			(gases:composition-components +air+)))
 	      0.000319))
     (is-true (math:semi-equal
-	      (gases:component-mole-fraction
+	      (gases:mole-fraction
 	       (gethash "Ar"
 			(gases:composition-components +air+)))
 	      0.009365))))
@@ -117,8 +117,8 @@
 		      +Ar+  0.012915987
 		      +CO2+ 4.846875e-4)
 		   (gases:mix-composition cmp-1 mfr-1 cmp-2 mfr-2)))))
-      (is-true (math:semi-equal (gases:component-mole-fraction (gases:reference "N2" +air+))
-				(gases:component-mole-fraction (gases:reference "N2" cmp)))))))
+      (is-true (math:semi-equal (gases:mole-fraction (gases:reference "N2" +air+))
+				(gases:mole-fraction (gases:reference "N2" cmp)))))))
 
 (def-test combustion-reaction-test ()
   (is-true (eq 'gases::<reaction>
