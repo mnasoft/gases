@@ -3,6 +3,7 @@
 *.FASL
 *.fasl
 *.lisp-temp
-\#*#
 build
+\#*#
+
 *.inp.clean
