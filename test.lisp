@@ -2,6 +2,9 @@
 
 (in-package :gases)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (relativ-air-mass-for-burning (make-instance-composition '(("CH4" 0.9) ("H2" 0.1))))
 
 (molar-mass (make-instance-composition '(("CH4" 1.0) ("H2" 0.0))))
@@ -44,13 +47,27 @@
 
 (defparameter *sp* (get-sp "H2O"))
 
-(defun foo (elem)
-  (member-if 
-   #'(lambda (el) (sp-chemical-formula elem))
-	   (sp-chemical-formula *sp*)
-	   ))
+(defmacro q-of (elem quan)
+  ` (find-if
+     #'(lambda (el)
+	 (and (string= (first el) ,elem)
+	      (= (second el) ,quan)))
+     formula))
 
-*sp*
+
+(defmacro foo (elem rule)
+  `(let ((formula (sp-chemical-formula ,elem)))
+     ,rule))
+
+(foo *sp*   (and (q-of "H" 2) (q-of "O" 1) t))
+
+(let ((formula (sp-chemical-formula *sp*)))
+  (and 
+   (q-of "H" 2)
+   (q-of "O" 1)
+   t))
+
+(foo *sp*)
 
 @annot.doc:doc
 "
