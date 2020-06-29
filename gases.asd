@@ -16,7 +16,6 @@
 		 (:file "defgenerics")
 		 (:file "defmethods")
 		 (:file "burning")
-		 (:file "air")
 		 (:file "example-gas"))))
   :description "Проект содержит некоторые формулы термодинамики"
   :in-order-to ((test-op (test-op "gases/tests"))))
@@ -34,9 +33,18 @@
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
   :depends-on (#:cl-annot #:gases)
-  :components ((:module "molecule"
+  :components ((:module "molecule/src"
 		:serial t
 		:components ((:file "elements")))))
+
+(defsystem #:gases/wet-air
+  :version "0.2.0"
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
+  :depends-on (#:cl-annot #:gases)
+  :components ((:module "wet-air/src"
+		:serial t
+		:components ((:file "air")))))
 
 (defsystem #:gases/gas-dynamics
   :version "0.1.0"
