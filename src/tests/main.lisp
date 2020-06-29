@@ -1,5 +1,3 @@
-(in-package :cl-user)
-
 (defpackage #:gases-tests
   (:use #:cl #:fiveam)
   (:export #:run!

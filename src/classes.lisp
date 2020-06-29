@@ -9,46 +9,46 @@
 @annot.class:export-class
 (defclass <molecule> nil
   ((molecule-name-ru
-    :accessor molecule-name-ru :initarg :name-ru
+    :accessor <molecule>-name-ru :initarg :name-ru
     :initform ""
     :documentation
     "Обозначение русскоязычное")
    (molecule-name-en
-    :accessor molecule-name-en
+    :accessor <molecule>-name-en
     :initarg :name-en
     :initform "" :documentation
     "Обозначение англоязычное")
    (molecule-name-en-short
-    :accessor molecule-name-en-short :initarg
+    :accessor <molecule>-name-en-short :initarg
     :name-en-short :initform ""
     :documentation
     "Короткое англоязычное обозначение")
    (molecule-smile
-    :accessor molecule-smile :initarg :smile :initform "" :documentation "Smile")
+    :accessor <molecule>-smile :initarg :smile :initform "" :documentation "Smile")
    (molecule-mass
-    :accessor molecule-mass :initarg :mass :initform ""
+    :accessor <molecule>-mass :initarg :mass :initform ""
     :documentation "Молекулярная масса кг/моль")
    (molecule-μcp-a-b-c
-    :accessor molecule-μcp-a-b-c :initarg :μcp-a-b-c
+    :accessor <molecule>-μcp-a-b-c :initarg :μcp-a-b-c
     :initform ""
     :documentation
     "Коэффициенты для расчета мольной теплоемкости ккал/(моль*К). 
 Данные взяты из файла ./doc/111.jpg (см. мультитехнический справочник Интернет).")
    (molecule-formula
-    :accessor molecule-formula :initarg :formula
+    :accessor <molecule>-formula :initarg :formula
     :initform "" :documentation "Химическая формула")
-   (molecule-note :accessor molecule-note :initarg :note :initform ""
+   (molecule-note :accessor <molecule>-note :initarg :note :initform ""
                   :documentation "Примечание"))
   (:documentation "Представляет молекулу вещества."))
 
 (defmethod print-object :before ((x <molecule>) s)
   (format s " #<molecule>(~S ~S ~S ~S ~S ~S"
-	  (molecule-name-en-short x)
-	  (molecule-name-ru x)
-	  (molecule-μcp-a-b-c x)
-	  (molecule-mass x)
-	  (molecule-formula x)
-	  (molecule-note x)))
+	  (<molecule>-name-en-short x)
+	  (<molecule>-name-ru x)
+	  (<molecule>-μcp-a-b-c x)
+	  (<molecule>-mass x)
+	  (<molecule>-formula x)
+	  (<molecule>-note x)))
 
 (defmethod print-object         ((x <molecule>) s) (format s "" ))
 
