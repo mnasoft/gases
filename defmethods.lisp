@@ -979,25 +979,7 @@ defaults to CHAR= (for case-sensitive comparison)."
 	 (push (relativ-oxigen-mass-for-burning value) rez))
      components)
     (apply #'+ rez)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; relativ-air-mass-for-burning
-
-@export
-(defmethod relativ-air-mass-for-burning ((sp <sp>))
-  (/ (relativ-oxigen-mass-for-burning sp)
-     (mass-fraction (reference "O2" *air*))))
-
-@export
-(defmethod relativ-air-mass-for-burning ((cmp <component>))
-  (/ (relativ-oxigen-mass-for-burning cmp)
-     (mass-fraction (reference "O2" *air*))))
-
-@export
-(defmethod relativ-air-mass-for-burning ((cmp <composition>))
-  (/ (relativ-oxigen-mass-for-burning cmp)
-     (mass-fraction (reference "O2" *air*))))
-
+ 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Q-work-low
 
@@ -1058,37 +1040,4 @@ defaults to CHAR= (for case-sensitive comparison)."
   (/ (* (molar-mass c-n) pressure)
      (* *Rμ* temperature)
      1000))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; Число Воббе низшее
-
-(defmethod wobber-low ((sp <sp>))
-  (let ((ρ-f (density sp *p-normal* *t-normal*))
-	(ρ-a (density *air* *p-normal* *t-normal*)))
-    (/ (* (Q-work-low sp) ρ-f) (sqrt (/ ρ-f ρ-a)))))
-
-(defmethod wobber-low ((c-t <component>))
-  (error "Not defined")
-  )
-
-(defmethod wobber-low ((c-n <composition>))
-  (let ((ρ-f (density c-n *p-normal* *t-normal*))
-	(ρ-a (density *air* *p-normal* *t-normal*)))
-    (/ (* (Q-work-low c-n) ρ-f) (sqrt (/ ρ-f ρ-a)))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;; Число Воббе высшее
-
-;;;; Число Воббе высшее
-(defmethod wobber-hight ((sp <sp>))
-    (error "Not defined yet")  
-)
-
-(defmethod wobber-hight ((c-t <component>))
-  (error "Not defined")
-  )
-
-(defmethod wobber-hight ((c-n <composition>))
-  (error "Not defined")
-  )
 

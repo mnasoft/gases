@@ -6,32 +6,33 @@
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
   :depends-on (#:cl-annot #:cl-utilities #:half-div #:math ) ;; #:mnas-defclass CL-UTILITIES
   :components
-			((:file "package")
-			 (:file "gases")
-			 (:file "defparameters")
-			 (:file "classes")
- 			 (:file "defgenerics")
-			 (:file "defmethods")
-			 (:file "termo")
-			 (:file "air")
-			 (:file "example-gas")
-			 
-			 ;; (:file "elements")
-			 )
+  ((:file "package")
+   (:file "gases")
+   (:file "defparameters")
+   (:file "classes")
+   (:file "termo")
+   (:file "defgenerics")
+   (:file "defmethods")
+   (:file "burning")
+   (:file "air")
+   (:file "example-gas")   
 
-;  :components ((:module "src"
-;			:components
-;			((:file "package")
-;			 (:file "gases")
-;			 (:file "classes")
-;			 (:file "defmethods")
-;			 (:file "termo")
-;			 ;; (:file "elements")
-;			 ;; (:file "running-gas")
-;			 ;; (:file "stopping-gas")
-;			 (:file "air"))))
-;  :description "Проект содержит некоторые формулы термодинамики"
-;  :in-order-to ((test-op (test-op "gases/tests")))
+   ;; (:file "elements")
+   )
+
+  ;;  :components ((:module "src"
+  ;;			:components
+  ;;			((:file "package")
+  ;;			 (:file "gases")
+  ;;			 (:file "classes")
+  ;;			 (:file "defmethods")
+  ;;			 (:file "termo")
+  ;;			 ;; (:file "elements")
+  ;;			 ;; (:file "running-gas")
+  ;;			 ;; (:file "stopping-gas")
+  ;;			 (:file "air"))))
+  ;;  :description "Проект содержит некоторые формулы термодинамики"
+  ;;  :in-order-to ((test-op (test-op "gases/tests")))
   )
 
 (defsystem #:gases/tests

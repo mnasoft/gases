@@ -2,20 +2,9 @@
 
 (in-package :gases)
 
-(defparameter *Air*
-  (make-instance-composition
-   `(("N2" ,(/ 78.084 100))
-     ("O2" ,(/ 20.9476 100))
-     ("Ar" ,(/ .9365 100))
-     ("CO2",(/ .0319 100)))))
-
 (defparameter *N2*
   (make-instance-composition
    `(("N2" ,(/ 100. 100)))))
-
-(defparameter *O2*
-  (make-instance-composition
-   `(("O2" ,(/ 100. 100)))))
 
 (defparameter *H2*
   (make-instance-composition
