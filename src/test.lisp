@@ -43,31 +43,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(annot:enable-annot-syntax)
 
-(defparameter *sp* (get-sp "H2O"))
-
-(defmacro q-of (elem quan)
-  ` (find-if
-     #'(lambda (el)
-	 (and (string= (first el) ,elem)
-	      (= (second el) ,quan)))
-     formula))
-
-
-(defmacro foo (elem rule)
-  `(let ((formula (sp-chemical-formula ,elem)))
-     ,rule))
-
-(foo *sp*   (and (q-of "H" 2) (q-of "O" 1) t))
-
-(let ((formula (sp-chemical-formula *sp*)))
-  (and 
-   (q-of "H" 2)
-   (q-of "O" 1)
-   t))
-
-(foo *sp*)
 
 @annot.doc:doc
 "
@@ -82,46 +58,9 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(get-sp "C8H7N")
-
-(get-sp "C4H9NO2")
-(setf (gases:get-sp "C4H9NO2")
-	(make-instance 'gases:<sp>
-		       :name "C4H9NO2"
-		       :chemical-formula '(("C" 4.0) ("H" 9.0) ("N" 1.0) ("O" 2.0) ("" 0.0))))
 (get-sp "NaOH")
 (get-sp "H2O")
-(get-sp "C4H10O2PSCl")
-(setf (gases:get-sp "C4H10O2PSCl")
-	(make-instance 'gases:<sp>
-		       :name "C4H10O2PSCl"
-		       :chemical-formula '(("C" 4.0) ("H" 10.0) ("O" 2.0) ("P" 1.0) ("S" 1.0) ("CL" 1.0))))
-
-(get-sp "C8H5N2ONa")
-(setf (gases:get-sp "C8H5N2ONa")
-	(make-instance 'gases:<sp>
-		       :name "C8H5N2ONa"
-		       :chemical-formula '(("C" 8.0) ("H" 5.0) ("N" 2.0) ("O" 1.0) ("Na" 1.0))))
-
-(get-sp	"C12H15O3PSN2")
-(setf (gases:get-sp "C12H15O3PSN2")
-	(make-instance 'gases:<sp>
-		       :name "C12H15O3PSN2"
-		       :chemical-formula '(("C" 12.0) ("H" 15.0) ("O" 3.0) ("P" 1.0) ("S" 1.0) ("N" 2.0))))
-
 (get-sp	"NaCL")
-(get-sp	"C4H9OH")
-(setf (gases:get-sp "C4H9OH")
-	(make-instance 'gases:<sp>
-		       :name "C4H9OH"
-		       :chemical-formula '(("C" 4.0) ("H" 10.0) ("O" 1.0) ("" 0.0) ("" 0.0) ("" 0.0))))
-(get-sp	"H2O")
-
-(make-instance 'gases:<reaction>
-			     :reactant-names (list "C8H7N" "C4H9NO2" "NaOH" "C4H10O2PSCl" )
-			     :product-names  (list "C8H5N2ONa" "C12H15O3PSN2" "NaCL" "C4H9OH" "H2O"))
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

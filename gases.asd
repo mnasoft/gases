@@ -16,7 +16,8 @@
 		 (:file "defgenerics")
 		 (:file "defmethods")
 		 (:file "burning")
-		 (:file "example-gas"))))
+		 (:file "example-gas")
+		 (:file "select"))))
   :description "Проект содержит некоторые формулы термодинамики"
   :in-order-to ((test-op (test-op "gases/tests"))))
 
