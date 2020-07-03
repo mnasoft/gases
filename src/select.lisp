@@ -13,12 +13,18 @@
     formula))
 
 @export
+@annot.doc:doc
+"@b(Описание:) макрос @b(find-atoms)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (find-atoms (get-sp \"H2O\") (and (q-of \"H\"  =  2) (q-of \"O\" =  1) t))
+ (find-atoms (get-sp \"H2O\") (and (q-of \"NA\" =  1) (q-of \"CL\" = 1) t))
+@end(code)
+"
 (defmacro find-atoms (elem rule)
   `(let ((formula (sp-chemical-formula ,elem)))
      ,rule))
-
-(find-atoms (get-sp "H2O") (and (q-of "H"  =  2) (q-of "O" =  1) t))
-(find-atoms (get-sp "H2O") (and (q-of "NA" =  1) (q-of "CL" = 1) t))
 
 @export
 @annot.doc:doc
