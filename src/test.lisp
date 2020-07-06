@@ -2,6 +2,161 @@
 
 (in-package :gases)
 
+(require :math)
+(defparameter *tbl-perodic-long-1*
+  (make-instance 'math:<matrix>
+		 :dimensions '(10 19)
+		 :initial-element t))
+
+(loop :for i :from 0 :below (math:rows *tbl-perodic-long-1*) :do
+  (loop :for j :from 0 :below (math:cols *tbl-perodic-long-1*) :do
+    (setf (math:mref *tbl-perodic-long-1* i j) nil)))
+
+(defparameter *tbl-colors*
+  '((:c01 "#f66"    "Щёлочные металлы")
+    (:c02 "#ffdead" "Щёлочноземельные металлы")
+    (:c03 "#ffc0c0" "Переходные металлы")
+    (:c04 "#ccc"    "Постпереходные металлы")
+    (:c05 "#cc9"    "Полуметаллы -- металлоиды")
+    (:c06 "#a0ffa0" "Другие неметаллы (16-я (VI) группа -- халькогены)")
+    (:c07 "#ff9"    "Галогены")
+    (:c08 "#c0ffff" "Благородные газы")
+    (:c09 "#ffbfff" "Лантаноиды")
+    (:c10 "#ef99cc" "Актиноиды")))
+
+(defparameter *tbl-perodic-long*
+  '(( 1  1 1 1 :M) (  2   2 1 18 :M)
+    ( 3  4 2 1 :M) (  5  10 2 13 :M)
+    (11 12 3 1 :M) ( 13  18 3 13 :M)
+    (19 36 4 1 :M)
+    (37 54 5 1 :M)
+    (55 57 6 1 :M) ( 58  71 6 4 :LA) ( 72  86 6 4 :M)
+    (87 89 7 1 :M) ( 90 103 7 4 :AC) (104 118 7 4 :M)))
+
+(defun period-group-long (el-number)
+  "Для элемента периодической таблицы элементов, 
+заданной номером возвращает список содержащий:
+1) Признак принадлежности к:
+ - главной части таблицы -- :M  ;
+ - группе лантаноидов    -- :LA ;
+ - группе актиноидов     -- :AC .
+2) период -- число от 1 до 7 ;
+3) группу -- число от 1 до 18
+или nil если номер элемента отсутствует в таблице.
+"
+  (let ((desc (find-if
+	       #'(lambda (el)
+		   (<= (first el) el-number (second el))
+		   )
+	       *tbl-perodic-long*)))
+    (when desc
+      (list
+       (fifth desc)
+       (third desc)
+       (+ (fourth desc)
+	  (-  el-number
+	      (first desc) ))))))
+
+(defun element-color (el-number)
+  (let* ((t-p-g (period-group-long el-number))
+	 (tag    (first  t-p-g))
+	 (period (second t-p-g))
+	 (group  (third  t-p-g))
+	 )
+    (cond
+      ((and (eq :LA tag)) (assoc :c09 *tbl-colors* ))
+      ((and (eq :AC tag)) (assoc :c10 *tbl-colors* ))
+      ((and (eq :M  tag) (= group 1) (<= 2 period 7) ) (assoc :c01 *tbl-colors* ))
+      ((and (eq :M  tag) (= group 2) (<= 2 period 7) ) (assoc :c02 *tbl-colors* ))
+      ((and (eq :M  tag) (<= 3 group 12) (<= 4 period 7) ) (assoc :c03 *tbl-colors* ))
+      ((and (eq :M  tag)
+	    (or
+	     (and (= group 13) (<= 3 period 7))
+	     (and (= group 14) (<= 5 period 7))
+	     (and (= group 15) (<= 6 period 7))
+	     (and (= group 16) (=    period 7))))
+       (assoc :c04 *tbl-colors* ))
+      ((and (eq :M  tag)
+	    (or
+	     (and (= group 13) (=    period 2))
+	     (and (= group 14) (<= 3 period 4))
+	     (and (= group 15) (<= 4 period 5))
+	     (and (= group 16) (<= 5 period 6))))
+       (assoc :c05 *tbl-colors* ))
+      ((and (eq :M  tag)
+	    (or
+	     (and (= period 1) (=    group 1) )
+	     (and (= period 2) (<= 14 group 16))
+	     (and (= period 3) (<= 15 group 16))
+	     (and (= period 4) (=     group 16))))
+       (assoc :c06 *tbl-colors* ))
+      ((and (eq :M  tag) (= group 17) (<= 2 period 7) )
+       (assoc :c07 *tbl-colors* ))
+      ((and (eq :M  tag) (= group 18) (<= 1 period 7) )
+       (assoc :c08 *tbl-colors* ))
+      (t t-p-g))))
+
+(element-color 2)
+
+(period-group 90)
+
+(elements:element-name (elements:atomic-number-element 12))
+
+(type-of (elements:atomic-number-element 12)) ; => ELEMENTS:ELEMENT
+
+(defmethod html-out ((el t) s)
+  (when el (format s "~A" el)))
+
+(defmethod html-out ((el ELEMENTS:ELEMENT) s)
+  (format s "
+<form>
+<table style=\"background-color:~A; color:black; width:5em\";>
+ <tr style=\"font-size: 50%\"><td>~A</td> <td> <input type=\"number\" style=\"width:3em\"  min=\"1\" max=\"100\"> </td> </td>
+ 
+</tr>
+ <tr><td>~A</td> <td> <input type=\"checkbox\"><td> </tr>
+</table>
+</form>"
+          (second (element-color (elements:element-atomic-number el)))
+	  (elements:element-atomic-number el)
+	  (elements:element-symbol        el)))
+
+(html-out (elements:atomic-number-element 12) t )
+
+
+(defmethod html-out ((mm math:<matrix>) s)
+  (format s "~%<table>")
+  (loop :for i :from 0 :below (math:rows mm) :do
+    (let ((rr (math:row mm i)))
+      (format s "~%<tr>")
+      (map nil
+	   #'(lambda (el)
+	       (format s "<td>")
+	       (html-out el s)
+	       (format s "</td>"))
+	   rr)
+      (format s "~%</tr>")))
+  (format s "~%</table>"))
+
+(loop :for i :from 1 :to 112 :do
+  (let ((t-p-g (period-group i)))
+    (when (and t-p-g (eq :M (first t-p-g)))
+      (setf (math:mref *tbl-perodic-long-1*
+		       (second t-p-g) 
+		       (third  t-p-g))
+	    (elements:atomic-number-element i)))
+    (when (and t-p-g (eq :LA (first t-p-g)))
+      (setf (math:mref *tbl-perodic-long-1*
+		       (+ (second t-p-g) 2)
+		       (third  t-p-g))
+	    (elements:atomic-number-element i)))
+    (when (and t-p-g (eq :AC (first t-p-g)))
+      (setf (math:mref *tbl-perodic-long-1*
+		       (+ (second t-p-g) 2)
+		       (third  t-p-g))
+	    (elements:atomic-number-element i)))))
+
+(html-out *tbl-perodic-long-1* t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
