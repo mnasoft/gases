@@ -3,6 +3,7 @@
 (in-package :gases)
 
 (require :math)
+
 (defparameter *tbl-perodic-long-1*
   (make-instance 'math:<matrix>
 		 :dimensions '(10 19)
@@ -43,6 +44,12 @@
 2) период -- число от 1 до 7 ;
 3) группу -- число от 1 до 18
 или nil если номер элемента отсутствует в таблице.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+(period-group-long 7) =>  (:M 2 15)
+(period-group-long 13) => (:M 3 13)
+@end(code)
 "
   (let ((desc (find-if
 	       #'(lambda (el)
@@ -98,33 +105,74 @@
 
 (element-color 2)
 
-(period-group 90)
+(period-group-long 90)
+
+
+(require :periodic-table)
 
 (elements:element-name (elements:atomic-number-element 12))
 
 (type-of (elements:atomic-number-element 12)) ; => ELEMENTS:ELEMENT
 
+
 (defmethod html-out ((el t) s)
   (when el (format s "~A" el)))
 
 (defmethod html-out ((el ELEMENTS:ELEMENT) s)
-  (format s "
-<form>
-<table style=\"background-color:~A; color:black; width:5em\";>
- <tr style=\"font-size: 50%\"><td>~A</td> <td> <input type=\"number\" style=\"width:3em\"  min=\"1\" max=\"100\"> </td> </td>
- 
-</tr>
- <tr><td>~A</td> <td> <input type=\"checkbox\"><td> </tr>
-</table>
-</form>"
-          (second (element-color (elements:element-atomic-number el)))
-	  (elements:element-atomic-number el)
-	  (elements:element-symbol        el)))
+  "Новая версия 01"
+  (format s 
+	  (cl-who:with-html-output-to-string (o-str nil :indent t)
+	    (cl-who:htm
+	     (:form :action "mg-edit"	      
+	      (:table :style
+		      (cl-who:conc "background-color:" (second (element-color (elements:element-atomic-number el))) "; "
+				   "color:black; width:6em") ;;;; 
+		      (:tr (:td (:div :style "font-size:50%" (cl-who:fmt "~A" (elements:element-atomic-number el)))
+				(:input :name (cl-who:conc "elements" "[" (elements:element-symbol el) "]" "[ch-box]") :type "checkbox" )
+				(cl-who:fmt "~A" (elements:element-symbol el))
+				(:input :name (cl-who:conc "elements" "[" (elements:element-symbol el) "]" "[l-e-b]") :list "less-eq-big"
+					:style "font-size:65%; width:2.5em;")
+				(:datalist :id "less-eq-big"
+					   (:option :value "<")
+					   (:option :value "=")
+					   (:option :value ">"))))
+		      (:tr (:td (:input :name (cl-who:conc "elements" "[" (elements:element-symbol el) "]" "[num]")
+					:type "number"
+					:style "width:6em"
+					:min "1"
+					:max "100"))))
+	      (:input :type "submit"))))))
 
-(html-out (elements:atomic-number-element 12) t )
+(defmethod html-out ((el ELEMENTS:ELEMENT) s)
+  "Новая версия 02"
+  (format s 
+	  (cl-who:with-html-output-to-string (o-str nil :indent t)
+	    (cl-who:htm
+	     (:table :style
+		      (cl-who:conc "background-color:" (second (element-color (elements:element-atomic-number el))) "; "
+				   "color:black; width:6em") ;;;; 
+		      (:tr (:td (:div :style "font-size:50%" (cl-who:fmt "~A" (elements:element-atomic-number el)))
+				(:input :name (cl-who:conc "elements" "[" (elements:element-symbol el) "]" "[ch-box]") :type "checkbox" )
+				(cl-who:fmt "~A" (elements:element-symbol el))
+				(:input :name (cl-who:conc "elements" "[" (elements:element-symbol el) "]" "[l-e-b]") :list "less-eq-big"
+					:style "font-size:65%; width:2.5em;")
+				(:datalist :id "less-eq-big"
+					   (:option :value "<")
+					   (:option :value "=")
+					   (:option :value ">"))))
+		      (:tr (:td (:input :name (cl-who:conc "elements" "[" (elements:element-symbol el) "]" "[num]")
+					:type "number"
+					:style "width:6em"
+					:min "1"
+					:max "100"))))
+))))
 
+;;;; (let ((o-str (make-string-output-stream))) (get-output-stream-string o-str)))
+
+(html-out (elements:atomic-number-element 12) t)
 
 (defmethod html-out ((mm math:<matrix>) s)
+  "Старая версия"
   (format s "~%<table>")
   (loop :for i :from 0 :below (math:rows mm) :do
     (let ((rr (math:row mm i)))
@@ -138,8 +186,25 @@
       (format s "~%</tr>")))
   (format s "~%</table>"))
 
+(defmethod html-out ((mm math:<matrix>) s)
+  "Новая версия"
+  (let ((o-str (make-string-output-stream)))
+    (format o-str "~%<table>")
+    (loop :for i :from 0 :below (math:rows mm) :do
+      (let ((rr (math:row mm i)))
+	(format o-str "~%<tr>")
+	(map nil
+	     #'(lambda (el)
+		 (format o-str "<td>")
+		 (html-out el o-str)
+		 (format o-str "</td>"))
+	     rr)
+	(format o-str "~%</tr>")))
+    (format o-str "~%</table>")
+    (format s "~A" (get-output-stream-string o-str))))
+
 (loop :for i :from 1 :to 112 :do
-  (let ((t-p-g (period-group i)))
+  (let ((t-p-g (period-group-long i)))
     (when (and t-p-g (eq :M (first t-p-g)))
       (setf (math:mref *tbl-perodic-long-1*
 		       (second t-p-g) 
@@ -156,7 +221,7 @@
 		       (third  t-p-g))
 	    (elements:atomic-number-element i)))))
 
-(html-out *tbl-perodic-long-1* t)
+(html-out *tbl-perodic-long-1* nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
