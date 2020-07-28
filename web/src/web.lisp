@@ -3,9 +3,13 @@
 (in-package :cl-user)
 
 (defpackage #:gases.web
-  (:use #:cl))
+  (:use #:cl)
+  (:export html-out make-table-periodic)
+  )
 
 (in-package :gases.web)
+
+(annot:enable-annot-syntax)
 
 (defparameter *tbl-colors*
   '((:c01 "#f66"    "Щёлочные металлы")
@@ -124,7 +128,7 @@
       (t t-p-g))))
 
 
-
+@export
 (defgeneric html-out (obj stream)
   (:documentation "Вывод объекта obj в поток stream."))
 
@@ -187,7 +191,7 @@
     (loop :for i :from 0 :below (math:rows *tbl-perodic-long-1*) :do
       (loop :for j :from 0 :below (math:cols *tbl-perodic-long-1*) :do
 	(setf (math:mref *tbl-perodic-long-1* i j) nil)))))
-
+@export
 (defun make-table-periodic ()
   (let ((tbl-perodic-long
 	  (make-instance 'math:<matrix>
@@ -217,6 +221,24 @@
 		(elements:atomic-number-element i)))))
     tbl-perodic-long))
 
+(defmethod html-out ((sp gases:<sp>) s)
+  "Короткая версия для вывода элемента"
+  (format s "~A"
+	  (cl-who:with-html-output-to-string (o-str nil :indent t)
+	    (:div
+	     (:table :bordercolor "\\#ff0" :border "2"
+		     (:tr
+		      (:td (cl-who:str (gases:sp-name       sp)))
+		      (:td (cl-who:str (gases:sp-molar-mass sp)))
+		      (:td (cl-who:str (gases:sp-comments   sp)))))))))
+
+(html-out (gases:get-sp "C2H5OH") t)
+
+(gases:sp-molar-mass)
+
+(gases:find-by-atoms (and (gases:q-of "H" >= 2) (gases:q-of "H" <= 8) (gases:q-of "C" = 1))) 
+
+ 
 ;;;; (html-out (make-table-periodic) t)
 
 ;;;; (period-group-long 1)
