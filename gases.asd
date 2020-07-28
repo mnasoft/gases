@@ -59,6 +59,25 @@
   :description "Проект содержит некоторые газодинамические функции."
   :in-order-to ((test-op (test-op "gases/tests"))))
 
+(defsystem #:gases/web
+  :version "0.0.1"
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
+  :depends-on (#:cl-annot
+	       #:gases
+	       #:math
+	       #:periodic-table
+	       #:caveman
+	       #:cl-who) 
+  :components ((:module "web/src"
+		:serial t
+		:components
+		((:file "web"))))
+  :description "Проект содержит некоторые газодинамические функции."
+;;  :in-order-to ((test-op (test-op "gases/tests")))
+  )
+
+
 ;;;;(:module "gas-dynamics" :depends-on (#:half-div) :components ((:file "src/main")))
 
 ;;;;/home/namatv/quicklisp/local-projects/clisp/gases/gases/src/main.lisp:
