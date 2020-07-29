@@ -191,6 +191,7 @@
     (loop :for i :from 0 :below (math:rows *tbl-perodic-long-1*) :do
       (loop :for j :from 0 :below (math:cols *tbl-perodic-long-1*) :do
 	(setf (math:mref *tbl-perodic-long-1* i j) nil)))))
+
 @export
 (defun make-table-periodic ()
   (let ((tbl-perodic-long
@@ -232,15 +233,22 @@
 		      (:td (cl-who:str (gases:sp-molar-mass sp)))
 		      (:td (cl-who:str (gases:sp-comments   sp)))))))))
 
-(html-out (gases:get-sp "C2H5OH") t)
+@export
+(defun filter-not-checked-elements (lst)
+  (remove-if
+   #'(lambda (el)
+       (let ((al (cdr el)))
+	 (and (string= "" (cdr (assoc "l-e-b" al :test #'string=)))
+	      (string= "" (cdr (assoc "num"   al :test #'string=))))))
+   lst))
 
-(gases:sp-molar-mass)
+@export
+(defparameter *assss* nil)
 
-(gases:find-by-atoms (and (gases:q-of "H" >= 2) (gases:q-of "H" <= 8) (gases:q-of "C" = 1))) 
-
- 
+;;;; (html-out (gases:get-sp "C2H5OH") t)
+;;;; (gases:sp-molar-mass
+;;;; (gases:find-by-atoms (and (gases:q-of "H" >= 2) (gases:q-of "H" <= 8) (gases:q-of "C" = 1))) 
 ;;;; (html-out (make-table-periodic) t)
-
 ;;;; (period-group-long 1)
 ;;;; (elements:element-name (elements:atomic-number-element 12)) ; => "Magnesium"
 ;;;; (type-of (elements:atomic-number-element 12)) ; => ELEMENTS:ELEMENT

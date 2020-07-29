@@ -115,13 +115,4 @@
 		      ("No" ("l-e-b" . "") ("num" . ""))
 		      ("Lr" ("l-e-b" . "") ("num" . ""))))
 
-@export
-(defun filter-not-checked-elements (lst)
-  (remove-if
-   #'(lambda (el)
-       (let ((al (cdr el)))
-	 (and (string= "" (cdr (assoc "l-e-b" al :test #'string=)))
-	      (string= "" (cdr (assoc "num"   al :test #'string=))))))
-   lst))
-
 
