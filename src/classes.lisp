@@ -266,11 +266,9 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
        (mapcar #'first lst)
        :test #'string=))))
 
-
 (defmethod initialize-instance :after ((cmp <composition>)
 				       &key (components (make-hash-table :test #'equal)))
-  (setf (composition-components cmp) components)
-  )
+  (setf (composition-components cmp) components))
 
 (defmethod print-object :before ((x <composition>) s)
   (format s

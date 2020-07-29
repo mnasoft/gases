@@ -181,17 +181,6 @@
     (format o-str "~%</table>")
     (format s "~A" (get-output-stream-string o-str))))
 
-(block tbl-perodic-init
-  (progn
-    (defparameter *tbl-perodic-long-1*
-      (make-instance 'math:<matrix>
-		     :dimensions '(10 19)
-		     :initial-element nil)
-      "Матрица, содержащая элементы периодической системы элементов")
-    (loop :for i :from 0 :below (math:rows *tbl-perodic-long-1*) :do
-      (loop :for j :from 0 :below (math:cols *tbl-perodic-long-1*) :do
-	(setf (math:mref *tbl-perodic-long-1* i j) nil)))))
-
 @export
 (defun make-table-periodic ()
   (let ((tbl-perodic-long
