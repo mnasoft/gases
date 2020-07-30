@@ -1,5 +1,7 @@
 ;;;; web.lisp
 
+(annot:enable-annot-syntax)
+
 (in-package :cl-user)
 
 (defpackage #:gases.web
@@ -9,7 +11,7 @@
 
 (in-package :gases.web)
 
-(annot:enable-annot-syntax)
+
 
 (defparameter *tbl-colors*
   '((:c01 "#f66"    "Щёлочные металлы")
@@ -232,7 +234,35 @@
    lst))
 
 @export
-(defparameter *assss* nil)
+(defun query-map (lst)
+  (eval
+   `(gases:find-by-atoms
+     ,(cons 'and (mapcar #'query-item
+			 lst)))))
+
+@export
+(defun query-item (lst)
+  (let ((element (car lst))
+       (ch-box  (cdr (assoc "ch-box" (cdr lst) :test #'string=)))
+       (l-e-b   (cdr (assoc "l-e-b"  (cdr lst) :test #'string=)))
+       (num     (cdr (assoc "num"    (cdr lst) :test #'string=)))
+       )
+   (list element ch-box l-e-b num)
+   (when (and ch-box
+	      l-e-b
+	      num
+	      (parse-integer num :junk-allowed t)
+	      (string= ch-box "on")
+	      (member l-e-b '("<" ">" "=") :test #'string=)
+	      (<= 1 (parse-integer num :junk-allowed t)))
+     `(gases:q-of
+	 ,element
+	 ,(cond ((string= l-e-b ">") '>=)
+		((string= l-e-b "=") '=)
+		((string= l-e-b "<") '<=))
+	 ,(parse-integer num :junk-allowed t)))))
+
+(gases:find-by-atoms (and (gases:q-of "H" >= 2) (gases:q-of "H" <= 8) (gases:q-of "C" = 1))) 
 
 ;;;; (html-out (gases:get-sp "C2H5OH") t)
 ;;;; (gases:sp-molar-mass
