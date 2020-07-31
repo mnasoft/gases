@@ -233,6 +233,11 @@
 	      (string= "" (cdr (assoc "num"   al :test #'string=))))))
    lst))
 
+(query-map '(("Ne" ("ch-box" . "on") ("l-e-b" . "=") ("num" . "1"))))
+
+(query-item '("Ne" ("ch-box" . "on") ("l-e-b" . "=") ("num" . "1")))
+(GASES:Q-OF "Ne" = 1)
+
 @export
 (defun query-map (lst)
   (eval
@@ -242,25 +247,25 @@
 
 @export
 (defun query-item (lst)
-  (let ((element (car lst))
-       (ch-box  (cdr (assoc "ch-box" (cdr lst) :test #'string=)))
-       (l-e-b   (cdr (assoc "l-e-b"  (cdr lst) :test #'string=)))
-       (num     (cdr (assoc "num"    (cdr lst) :test #'string=)))
-       )
-   (list element ch-box l-e-b num)
-   (when (and ch-box
-	      l-e-b
-	      num
-	      (parse-integer num :junk-allowed t)
-	      (string= ch-box "on")
-	      (member l-e-b '("<" ">" "=") :test #'string=)
-	      (<= 1 (parse-integer num :junk-allowed t)))
-     `(gases:q-of
-	 ,element
-	 ,(cond ((string= l-e-b ">") '>=)
-		((string= l-e-b "=") '=)
-		((string= l-e-b "<") '<=))
-	 ,(parse-integer num :junk-allowed t)))))
+  (let ((element (string-upcase (car lst)))
+	(ch-box  (cdr (assoc "ch-box" (cdr lst) :test #'string=)))
+	(l-e-b   (cdr (assoc "l-e-b"  (cdr lst) :test #'string=)))
+	(num     (cdr (assoc "num"    (cdr lst) :test #'string=)))
+	)
+    (list element ch-box l-e-b num)
+    (when (and ch-box
+	       l-e-b
+	       num
+	       (parse-integer num :junk-allowed t)
+	       (string= ch-box "on")
+	       (member l-e-b '("<" ">" "=") :test #'string=)
+	       (<= 1 (parse-integer num :junk-allowed t)))
+      `(gases:q-of
+	,element
+	,(cond ((string= l-e-b ">") '>=)
+	       ((string= l-e-b "=") '=)
+	       ((string= l-e-b "<") '<=))
+	,(parse-integer num :junk-allowed t)))))
 
 (gases:find-by-atoms (and (gases:q-of "H" >= 2) (gases:q-of "H" <= 8) (gases:q-of "C" = 1))) 
 
@@ -272,3 +277,23 @@
 ;;;; (elements:element-name (elements:atomic-number-element 12)) ; => "Magnesium"
 ;;;; (type-of (elements:atomic-number-element 12)) ; => ELEMENTS:ELEMENT
 ;;;; (let ((o-str (make-string-output-stream))) (get-output-stream-string o-str)))
+
+(defparameter *bag* '(0 1000 0))
+
+(defun silver ()
+  (setf (second *bag*) (- (second *bag*) 5))
+  (setf (first  *bag*) (+ (first  *bag*) 3))
+  (setf (third  *bag*) (+ (third  *bag*) 1))
+  *bag*)
+
+(defun gold ()
+  (setf (first  *bag*) (- (first  *bag*) 2))
+  (setf (second *bag*) (+ (second *bag*) 3))
+  (setf (third  *bag*) (+ (third  *bag*) 1))
+  *bag*)
+
+
+(silver)
+(gold)
+
+20
