@@ -1,7 +1,5 @@
 ;;;; web.lisp
 
-(annot:enable-annot-syntax)
-
 (in-package :cl-user)
 
 (defpackage #:gases.web
@@ -11,7 +9,7 @@
 
 (in-package :gases.web)
 
-
+(annot:enable-annot-syntax)
 
 (defparameter *tbl-colors*
   '((:c01 "#f66"    "Щёлочные металлы")
@@ -233,11 +231,6 @@
 	      (string= "" (cdr (assoc "num"   al :test #'string=))))))
    lst))
 
-(query-map '(("Ne" ("ch-box" . "on") ("l-e-b" . "=") ("num" . "1"))))
-
-(query-item '("Ne" ("ch-box" . "on") ("l-e-b" . "=") ("num" . "1")))
-(GASES:Q-OF "Ne" = 1)
-
 @export
 (defun query-map (lst)
   (eval
@@ -267,7 +260,7 @@
 	       ((string= l-e-b "<") '<=))
 	,(parse-integer num :junk-allowed t)))))
 
-(gases:find-by-atoms (and (gases:q-of "H" >= 2) (gases:q-of "H" <= 8) (gases:q-of "C" = 1))) 
+;;;; (gases:find-by-atoms (and (gases:q-of "H" >= 2) (gases:q-of "H" <= 8) (gases:q-of "C" = 1))) 
 
 ;;;; (html-out (gases:get-sp "C2H5OH") t)
 ;;;; (gases:sp-molar-mass
@@ -277,6 +270,12 @@
 ;;;; (elements:element-name (elements:atomic-number-element 12)) ; => "Magnesium"
 ;;;; (type-of (elements:atomic-number-element 12)) ; => ELEMENTS:ELEMENT
 ;;;; (let ((o-str (make-string-output-stream))) (get-output-stream-string o-str)))
+
+;;;; (query-map '(("Ne" ("ch-box" . "on") ("l-e-b" . "=") ("num" . "1"))))
+
+;;;; (query-item '("Ne" ("ch-box" . "on") ("l-e-b" . "=") ("num" . "1")))
+;;;; (GASES:Q-OF "Ne" = 1)
+
 
 (defparameter *bag* '(0 1000 0))
 
