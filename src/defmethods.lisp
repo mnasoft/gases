@@ -900,11 +900,15 @@ defaults to CHAR= (for case-sensitive comparison)."
 
 @export
 @annot.doc:doc
-"@b(Описание:) метод @b(combustion-reaction) возвращает
+"@b(Описание:) метод @b(combustion-reaction) возвращает реакцию горения
+компонента в кислороде.
+В хештаблице *not-combasted-sp* сохраняются негорючие компоненты.
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
  (combustion-reaction (get-sp \"CO\")) => 2*CO + 1*O2 => 2*CO2
+ (combustion-reaction (get-sp \"N2\")) => 1*N2 => 1*N2
+ (combustion-reaction (get-sp \"O2\")) => 1*O2 => 1*O2
 @end(code)
 "
 (defmethod combustion-reaction ((sp <sp>))
@@ -917,7 +921,10 @@ defaults to CHAR= (for case-sensitive comparison)."
 	(products  nil))
     (block not-combastor-sp
       (when (gethash (sp-name sp) *not-combasted-sp*)
-	(return-from not-combastor-sp nil)))
+	(return-from combustion-reaction
+	  (make-instance 'gases:<reaction>
+			 :reactant-names (list (gases:sp-name sp))
+			 :product-names  (list (gases:sp-name sp))))))
     (block check-and-make-reaction
       (maphash
        #'(lambda (key value)
