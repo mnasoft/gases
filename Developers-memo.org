@@ -11,14 +11,8 @@
 * Генерирование документации
 #+name: make-html
 #+BEGIN_SRC lisp
-  (mnas-package:make-codex-documentation  :gases :gases)
+  (mnas-package:make-codex-documentation :gases :gases)
 #+END_SRC
-
-#+RESULTS:
-: #GRAPH(VC=31 RC=14)
-: (T:"get-db-as-string" T:"combustion-reaction" T:"relativ-air-mass-for-burning" T:"get-db" T:"molar-entropy" T:"molar-enthalpy" T:"molar-isochoric-heat-capacity" T:"molar-isobaric-heat-capacity" T:"density" T:"wobber-low" T:"property-table" T:"*stopping-gas*" T:"*not-combasted-sp-names*" T:"*ar*" T:"*pick-bel-gas*" T:"*str-db*" T:"*not-combasted-sp*" T:"*n2*" T:"*running-gas*" T:"*air*" T:"*o2*" T:"*co2*" T:"*sp-db*" T:"*h2*" T:"*t-normal*" T:"*p-standard*" T:"*rμ*" T:"*p-normal*" T:"*kal*" T:"*c-0*" T:"*t-standard*" )
-: ((T:"get-db-as-string"->T:"*str-db*") (T:"combustion-reaction"->T:"*not-combasted-sp*") (T:"relativ-air-mass-for-burning"->T:"*air*") (T:"wobber-low"->T:"*air*") (T:"get-db"->T:"*sp-db*") (T:"wobber-low"->T:"*t-normal*") (T:"molar-entropy"->T:"*rμ*") (T:"molar-enthalpy"->T:"*rμ*") (T:"molar-isochoric-heat-capacity"->T:"*rμ*") (T:"molar-isobaric-heat-capacity"->T:"*rμ*") (T:"density"->T:"*rμ*") (T:"wobber-low"->T:"*p-normal*") (T:"property-table"->T:"*kal*") (T:"property-table"->T:"*c-0*") ))
-
 * Публикация
 #+name: publish
 #+BEGIN_SRC shell :var make-html=make-html
@@ -29,10 +23,10 @@
   then
       echo "mnasoft-00"
   fi
-  if [[ `hostname` == "n118383" ]]
+  if [[ `hostname` == "N118383" ]]
   then
-      echo "n118383"
-      rm -rf "\\\\n133619\\home\\_namatv\\public_html\\Site\\Development\\Common-Lisp-Programs\\$CDIR\\"
-      cp -rf ./docs/build/* "\\\\n133619\\home\\_namatv\\public_html\\Site\\Development\\Common-Lisp-Programs\\"
+      echo "N118383"
+      mkdir -p //n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs/$CDIR
+      rsync -Pavzh ./docs/build/$CDIR/html/* //n133619/home/_namatv/public_html/Site/Development/Common-Lisp-Programs/$CDIR
    fi
 #+END_SRC
