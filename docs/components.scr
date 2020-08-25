@@ -1,0 +1,152 @@
+@begin(section) @title(Компоненты)
+
+ @begin(section) @title(Обзор)
+ Проект предназначен для предоставления информации о тепловых свойствах веществ.
+
+ Информация о тепловых свойствах веществ взята с сайта
+ @link[uri="https://www.grc.nasa.gov/www/CEAWeb/ceaHome.htm"](NASA Chemical Equilibrium with Applications (CEA)).
+
+ @end(section)
+
+ @begin(section) @title(База веществ)
+
+ Данные о веществах сохраняются в базе данных (БД) (хештаблица в памяти).
+ Для получения ссылки на нее используйте следующий код:
+ 
+@begin[lang=lisp](code)
+;;;; gases::*sp-db*
+(gases:get-db) => #<HASH-TABLE :TEST EQUAL :COUNT 1068 {10353290C3}>
+@end(code)
+
+ Для просмотра всех веществ, находящихся в (БД):
+ @begin[lang=lisp](code)
+ (maphash
+   #'(lambda (key val) (format t "~A~%" key))
+   (gases:get-db))
+ @end(code)
+
+ Данные о веществах сохраняются в объектах класса @b(<sp>). 
+ Для выбора вещества из БД используйте функцию @b(get-sp).
+ 
+ @begin[lang=lisp](code)
+ (gases:get-sp "CH4") =>
+ #<sp>(
+  sp-name="CH4"
+  sp-comments="Gurvich,1991 pt1 p44 pt2 p36."
+  sp-number-temperature-intervals=2
+  sp-reference-date-code="g 8/99"
+  sp-chemical-formula=(("C" 1.0) ("H" 4.0) ("" 0.0) ("" 0.0) ("" 0.0))
+  sp-phase=0
+  sp-molar-mass=16.04246d0
+  sp-heat-formation=-74600.0d0
+  sp-reccords=
+  (#<sp-rec>(
+    sp-rec-temperature-range=(200.0 1000.0)
+    sp-rec-number-coeff=7
+    sp-rec-polynomial-exponents=(-2.0 -1.0 0.0 1.0 2.0 3.0 4.0)
+    sp-rec-H_298.15-H-0=10016.202d0
+    sp-rec-coefficients=(-176685.0998d0 2786.18102d0 -12.0257785d0 0.0391761929d0 -3.61905443d-5 2.026853043d-8 -4.97670549d-12)
+    sp-rec-integration-constants=(-23313.1436d0 89.0432275d0))
+  #<sp-rec>(
+  sp-rec-temperature-range=(1000.0 6000.0)
+  sp-rec-number-coeff=7
+  sp-rec-polynomial-exponents=(-2.0 -1.0 0.0 1.0 2.0 3.0 4.0)
+  sp-rec-H_298.15-H-0=10016.202d0
+  sp-rec-coefficients=(3730042.76d0 -13835.01485d0 20.49107091d0 -0.001961974759d0 4.72731304d-7 -3.72881469d-11 1.623737207d-15)
+  sp-rec-integration-constants=(75320.6691d0 -121.9124889d0))))
+ @end(code)
+
+ Помимо веществ в проекте опреден класс, представляющий смесь веществ - <composition>.
+ Композиция веществ состоит из компонент - класс <component>, определяющих
+ долю (массовую и мольную) содержания элемента в композиции.
+
+ Для создания композиции веществ используйте функцию @b(make-instance-composition):
+ @begin[lang=lisp](code)
+ (make-instance-composition
+   '(("N2"              0.0003)
+     ("CO2"             0.0022)
+     ("CH4"             0.7374)
+     ("C2H6"            0.0593)
+     ("C3H8"            0.1179)
+     ("C4H10,isobutane" 0.0131)
+     ("C4H10,n-butane"  0.0379)
+     ("C5H12,i-pentane" 0.0130)
+     ("C5H12,n-pentane" 0.0139)
+     ("C6H14,n-hexane"  0.0017)
+     ("C5H10,cyclo-"    0.0004)
+     ("C6H12,cyclo-"    0.0003)     
+     ("C7H16,n-heptane" 0.0001)
+     ("H2O"             0.0025)))
+     =>
+    #<composition>(
+      #<component>(name="N2" mole-fraction=3.0e-4 mass-fraction=3.4905063504390727d-4)
+      #<component>(name="CO2" mole-fraction=0.0022 mass-fraction=0.0040213367938443335d0)
+      #<component>(name="CH4" mole-fraction=0.7374 mass-fraction=0.4913324298358915d0)
+      #<component>(name="C2H6" mole-fraction=0.0593 mass-fraction=0.07405861796700217d0)
+      #<component>(name="C3H8" mole-fraction=0.1179 mass-fraction=0.2159288090291503d0)
+      #<component>(name="C4H10,isobutane" mole-fraction=0.0131 mass-fraction=0.0316238453877922d0)
+      #<component>(name="C4H10,n-butane" mole-fraction=0.0379 mass-fraction=0.09149188983468187d0)
+      #<component>(name="C5H12,i-pentane" mole-fraction=0.013 mass-fraction=0.03895593994315799d0)
+      #<component>(name="C5H12,n-pentane" mole-fraction=0.0139 mass-fraction=0.041652887785301525d0)
+      #<component>(name="C6H14,n-hexane" mole-fraction=0.0017 mass-fraction=0.006084618703367254d0)
+      #<component>(name="C5H10,cyclo-" mole-fraction=4.0e-4 mass-fraction=0.0011651534147382498d0)
+      #<component>(name="C6H12,cyclo-" mole-fraction=3.0e-4 mass-fraction=0.0010486381495628883d0)
+      #<component>(name="C7H16,n-heptane" mole-fraction=1.0e-4 mass-fraction=4.161764042068601d-4)
+      #<component>(name="H2O" mole-fraction=0.0025 mass-fraction=0.0018706061162589418d0))
+ @end(code)
+
+ @end(section)
+ 
+ @begin(section) @title(API)
+  @begin(section) @title(Обобщенные функции(ОФ))
+   @cl:with-package[name="gases"](
+    @cl:doc(generic molar-mass)
+    @cl:doc(generic molar-isobaric-heat-capacity)
+    @cl:doc(generic molar-isochoric-heat-capacity)
+    @cl:doc(generic molar-enthalpy)
+    @cl:doc(generic molar-entropy)
+    @cl:doc(generic adiabatic-index)
+    @cl:doc(generic molar-fraction-summ)
+    @cl:doc(generic mass-fraction-summ)
+    @cl:doc(generic mix-composition)
+    @cl:doc(generic check-mole-fraction)
+    @cl:doc(generic check-mass-fraction)
+    @cl:doc(generic reference)
+    @cl:doc(generic elemental-mass-fraction)
+    @cl:doc(generic dump)
+    @cl:doc(generic adapt-mole-fractions)
+    @cl:doc(generic adapt-mass-fractions)
+    @cl:doc(generic insert)
+    @cl:doc(generic density)
+    @cl:doc(generic density-relative)
+   )
+   @end(section)
+   
+   @begin(section) @title(Горение ОФ) 
+    Обобщенные функции относящиеся к сжиганию в веществ в кислороде:
+    @cl:with-package[name="gases"](
+     @cl:doc(generic combustion-reaction)
+     @cl:doc(generic relativ-oxigen-mass-for-burning)
+     @cl:doc(generic relativ-air-mass-for-burning)
+     @cl:doc(generic wobber-hight)
+     @cl:doc(generic wobber-low)
+     @cl:doc(generic thermal-effect)
+     @cl:doc(generic Q-work-low)
+    )
+    @end(section)
+ @end(section)
+
+ @begin(section) @title(Константы)
+ 
+  Газодинамические константы:
+   @cl:with-package[name="gases"](
+    @cl:doc(variable *Rμ*)
+    @cl:doc(variable *kal*)
+    @cl:doc(variable *C-0*)
+    @cl:doc(variable *t-normal*)
+    @cl:doc(variable *t-standard*)
+    @cl:doc(variable *P-normal* )
+    @cl:doc(variable *P-standard*)
+    )
+ @end(section)
+@end(section)

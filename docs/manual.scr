@@ -1,5 +1,5 @@
 @begin(section)
-@title(Overview)
+ @title(Overview)
 
 This is where you explain what your project does.
 
@@ -35,11 +35,26 @@ learn how to do this.
   )
 @end(section)
 
-@begin(section)
- @title(Классы)
- @cl:with-package[name="gases"](
-  @cl:doc(class <sp>)
-  )
+@begin(section) @title(Классы)
+
+ @begin(section) @title(Компонентов)
+  @cl:with-package[name="gases"](
+   @cl:doc(class <sp>)
+   @cl:doc(class <sp-rec>)
+   @cl:doc(class <component>)
+   @cl:doc(class <composition>)
+   @cl:doc(class <molecule>)
+   )
+ @end(section)
+
+
+ @begin(section) @title(Реакций)
+  @cl:with-package[name="gases"](
+   @cl:doc(class <reaction>)
+   @cl:doc(class <reactant>)
+   @cl:doc(class <product>)
+   )
+ @end(section)
 @end(section)
 
 

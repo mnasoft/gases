@@ -94,17 +94,22 @@
 
 @export
 @annot.doc:doc
-"@b(Описание:) метод @b(dump) сбравывает символьное представление
- reference в символьный поток stream."
+"@b(Описание:) метод @b(adapt-mass-fractions) выполняет подгонку 
+состава смеси, заданной ммольными долями.
+"
 (defgeneric adapt-mole-fractions (reference))
 
 @export
 @annot.doc:doc
-"@b(Описание:) метод @b(adapt-mass-fractions) сбравывает символьное представление
- reference в символьный поток stream."
+"@b(Описание:) метод @b(adapt-mass-fractions) выполняет подгонку 
+состава смеси, заданной массовыми долями."
 (defgeneric  adapt-mass-fractions (reference))
 
 @export
+@annot.doc:doc
+"@b(Описание:) обобщенная_функция @b(insert) вставляет объект obj 
+в коллекцию collection.
+"
 (defgeneric insert (obj collection))
 
 @export

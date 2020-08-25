@@ -48,5 +48,5 @@
 	  (when
 	      (find-atoms value ,rule)
 	  (push key rez))) 
-     *sp-db*)
+     (get-db))
      rez))

@@ -211,22 +211,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 @export
-(defun clear-db ()
-  (clrhash *sp-db*))
-
-@export
 @annot.doc:doc
 "Возвращает базу данных компонентов."
 (defun get-db () *sp-db*)
 
+@export
+(defun clear-db ()
+  (clrhash (get-db)))
 
 @export
 @annot.doc:doc
 "Возвращает компонент по имени."
-(defun get-sp (name) (gethash name *sp-db*))
+(defun get-sp (name) (gethash name (get-db)))
 
 (defun (setf get-sp) (value name)
-  (setf (gethash name *sp-db*) value))
+  (setf (gethash name (get-db)) value))
 
 @export
 (defun init-db ()

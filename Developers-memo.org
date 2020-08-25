@@ -9,61 +9,30 @@
    - [[https://www.darkchestnut.com/2018/how-to-write-5am-test-fixtures/][Fixtures]]
  
 * Генерирование документации
-#+name: pwd
-#+BEGIN_SRC shell
-pwd
+#+name: make-html
+#+BEGIN_SRC lisp
+  (mnas-package:make-codex-documentation  :gases :gases)
 #+END_SRC
 
-#+RESULTS: pwd
-: /home/namatv/quicklisp/local-projects/clisp/gases
-
-#+name: basename-pwd
-#+BEGIN_SRC shell
-basename `pwd`
-#+END_SRC
-
-#+RESULTS: basename-pwd
-: gases
-
-#+name:make-graph
-#+BEGIN_SRC lisp :var pwd=pwd :var basename-pwd=basename-pwd
-  ;;;; (require :codex)
-  ;;;; (require :mnas-package)
-  ;;;;
-  ;;;; (require :gases)
-  (let ((pkg :gases)
-	(fpath (concatenate
-		'string
-		(cond ((uiop:getenv "MSYS_HOME")) (t ""))
-		pwd "/docs/build/"
-		basename-pwd "/html/")))
-    (codex:document pkg)
-    (mnas-package:view-call-graph   pkg :out-type "png" :viewer nil :fpath fpath :fname "call-graph")
-    (mnas-package:view-system-graph pkg :out-type "png" :viewer nil :fpath fpath :fname "system-graph")
-    (mnas-package:view-class-graph  pkg :out-type "png" :viewer nil :fpath fpath :fname "class-graph")
-    (mnas-package:view-symbol-graph pkg :out-type "png" :viewer nil :fpath fpath :fname "symbol-graph")
-)
-#+END_SRC
-
-#+RESULTS: make-graph
+#+RESULTS:
+: #GRAPH(VC=31 RC=14)
+: (T:"get-db-as-string" T:"combustion-reaction" T:"relativ-air-mass-for-burning" T:"get-db" T:"molar-entropy" T:"molar-enthalpy" T:"molar-isochoric-heat-capacity" T:"molar-isobaric-heat-capacity" T:"density" T:"wobber-low" T:"property-table" T:"*stopping-gas*" T:"*not-combasted-sp-names*" T:"*ar*" T:"*pick-bel-gas*" T:"*str-db*" T:"*not-combasted-sp*" T:"*n2*" T:"*running-gas*" T:"*air*" T:"*o2*" T:"*co2*" T:"*sp-db*" T:"*h2*" T:"*t-normal*" T:"*p-standard*" T:"*rμ*" T:"*p-normal*" T:"*kal*" T:"*c-0*" T:"*t-standard*" )
+: ((T:"get-db-as-string"->T:"*str-db*") (T:"combustion-reaction"->T:"*not-combasted-sp*") (T:"relativ-air-mass-for-burning"->T:"*air*") (T:"wobber-low"->T:"*air*") (T:"get-db"->T:"*sp-db*") (T:"wobber-low"->T:"*t-normal*") (T:"molar-entropy"->T:"*rμ*") (T:"molar-enthalpy"->T:"*rμ*") (T:"molar-isochoric-heat-capacity"->T:"*rμ*") (T:"molar-isobaric-heat-capacity"->T:"*rμ*") (T:"density"->T:"*rμ*") (T:"wobber-low"->T:"*p-normal*") (T:"property-table"->T:"*kal*") (T:"property-table"->T:"*c-0*") ))
 
 * Публикация
 #+name: publish
-#+BEGIN_SRC shell :var make-graph=make-graph
+#+BEGIN_SRC shell :var make-html=make-html
+  mkdir -p "$HOME/public_html/Common-Lisp-Programs/"
+  CDIR=`basename $PWD`
+  rsync -Pavzh ./docs/build/$CDIR/html/* $HOME/public_html/Common-Lisp-Programs/$CDIR 
   if [[ `hostname` == "mnasoft-00" ]]
   then
       echo "mnasoft-00"
-      mkdir -p "$HOME/public_html/Common-Lisp-Programs/"
-      CDIR=`basename $PWD`
-      rm -rf "$HOME/public_html/Common-Lisp-Programs/$CDIR/"
-      cp -rf ./docs/build/* "$HOME/public_html/Common-Lisp-Programs/"
   fi
-  if [[ `hostname` == "ko11-118383" ]]
+  if [[ `hostname` == "n118383" ]]
   then
-      CDIR=`basename $PWD`
+      echo "n118383"
       rm -rf "\\\\n133619\\home\\_namatv\\public_html\\Site\\Development\\Common-Lisp-Programs\\$CDIR\\"
       cp -rf ./docs/build/* "\\\\n133619\\home\\_namatv\\public_html\\Site\\Development\\Common-Lisp-Programs\\"
    fi
 #+END_SRC
-
-#+RESULTS: publish
