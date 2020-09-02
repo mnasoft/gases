@@ -2,8 +2,6 @@
 
 (in-package :gases)
 
-(annot:enable-annot-syntax)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    make-instance                                                                           ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -36,8 +34,8 @@
    :heat-formation               (nth 16 lst)
    :reccords               (mapcar #'make-instance-sp-rec (car(last lst)))))
 
-@export
-@annot.doc:doc
+(export 'make-instance-component )
+(defun make-instance-component (component-name fraction &optional (fraction-type :mole))
 "@b(Описание:) функция @b(make-instance-component) возвращает компонент
 газовой смеси, заданной мольными или массовыми долями. По умолчанию
 поределяется через мольную долю.
@@ -57,7 +55,6 @@
  (make-instance-component \"O2\" 0.78 :mass)
 @end(code)
 "
-(defun make-instance-component (component-name fraction &optional (fraction-type :mole))
   (ecase fraction-type
   (:mole (make-instance '<component>
 		 :species (get-sp component-name)
@@ -66,8 +63,8 @@
 		 :species (get-sp component-name)
 		 :mass-fraction fraction))))
 
-@export
-@annot.doc:doc
+(export 'make-instance-composition )
+(defun make-instance-composition (lst &optional (fraction-type :mole))
 "@b(Описание:) функция @b(make-instance-composition) возвращает 
 газовую смесь, заданную мольными долями.
 
@@ -78,7 +75,6 @@
  (make-instance-composition '((\"N2\" 0.78) (\"O2\" 0.22)) :mass)
 @end(code)
 "
-(defun make-instance-composition (lst &optional (fraction-type :mole))
   (unless (check-spices-is-unique lst)
     (error "Spices is not unique=~S" (check-spices-is-unique lst) ))
   (unless (check-spices-exist-in-db lst)
@@ -186,7 +182,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@annot.doc:doc
+(defun make-element-table ()
 "@b(Описание:) функция @b(make-element-table)
 
  @b(Пример использования:)
@@ -194,7 +190,6 @@
  (make-element-table)
 @end(code)
 "
-(defun make-element-table ()
   (let ((rez nil)
 	(rez-lst nil))
     (with-open-file (is (namestring (asdf:system-relative-pathname :gases "data/termo.inp.clean")) :direction :input)
@@ -210,24 +205,22 @@
 (make-element-table)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@export
-@annot.doc:doc
+(export 'get-db )
+(defun get-db ()
 "Возвращает базу данных компонентов."
-(defun get-db () *sp-db*)
-
-@export
+ *sp-db*)
+(export 'clear-db )
 (defun clear-db ()
   (clrhash (get-db)))
 
-@export
-@annot.doc:doc
+(export 'get-sp )
+(defun get-sp (name)
 "Возвращает компонент по имени."
-(defun get-sp (name) (gethash name (get-db)))
-
+ (gethash name (get-db)))
 (defun (setf get-sp) (value name)
   (setf (gethash name (get-db)) value))
 
-@export
+(export 'init-db )
 (defun init-db ()
   (clean-termo-inp)
   (clear-db)

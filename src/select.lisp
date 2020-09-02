@@ -2,9 +2,7 @@
 
 (in-package :gases)
 
-(annot:enable-annot-syntax)
-
-@export
+(export 'q-of )
 (defmacro q-of (elem func quan)
   `(find-if
     #'(lambda (el)
@@ -12,8 +10,8 @@
 	     (,func (second el) ,quan)))
     formula))
 
-@export
-@annot.doc:doc
+(export 'find-atoms )
+(defmacro find-atoms (elem rule)
 "@b(Описание:) макрос @b(find-atoms)
 
  @b(Пример использования:)
@@ -22,12 +20,11 @@
  (find-atoms (get-sp \"H2O\") (and (q-of \"NA\" =  1) (q-of \"CL\" = 1) t))
 @end(code)
 "
-(defmacro find-atoms (elem rule)
   `(let ((formula (sp-chemical-formula ,elem)))
      ,rule))
 
-@export
-@annot.doc:doc
+(export 'find-by-atoms )
+(defmacro find-by-atoms (rule)
 "@b(Описание:) макрос @b(find-by-atoms) позволяет выполнять поиск 
 веществ в базе данных по количеству атомов.
 
@@ -41,7 +38,6 @@
  => (\"HBOH\" \"HCHO,formaldehy\" \"H2BOH\" \"H2O\" \"NH2OH\" \"CH2OH\" \"CH3O\" \"CH2CO,ketene\"
      \"CH3CO,acetyl\" \"H2O(cr)\" \"H2O(L)\")
 "
-(defmacro find-by-atoms (rule)
   `(let ((rez nil))
      (maphash
       #'(lambda (key value)

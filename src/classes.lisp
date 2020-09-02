@@ -2,12 +2,19 @@
 
 (in-package :gases)
 
-(annot:enable-annot-syntax)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@annot.class:export-class
-(defclass <molecule> nil
+(export '<molecule>)
+(export '<molecule>-name-ru)
+(export '<molecule>-name-en)
+(export '<molecule>-name-en-short)
+(export '<molecule>-smile)
+(export '<molecule>-mass)
+(export '<molecule>-μcp-a-b-c)
+(export '<molecule>-formula)
+(export '<molecule>-note)
+
+(defclass <molecule> ()
   ((molecule-name-ru
     :accessor <molecule>-name-ru :initarg :name-ru
     :initform ""
@@ -56,7 +63,14 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@annot.class:export-class
+(export '<sp-rec>)
+(export 'sp-rec-temperature-range)
+(export 'sp-rec-number-coeff)
+(export 'sp-rec-polynomial-exponents)
+(export 'sp-rec-h_298.15-h-0)
+(export 'sp-rec-coefficients)
+(export 'sp-rec-integration-constants)
+ 
 (defclass <sp-rec> nil
   ((sp-rec-temperature-range
     :accessor sp-rec-temperature-range
@@ -124,8 +138,18 @@ component of entropy, respectively."))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@annot.class:export-class
-(defclass <sp> nil
+(export '<sp>)
+(export 'sp-name)
+(export 'sp-comments)
+(export 'sp-number-temperature-intervals)
+(export 'sp-reference-date-code)
+(export 'sp-chemical-formula)
+(export 'sp-phase)
+(export 'sp-molar-mass)
+(export 'sp-heat-formation)
+(export 'sp-reccords)
+
+(defclass <sp> ()
   ((sp-name
     :accessor sp-name :initarg :name :initform ""
     :documentation
@@ -213,8 +237,12 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@annot.class:export-class
-(defclass <component> nil
+(export '<component>)
+(export 'species)
+(export 'mole-fraction)
+(export 'mass-fraction)
+
+(defclass <component> ()
   ((component-species :accessor species :initarg :species
 		      :documentation
 		      "Должен содержать объект типа <sp>.")
@@ -238,7 +266,9 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@annot.class:export-class
+(export '<composition>)
+(export 'composition-components )
+
 (defclass <composition> nil
   ((composition-components :accessor composition-components :initarg :components
 			   :documentation
@@ -248,18 +278,16 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
   (:documentation
    "Представляет смесь, состоящую из объектов класса <component>."))
 
-@annot.doc:doc
-"Проверка на то, что заданные компоненты имеются в базе данных."
 (defun check-spices-exist-in-db (lst)
+"Проверка на то, что заданные компоненты имеются в базе данных."
   (reduce
    #'(lambda (el1 el2)
        (and el1 (get-sp (first el2))))
    lst
    :initial-value t))
 
-@annot.doc:doc
-"Проверка на неповторяемость компопнентов, передаваемых в конструктор."
 (defun check-spices-is-unique (lst)
+"Проверка на неповторяемость компопнентов, передаваемых в конструктор."
   (= (length lst)
      (length
       (remove-duplicates
@@ -284,7 +312,10 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 (defmethod print-object :after ((x <composition>) s)
   (format s ")" ))
 
-@annot.class:export-class
+(export '<reactant>)
+(export 'species)
+(export 'moles-number )
+
 (defclass <reactant> ()
   ((reactant-species :accessor species :initarg :species
 		      :documentation
@@ -299,6 +330,10 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 
 (defmethod elements ((rt <reactant>))
   (elements (species rt)))
+
+(export '<product>)
+(export 'species)
+(export 'moles-number)
 
 (defclass <product> ()
   ((product-species :accessor species :initarg :species
@@ -319,7 +354,10 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 	      lst)))
     (minus (elements (species pt)))))
 
-@annot.class:export-class
+(export '<reaction>)
+(export 'reaction-reactants)
+(export 'reaction-products )
+
 (defclass <reaction> ()
   ((reaction-reactants :accessor reaction-reactants :initform nil
 		       :documentation "Список реактантов химической реакции.")
@@ -348,7 +386,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-@annot.doc:doc
+(defun make-layer-iterator (vars)
 "Создает замыкание, позволяющее получать индексы эмементов куба (гиппокуба, гиперкуба)
  по слоям в направлении роста индексов.
 
@@ -376,7 +414,6 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 
 @end(code)
 "
-(defun make-layer-iterator (vars)
   (labels ((summ-values (v layer)
 	     (+ (length v ) layer -1))
 	   (grow-vector (vec layer)
@@ -418,7 +455,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 			   (apply #'+ (cdr (nreverse (coerce vvv 'list))))))))
 	    rez)))))
 
-@annot.doc:doc
+(defun atoms (equation)
   "@b(Описание:) функция @b(atoms) возвращает список элементов,
  из которых состоит молекула.
 
@@ -427,7 +464,6 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
  (atoms *equation*) => (\"C\" \"H\" \"O\")
 @end(code)
 "
-(defun atoms (equation)
   (sort
    (remove-duplicates
     (mapcar #'first (apply #'append equation))

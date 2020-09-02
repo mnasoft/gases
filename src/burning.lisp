@@ -2,8 +2,6 @@
 
 (in-package :gases)
 
-(annot:enable-annot-syntax)
-
 (defparameter *O2*
   (make-instance-composition
    `(("O2" ,(/ 100. 100)))))
@@ -18,17 +16,17 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; relativ-air-mass-for-burning
 
-@export
+(export 'relativ-air-mass-for-burning )
 (defmethod relativ-air-mass-for-burning ((sp <sp>))
   (/ (relativ-oxigen-mass-for-burning sp)
      (mass-fraction (reference "O2" *air*))))
 
-@export
+(export 'relativ-air-mass-for-burning )
 (defmethod relativ-air-mass-for-burning ((cmp <component>))
   (/ (relativ-oxigen-mass-for-burning cmp)
      (mass-fraction (reference "O2" *air*))))
 
-@export
+(export 'relativ-air-mass-for-burning )
 (defmethod relativ-air-mass-for-burning ((cmp <composition>))
   (/ (relativ-oxigen-mass-for-burning cmp)
      (mass-fraction (reference "O2" *air*))))

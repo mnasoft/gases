@@ -9,8 +9,6 @@
 
 (in-package :gases.web)
 
-(annot:enable-annot-syntax)
-
 (defparameter *tbl-colors*
   '((:c01 "#f66"    "Щёлочные металлы")
     (:c02 "#ffdead" "Щёлочноземельные металлы")
@@ -128,7 +126,7 @@
       (t t-p-g))))
 
 
-@export
+(export 'html-out )
 (defgeneric html-out (obj stream)
   (:documentation "Вывод объекта obj в поток stream."))
 
@@ -181,7 +179,7 @@
     (format o-str "~%</table>")
     (format s "~A" (get-output-stream-string o-str))))
 
-@export
+(export 'make-table-periodic )
 (defun make-table-periodic ()
   (let ((tbl-perodic-long
 	  (make-instance 'math:<matrix>
@@ -222,7 +220,7 @@
 		      (:td (cl-who:str (gases:sp-molar-mass sp)))
 		      (:td (cl-who:str (gases:sp-comments   sp)))))))))
 
-@export
+(export 'filter-not-checked-elements )
 (defun filter-not-checked-elements (lst)
   (remove-if
    #'(lambda (el)
@@ -231,14 +229,14 @@
 	      (string= "" (cdr (assoc "num"   al :test #'string=))))))
    lst))
 
-@export
+(export 'query-map )
 (defun query-map (lst)
   (eval
    `(gases:find-by-atoms
      ,(cons 'and (mapcar #'query-item
 			 lst)))))
 
-@export
+(export 'query-item )
 (defun query-item (lst)
   (let ((element (string-upcase (car lst)))
 	(ch-box  (cdr (assoc "ch-box" (cdr lst) :test #'string=)))

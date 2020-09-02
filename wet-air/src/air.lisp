@@ -1,7 +1,5 @@
 ;;;; air.lisp
 
-(annot:enable-annot-syntax)
-
 (defpackage #:gases-wet-air (:use #:cl)
 	    (:nicknames "W-A" "WET-AIR")
 	    (:documentation "
@@ -26,8 +24,8 @@
 
 (defparameter *torr* 133.322 "Один торр = 133.322 Па")
 
-@export
-@annot.doc:doc
+(export 'J-wet-air )
+(defun J-wet-air (temerature d)
 "Возвращает энтальпию влажного воздуха 
 
  @b(Переменые:)
@@ -36,7 +34,6 @@
 @item(d - влагосодержание, [кг воды]/[кг сухого воздуха];)
 @end(list)
 "
-(defun J-wet-air (temerature d)
   (values
    (+
     (* 1.005 temerature)
@@ -44,8 +41,8 @@
    "kJ/kg")
   )
 
-@export
-@annot.doc:doc
+(export 'p-wet-air-water-full )
+(defun p-wet-air-water-full (temerature)
 "@b(Описание:) функция @b(p-wet-air-water-full) возвращает
 давление насыщения водяных паров от температуры, Па.
  (Формула М.И. Фильнея. Она точнее, чем формула Г.К. Филоненко)
@@ -64,14 +61,13 @@
  
 
 "
-(defun p-wet-air-water-full (temerature)
   (* *torr*
      (expt 10.0
 	   (/ (+ 156.0 (* 8.12 temerature))
 	      (+ 236 temerature)))))
 
-@export
-@annot.doc:doc
+(export 'p-wet-air-water-full-1 )
+(defun p-wet-air-water-full-1 (temerature)
 "@b(Описание:) функция @b(p-wet-air-water-full-1)
 
 Давление насыщения водяных паров влажного воздуха от температуры. 
@@ -83,23 +79,18 @@
  (p-wet-air-water-full-1 100.0) 92435.086
 @end(code)
 "
-(defun p-wet-air-water-full-1 (temerature)
   (* *torr*
      (expt 10.0
 	   (+ 0.622 (/ (* 7.5 temerature) (+ 238.0 temerature))))))
 
-@export
-@annot.doc:doc
+(export 'd-wet-air )
+(defun d-wet-air (p-b p-w)
 "@b(Описание:) функция @b(d-wet-air) возвращает влагосодержание
 влажного воздуха, г/кг."
-(defun d-wet-air (p-b p-w)
   (values (* 622.0 (/ p-w (- p-b p-w))) "g/kg"))
-
-@export
-@annot.doc:doc
+(export 'd-wet-air-by-temp )
+(defun d-wet-air-by-temp (temp &key (fi 0.6) (p-b 101325.0))
 "@b(Описание:) функция @b(d-wet-air-by-temp) влагосодержание влажного воздуха
 от температуры и давления, "
-(defun d-wet-air-by-temp (temp &key (fi 0.6) (p-b 101325.0))
   (d-wet-air p-b (* fi (p-wet-air-water-full temp))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
