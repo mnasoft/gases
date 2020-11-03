@@ -351,11 +351,11 @@
 (export 'check-mole-fraction )
 (defmethod check-mole-fraction ((cmp <composition>))
 "Проверка правильности задания мольных долей."
-  (math:semi-equal (molar-fraction-summ cmp) 1.0))
+  (math/arr-matr:semi-equal (molar-fraction-summ cmp) 1.0))
 (export 'check-mass-fraction )
 (defmethod check-mass-fraction ((cmp <composition>))
 "Проверка правильности задания массовых долей."
-  (math:semi-equal (mass-fraction-summ cmp) 1.0))
+  (math/arr-matr:semi-equal (mass-fraction-summ cmp) 1.0))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'reference )

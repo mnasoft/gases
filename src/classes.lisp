@@ -482,7 +482,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 			  :collect (diagonal-index i))))
 
 (defun m-mk (lst)
-  (make-instance 'math:<matrix> :initial-contents lst))
+  (make-instance 'math/arr-matr:<matrix> :initial-contents lst))
 
 (defun make-matrix-m-1xm (mm)
   "Добавляет к матрице mm такое количество строк, чтобы их число
@@ -490,7 +490,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
  Заполняет главную диагональ новой матрицы единицами."
   (let ((rez 
 	  (make-instance
-	   'math:<matrix>
+	   'math/arr-matr:<matrix>
 	   :dimensions (list (1- (math:cols mm)) (math:cols mm))))
 	(index nil)
 	(skiped-rows 0))
@@ -499,31 +499,31 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 	(loop :for c :from r :below (math:cols rez) :do
 	  (if (>= (- r skiped-rows ) (math:rows mm))
 	      (progn
-		(setf (math:mref rez r r) 1)
+		(setf (math/arr-matr:mref rez r r) 1)
 		(push r index)
 		(return-from cols))
-	      (if (= 0 (math:mref mm (- r skiped-rows) r))
+	      (if (= 0 (math/arr-matr:mref mm (- r skiped-rows) r))
 		  (progn
 		    (incf skiped-rows)
 		    (push r index)
-		    (setf (math:mref rez r r) 1)
+		    (setf (math/arr-matr:mref rez r r) 1)
 		    (return-from cols))
-		  (setf (math:mref rez r c)
-			(math:mref mm (- r skiped-rows) c)))))))
+		  (setf (math/arr-matr:mref rez r c)
+			(math/arr-matr:mref mm (- r skiped-rows) c)))))))
     (values rez (remove-duplicates index))))
 
 (defun set-last-col-values (m1 rows vals)
   (loop :for r :in rows
 	:for v :in vals :do
-	  (setf (math:mref m1 r (1- (math:cols m1))) v))
+	  (setf (math/arr-matr:mref m1 r (1- (math:cols m1))) v))
   m1)
 
-(defmethod matr-col-row ((matr math:<matrix>))
+(defmethod matr-col-row ((matr math/arr-matr:<matrix>))
   (multiple-value-bind (mm rows) (make-matrix-m-1xm matr)
     (let ((lay-iter (make-layer-iterator (length rows))))
       (loop :for i :from 0 :to (expt 1000 (length rows)) :do
 	(let ((koeff
-		(math:row (math:solve-linear-system-gauss-backward-run 
+		(math:row (math/ls-gauss:solve-linear-system-gauss-backward-run 
 			   (set-last-col-values mm rows (funcall lay-iter))) 
 			  0)))
 	  (when (every #'(lambda (el) (and (integerp el) (plusp el)))
@@ -531,7 +531,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 	    (return koeff)))))))
 
 (defun equation-koeffitients (equation)
-  (let ((matr (math:convert-to-triangular
+  (let ((matr (math/ls-gauss:convert-to-triangular
 	       (m-mk
 		(mapcar
 		 #'(lambda (el)
