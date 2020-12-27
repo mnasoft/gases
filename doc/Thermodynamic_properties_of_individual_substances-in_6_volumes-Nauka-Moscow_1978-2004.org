@@ -31,7 +31,7 @@
 Thermodynamic_properties_of_individual substances-in 6 volumes-Nauka-Moscow_1978-2004
 Thermodynamic_properties_of_individual substances-in 6 volumes-Nauka-Moscow_1978-2004
 
-* Ссылки
+* Сайт
  - [[http://twt.mpei.ac.ru/TTHB/2/OIVT/IVTANThermo/Rus/index.htm][Сайт на русском языке]]
  - [[http://twt.mpei.ac.ru/TTHB/2/OIVT/IVTANThermo/Eng/index.htm][Сайт на английском языке]]
 
