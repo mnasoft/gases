@@ -555,3 +555,4 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 		     (mapcar #'elements (reaction-products  reac))))
 	    (append (reaction-reactants reac)(reaction-products reac)))
   reac)
+
