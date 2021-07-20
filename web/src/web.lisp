@@ -216,9 +216,9 @@
 	    (:div
 	     (:table :bordercolor "\\#ff0" :border "2"
 		     (:tr
-		      (:td (cl-who:str (gases:sp-name       sp)))
-		      (:td (cl-who:str (gases:sp-molar-mass sp)))
-		      (:td (cl-who:str (gases:sp-comments   sp)))))))))
+		      (:td (cl-who:str (gases:<sp>-name       sp)))
+		      (:td (cl-who:str (gases:<sp>-molar-mass sp)))
+		      (:td (cl-who:str (gases:<sp>-comments   sp)))))))))
 
 (export 'filter-not-checked-elements )
 (defun filter-not-checked-elements (lst)
@@ -261,7 +261,7 @@
 ;;;; (gases:find-by-atoms (and (gases:q-of "H" >= 2) (gases:q-of "H" <= 8) (gases:q-of "C" = 1))) 
 
 ;;;; (html-out (gases:get-sp "C2H5OH") t)
-;;;; (gases:sp-molar-mass
+;;;; (gases:<sp>-molar-mass
 ;;;; (gases:find-by-atoms (and (gases:q-of "H" >= 2) (gases:q-of "H" <= 8) (gases:q-of "C" = 1))) 
 ;;;; (html-out (make-table-periodic) t)
 ;;;; (period-group-long 1)

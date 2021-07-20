@@ -22,7 +22,7 @@
 ;;;; (molar-mass (get-sp \"N2\" )) => 28.0134
 ;;;; (molar-mass (get-sp \"CH4\")) => 16.04246
 "
-  (sp-molar-mass x))
+  (<sp>-molar-mass x))
 (defmethod molar-mass ((x <component>))
   "Возвращает молекулярную массу, [g/mol]
 Пример использования:
@@ -64,7 +64,7 @@
 
 (defmethod molar-isobaric-heat-capacity ((x <sp-rec>) temperature)
 "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]"
-  (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7)  (values-list (sp-rec-coefficients x))
+  (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7)  (values-list (<sp-rec>-coefficients x))
     (* *Rμ* (Cp/R-new temperature a1 a2 a3 a4 a5 a6 a7))))
 
 (defmethod molar-isobaric-heat-capacity ((x <sp>) temperature)
@@ -72,9 +72,9 @@
   (molar-isobaric-heat-capacity
    (find-if
     #'(lambda (el)
-	(multiple-value-bind (a b) (values-list (sp-rec-temperature-range el))
+	(multiple-value-bind (a b) (values-list (<sp-rec>-temperature-range el))
 	  (<= a temperature b)))
-    (sp-reccords x))
+    (<sp>-reccords x))
    temperature))
 
 (defmethod molar-isobaric-heat-capacity ((x <component>) temperature)
@@ -129,8 +129,8 @@
       (values-list
        (concatenate
 	'list
-	(sp-rec-coefficients x)
-	(list (first (sp-rec-integration-constants x)))))
+	(<sp-rec>-coefficients x)
+	(list (first (<sp-rec>-integration-constants x)))))
        (* *Rμ* temperature (H/RT-new temperature a1 a2 a3 a4 a5 a6 a7 a8))))
 
 (defmethod molar-enthalpy ((x <sp>) temperature)
@@ -138,9 +138,9 @@
   (molar-enthalpy
    (find-if
     #'(lambda (el)
-	(multiple-value-bind (a b) (values-list (sp-rec-temperature-range el))
+	(multiple-value-bind (a b) (values-list (<sp-rec>-temperature-range el))
 	  (<= a temperature b)))
-    (sp-reccords x))
+    (<sp>-reccords x))
    temperature))
 
 (defmethod molar-enthalpy ((x <component>) temperature)
@@ -169,8 +169,8 @@
       (values-list
        (concatenate
 	'list
-	(sp-rec-coefficients x)
-	(list (second (sp-rec-integration-constants x)))))
+	(<sp-rec>-coefficients x)
+	(list (second (<sp-rec>-integration-constants x)))))
     (* *Rμ* (S/R-new temperature a1 a2 a3 a4 a5 a6 a7 a9))))
 
 (defmethod molar-entropy ((x <sp>) temperature)
@@ -178,9 +178,9 @@
   (molar-entropy
    (find-if
     #'(lambda (el)
-	(multiple-value-bind (a b) (values-list (sp-rec-temperature-range el))
+	(multiple-value-bind (a b) (values-list (<sp-rec>-temperature-range el))
 	  (<= a temperature b)))
-    (sp-reccords x))
+    (<sp>-reccords x))
    temperature))
 
 (defmethod molar-entropy ((x <component>) temperature)
@@ -325,7 +325,7 @@
     (maphash #'(lambda (key value)
 		 (declare (ignore key))
 		 (push (/ (mass-fraction value)
-			  (sp-molar-mass (species value)))
+			  (<sp>-molar-mass (species value)))
 		       rez))
 	     (composition-components x))
     (apply #'+ rez)))
@@ -341,7 +341,7 @@
 	 (declare (ignore key))
 	 (setf (mole-fraction value)
 	       (/ (mass-fraction value)
-		  (sp-molar-mass (species value))
+		  (<sp>-molar-mass (species value))
 		  mm)))
      (composition-components cmp))
     cmp))
@@ -411,9 +411,9 @@
 	 #'(lambda (el)
 	     (setf (mass-fraction el)
 		   (/
-		    (* (sp-molar-mass (species el))
+		    (* (<sp>-molar-mass (species el))
 		       (mass-fraction el))
-		    (sp-molar-mass (species ref))))
+		    (<sp>-molar-mass (species ref))))
 	     (setf (gethash
 		    (<sp>-name (species el))
 		    (composition-components cmp))
@@ -429,7 +429,7 @@
 	   #'(lambda (el)
 	       (or (and (numberp (second el)) (= 0.0 (second el)))
 		   (and (stringp (first el)) (string= "" (first el)))))
-	   (sp-chemical-formula (species ref)))))
+	   (<sp>-chemical-formula (species ref)))))
     (list cmp (mass-fraction ref))))
 
 (export 'elemental-mass-fraction )
@@ -446,9 +446,9 @@
 	 #'(lambda (el)
 	     (setf (mass-fraction el)
 		   (/
-		    (* (sp-molar-mass (species el))
+		    (* (<sp>-molar-mass (species el))
 		       (mass-fraction el))
-		    (sp-molar-mass ref)))
+		    (<sp>-molar-mass ref)))
 	     (setf (gethash
 		    (<sp>-name (species el))
 		    (composition-components cmp))
@@ -464,7 +464,7 @@
 	   #'(lambda (el)
 	       (or (and (numberp (second el)) (= 0.0 (second el)))
 		   (and (stringp (first el)) (string= "" (first el)))))
-	   (sp-chemical-formula ref))))
+	   (<sp>-chemical-formula ref))))
     (list cmp 1.0)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -486,17 +486,17 @@
    #'(lambda (el)
        (or (and (numberp (second el)) (= 0.0 (second el)))
 	   (and (stringp (first el)) (string= "" (first el)))))
-   (sp-chemical-formula ref))))
+   (<sp>-chemical-formula ref))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export 'molar-mass )
 (defmethod molar-mass ((rt <reactant>))
-  (* (moles-number rt) (sp-molar-mass (species rt))))
+  (* (moles-number rt) (<sp>-molar-mass (species rt))))
 
 (export 'molar-mass )
 (defmethod molar-mass ((pt <product>))
-  (* (moles-number pt) (sp-molar-mass (species pt))))
+  (* (moles-number pt) (<sp>-molar-mass (species pt))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -507,7 +507,7 @@
 "
   (* -1
      (moles-number rt)
-     (sp-heat-formation (species rt))))
+     (<sp>-heat-formation (species rt))))
 
 (export 'thermal-effect )
 (defmethod thermal-effect ((rt <product>))
@@ -515,7 +515,7 @@
  тепловой эффект получении продукта химической реакции.
 "
   (* (moles-number rt)
-     (sp-heat-formation (species rt))))
+     (<sp>-heat-formation (species rt))))
 
 (export 'thermal-effect )
 (defmethod thermal-effect ((reac <reaction>))
@@ -538,67 +538,67 @@
  Вывод должен осуществляться в форме пригодной для последующего считывания 
  в формате TermoBuild.
 "
-  (labels ((rec () (first (sp-reccords sp))))
-    (format s "~16A  ~62A~%" (<sp>-name sp) (sp-comments sp))
+  (labels ((rec () (first (<sp>-reccords sp))))
+    (format s "~16A  ~62A~%" (<sp>-name sp) (<sp>-comments sp))
     (format s "~2D ~6A ~{~2A~6,2F~}~2D~13,7f~15,3f~%"
-	    (sp-number-temperature-intervals sp)
-	    (sp-reference-date-code sp) 
-	    (apply #'append (sp-chemical-formula sp))
+	    (<sp>-number-temperature-intervals sp)
+	    (<sp>-reference-date-code sp) 
+	    (apply #'append (<sp>-chemical-formula sp))
 	    (<sp>-phase sp) 
-	    (sp-molar-mass sp) 
-	    (sp-heat-formation sp))
-    (when (/= 0 (sp-number-temperature-intervals sp))
+	    (<sp>-molar-mass sp) 
+	    (<sp>-heat-formation sp))
+    (when (/= 0 (<sp>-number-temperature-intervals sp))
       (map nil #'(lambda (el)(dump el s))
-	   (sp-reccords sp)))
-    (when (= 0 (sp-number-temperature-intervals sp))
+	   (<sp>-reccords sp)))
+    (when (= 0 (<sp>-number-temperature-intervals sp))
       (format s "~{~11,3f~}~1D~{~5,1F~}  ~15,3F~%" ;
-	      (sp-rec-temperature-range (rec))
-	      (sp-rec-number-coeff (rec))
+	      (<sp-rec>-temperature-range (rec))
+	      (<sp-rec>-number-coeff (rec))
 	      (append-some-value-to-length
-	       8 0.0 (sp-rec-polynomial-exponents (rec))) ;; Проверить считыватель
-	      (sp-rec-h_298.15-h-0 (rec))))))
+	       8 0.0 (<sp-rec>-polynomial-exponents (rec))) ;; Проверить считыватель
+	      (<sp-rec>-h_298.15-h-0 (rec))))))
 
 (defmethod dump+ ((sp <sp>) s)
-  (labels ((rec () (first (sp-reccords sp))))
-    (format s "~16A  ~62A~%" (<sp>-name sp) (sp-comments sp))
+  (labels ((rec () (first (<sp>-reccords sp))))
+    (format s "~16A  ~62A~%" (<sp>-name sp) (<sp>-comments sp))
     (format s "~2D ~6A ~{~2A~6,2F~}~2D~13,7f~15,3f~%"
-	    (sp-number-temperature-intervals sp)
-	    (sp-reference-date-code sp) 
-	    (apply #'append (sp-chemical-formula sp))
+	    (<sp>-number-temperature-intervals sp)
+	    (<sp>-reference-date-code sp) 
+	    (apply #'append (<sp>-chemical-formula sp))
 	    (<sp>-phase sp) 
-	    (sp-molar-mass sp) 
-	    (sp-heat-formation sp))
-    (when (/= 0 (sp-number-temperature-intervals sp))
+	    (<sp>-molar-mass sp) 
+	    (<sp>-heat-formation sp))
+    (when (/= 0 (<sp>-number-temperature-intervals sp))
       (map nil #'(lambda (el) (dump+ el s))
-	   (sp-reccords sp)))
-    (when (= 0 (sp-number-temperature-intervals sp))
+	   (<sp>-reccords sp)))
+    (when (= 0 (<sp>-number-temperature-intervals sp))
       (format s "~{~11,3f~}~1D~{~5,1F~}  ~15,3F~%" ;
-	      (sp-rec-temperature-range (rec))
-	      (sp-rec-number-coeff (rec))
+	      (<sp-rec>-temperature-range (rec))
+	      (<sp-rec>-number-coeff (rec))
 	      (append-some-value-to-length
-	       8 0.0 (sp-rec-polynomial-exponents (rec))) ;; Проверить считыватель
-	      (sp-rec-h_298.15-h-0 (rec))))))
+	       8 0.0 (<sp-rec>-polynomial-exponents (rec))) ;; Проверить считыватель
+	      (<sp-rec>-h_298.15-h-0 (rec))))))
 
 (defmethod dump+d->e ((sp <sp>) s)
-  (labels ((rec () (first (sp-reccords sp))))
-    (format s "~16A  ~62A~%" (<sp>-name sp) (sp-comments sp))
+  (labels ((rec () (first (<sp>-reccords sp))))
+    (format s "~16A  ~62A~%" (<sp>-name sp) (<sp>-comments sp))
     (format s "~2D ~6A ~{~2A~6,2F~}~2D~13,7f~15,3f~%"
-	    (sp-number-temperature-intervals sp)
-	    (sp-reference-date-code sp) 
-	    (apply #'append (sp-chemical-formula sp))
+	    (<sp>-number-temperature-intervals sp)
+	    (<sp>-reference-date-code sp) 
+	    (apply #'append (<sp>-chemical-formula sp))
 	    (<sp>-phase sp) 
-	    (sp-molar-mass sp) 
-	    (sp-heat-formation sp))
-    (when (/= 0 (sp-number-temperature-intervals sp))
+	    (<sp>-molar-mass sp) 
+	    (<sp>-heat-formation sp))
+    (when (/= 0 (<sp>-number-temperature-intervals sp))
       (map nil #'(lambda (el)(dump+d->e el s))
-	   (sp-reccords sp)))
-    (when (= 0 (sp-number-temperature-intervals sp))
+	   (<sp>-reccords sp)))
+    (when (= 0 (<sp>-number-temperature-intervals sp))
       (format s "~{~11,3f~}~1D~{~5,1F~}  ~15,3F~%" ;
-	      (sp-rec-temperature-range (rec))
-	      (sp-rec-number-coeff (rec))
+	      (<sp-rec>-temperature-range (rec))
+	      (<sp-rec>-number-coeff (rec))
 	      (append-some-value-to-length
-	       8 0.0 (sp-rec-polynomial-exponents (rec))) ;; Проверить считыватель
-	      (sp-rec-h_298.15-h-0 (rec))))))
+	       8 0.0 (<sp-rec>-polynomial-exponents (rec))) ;; Проверить считыватель
+	      (<sp-rec>-h_298.15-h-0 (rec))))))
 
 (defun lst-from-below (from below replace-nil-with lst)
   "Пример использования:
@@ -618,22 +618,22 @@
 		  (if (and (numberp el)(= el 0.0d0)) " 0.000000000D+00" el))
 	      lst)))
     (format s "~{~11,3f~}~1D~{~5,1F~}  ~15,3F~%"
-	    (sp-rec-temperature-range rec)
-	    (sp-rec-number-coeff rec)
+	    (<sp-rec>-temperature-range rec)
+	    (<sp-rec>-number-coeff rec)
 	    (append-some-value-to-length
-	     8 0.0 (sp-rec-polynomial-exponents rec)) ;; Проверить считыватель
-	    (sp-rec-h_298.15-h-0 rec))
+	     8 0.0 (<sp-rec>-polynomial-exponents rec)) ;; Проверить считыватель
+	    (<sp-rec>-h_298.15-h-0 rec))
     (format s "~{~16,9,2E~}~%"
 	    (fmt-16-9
 	     (lst-from-below 0 5
 			     (make-string 16 :initial-element #\Space)
-			     (sp-rec-coefficients rec))))
+			     (<sp-rec>-coefficients rec))))
     (format s "~{~16,9,2E~}~{~16,9,2E~}~%"
 	    (fmt-16-9
 	     (lst-from-below 5 8
 			     (make-string 16 :initial-element #\Space)
-			     (sp-rec-coefficients rec)))
-	    (fmt-16-9 (sp-rec-integration-constants rec)))))
+			     (<sp-rec>-coefficients rec)))
+	    (fmt-16-9 (<sp-rec>-integration-constants rec)))))
 
 (defmethod dump+ ((rec <sp-rec>) s)
   (labels ((fmt-16-9 (lst)
@@ -642,20 +642,20 @@
 		  (if (and (numberp el)(= el 0.0d0)) " 0.000000000D+00" el))
 	      lst)))
     (format s " ~{~10,3f~} ~1D~{~5,1F~}  ~15,3F~%"
-	    (sp-rec-temperature-range rec)
-	    (sp-rec-number-coeff rec)
+	    (<sp-rec>-temperature-range rec)
+	    (<sp-rec>-number-coeff rec)
 	    (append-some-value-to-length
-	     8 0.0 (sp-rec-polynomial-exponents rec)) ;; Проверить считыватель
-	    (sp-rec-h_298.15-h-0 rec))
+	     8 0.0 (<sp-rec>-polynomial-exponents rec)) ;; Проверить считыватель
+	    (<sp-rec>-h_298.15-h-0 rec))
     (format s "~{~16,9,2E~}~%"
 	    (fmt-16-9
 	     (lst-from-below 0 5 0.0d0
-			     (sp-rec-coefficients rec))))
+			     (<sp-rec>-coefficients rec))))
     (format s "~{~16,9,2E~}~{~16,9,2E~}~%"
 	    (fmt-16-9
 	     (lst-from-below 5 8 0.0d0
-			     (sp-rec-coefficients rec)))
-	    (fmt-16-9 (sp-rec-integration-constants rec)))))
+			     (<sp-rec>-coefficients rec)))
+	    (fmt-16-9 (<sp-rec>-integration-constants rec)))))
 
 (defmethod dump+d->e ((rec <sp-rec>) s)
   (labels ((fmt-16-9 (lst)
@@ -664,20 +664,20 @@
 		  (if (and (numberp el)(= el 0.0d0)) " 0.000000000E+00" el))
 	      lst)))
     (format s " ~{~10,3f~} ~1D~{~5,1F~}  ~15,3F~%"
-	    (sp-rec-temperature-range rec)
-	    (sp-rec-number-coeff rec)
+	    (<sp-rec>-temperature-range rec)
+	    (<sp-rec>-number-coeff rec)
 	    (append-some-value-to-length
-	     8 0.0 (sp-rec-polynomial-exponents rec)) ;; Проверить считыватель
-	    (sp-rec-h_298.15-h-0 rec))
+	     8 0.0 (<sp-rec>-polynomial-exponents rec)) ;; Проверить считыватель
+	    (<sp-rec>-h_298.15-h-0 rec))
     (format s "~{~16,9,2,,,,'EE~}~%"
 	    (fmt-16-9
 	     (lst-from-below 0 5 0.0d0
-			     (sp-rec-coefficients rec))))
+			     (<sp-rec>-coefficients rec))))
     (format s "~{~16,9,2,,,,'EE~}~{~16,9,2,,,,'EE~}~%"
 	    (fmt-16-9
 	     (lst-from-below 5 8 0.0d0
-			     (sp-rec-coefficients rec)))
-	    (fmt-16-9 (sp-rec-integration-constants rec)))))
+			     (<sp-rec>-coefficients rec)))
+	    (fmt-16-9 (<sp-rec>-integration-constants rec)))))
 
 (export 'dump )
 (defmethod dump ((ht hash-table) s)

@@ -30,10 +30,26 @@
 #+CREATOR: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 26.3 (<a href="https://orgmode.org">Org</a> mode 9.1.9)
 #+LATEX_HEADER:
 
-* Формулы для расчета влажного воздуа
+* [14/23] ToDo
+- [X] Переименовать аксессоры класса <sp-rec>  
+  - [X] <sp-rec>-temperature-range;
+  - [X] <sp-rec>-number-coeff;
+  - [X] <sp-rec>-polynomial-exponents;
+  - [X] <sp-rec>-h_298.15-h-0;
+  - [X] <sp-rec>-coefficients;
+  - [X] <sp-rec>-integration-constants.
 
+- [X] Переименовать аксессоры класса <sp>
+  - [X] <sp>-name;
+  - [X] <sp>-comments;
+  - [X] <sp>-number-temperature-intervals;
+  - [X] <sp>-reference-date-code;
+  - [X] <sp>-chemical-formula;
+  - [X] <sp>-phase;
+  - [X] <sp>-molar-mass;
+  - [X] <sp>-heat-formation;
+  - [X] <sp>-reccords.
 
-* [12/21] Что сделать
 - [ ] Вызов функции не проходит (gases:relativ-air-mass-for-burning *Way-Chzou-1*).
 - [-] Добавить функцию отбора компонентов из БД:
   - [X] По количеству атомов компонента => написаны макросы find-by-atoms, find-atoms, q-of
@@ -104,3 +120,5 @@
   - [X] Должно считываться 8 коэффициентов, а вычисляться по семи (по кайней мере пока).
   - [X] Ошибка при определении состава компонента.
   - [X] В считывателе <sp-rec> для полей, считываемых в формате D, добавить перобразование строки с заменой E->D.
+* Формулы для расчета влажного воздуа
+

@@ -38,74 +38,81 @@
            <molecule>-smile
            <molecule>-name-en
            )
-  (:export <sp>-name
-           sp-reccords
+  (:export <sp>
+           <sp>-name
+           <sp>-reccords
            <sp>-phase
-           sp-comments
-           sp-rec-integration-constants
-           sp-number-temperature-intervals
-           sp-rec-coefficients
-           sp-rec-polynomial-exponents
-           sp-rec-temperature-range
-           sp-chemical-formula get-sp
-           sp-rec-number-coeff
-           sp-molar-mass
-           sp-rec-h_298.15-h-0 
+           <sp>-comments
+           <sp>-heat-formation
+           <sp-rec>-integration-constants
+           <sp>-number-temperature-intervals
+           <sp>-molar-mass
+           <sp>-chemical-formula
+           
+           get-sp
            cp/r-new
            mole-fraction
+
+           )
+  (:export <sp-rec>
+           <sp-rec>-polynomial-exponents
+           <sp-rec>-temperature-range
+           <sp-rec>-number-coeff
+           <sp-rec>-h_298.15-h-0
+           <sp-rec>-coefficients
 
            )
   (:export make-instance-component
            make-instance-composition
            )
-  (:export <sp>
-           <sp-rec>
-           <product>
-           <component>
-           <composition>
-           <reactant>
-           <reaction>
+  (:export 
+
+   <product>
+   <component>
+   <composition>
+   <reactant>
+   <reaction>
 
    
-           species
-           composition-components
+   species
+   composition-components
 
-           culc-mass-fractions
-           h/rt-old
-           h/rt-new
-           mass-fraction
-           elements
+   culc-mass-fractions
+   h/rt-old
+   h/rt-new
+   mass-fraction
+   elements
 
-           sp-heat-formation
+
              
-           clear-db
+   clear-db
 
-           init-db
+   init-db
              
-           *t-normal*
-           *p-normal*
-           s/r-new
+   *t-normal*
+   *p-normal*
+   s/r-new
              
-           reaction-products
+   reaction-products
              
-           moles-number
+   moles-number
 
-           get-db
-           sp-reference-date-code
+   get-db
+   <sp>-reference-date-code
 
 
-           culc-molar-fractions
+   culc-molar-fractions
              
-           cp/r-old reaction-reactants
+   cp/r-old reaction-reactants
 
-           *c-0*
-           *kal*             
-           *t-standard*
-           *p-standard*
-           *rμ*
-           find-atoms q-of find-by-atoms
+   *c-0*
+   *kal*             
+   *t-standard*
+   *p-standard*
+   *rμ*
+   find-atoms q-of find-by-atoms
 
-           )) 
+   )) 
 
 
 ;;;; (declaim (optimize (compilation-speed 0) (debug 3) (safety 0) (space 0) (speed 0)))

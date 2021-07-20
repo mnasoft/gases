@@ -85,7 +85,7 @@
 
 (thermal-effect *rt*)
 
-(sp-heat-formation (species *rt*))
+(<sp>-heat-formation (species *rt*))
 
 
 
@@ -123,7 +123,7 @@
        (mapcar #'(lambda (el)
 		   (let ((elm (get-sp (first el) )))
 ;;;;	      (break "~S" elm)
-		     (* (sp-molar-mass elm ) (second el))))
+		     (* (<sp>-molar-mass elm ) (second el))))
 	       '(("N2"	                0.0003)
 		 ("CO2"	                0.0022)
 		 ("CH4"	                0.7374 "C1")
@@ -143,7 +143,7 @@
 (apply #'+
        (mapcar #'(lambda (el)
 		   (let ((elm (get-sp (first el) )))
-		     (* (sp-molar-mass elm ) (second el))))
+		     (* (<sp>-molar-mass elm ) (second el))))
 	       '(
 		 ("CO2"	                0.0739)
 		 ("N2"	                0.0004)

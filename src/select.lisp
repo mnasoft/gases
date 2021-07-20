@@ -20,7 +20,7 @@
  (find-atoms (get-sp \"H2O\") (and (q-of \"NA\" =  1) (q-of \"CL\" = 1) t))
 @end(code)
 "
-  `(let ((formula (sp-chemical-formula ,elem)))
+  `(let ((formula (<sp>-chemical-formula ,elem)))
      ,rule))
 
 (export 'find-by-atoms )
