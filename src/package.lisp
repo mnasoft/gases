@@ -1,32 +1,111 @@
 ;;;; package.lisp
 
-(defpackage #:gases (:use #:cl)
-            (:export molar-mass
-                     molar-isobaric-heat-capacity 
-                     molar-isochoric-heat-capacity 
-                     molar-enthalpy 
-                     molar-entropy 
-                     adiabatic-index 
-                     molar-fraction-summ 
-                     mass-fraction-summ  
-                     mix-composition 
-                     check-mole-fraction 
-                     check-mass-fraction 
-                     reference 
-                     elemental-mass-fraction 
-                     dump 
-                     adapt-mole-fractions 
-                     adapt-mass-fractions 
-                     insert 
-                     combustion-reaction 
-                     relativ-oxigen-mass-for-burning 
-                     relativ-air-mass-for-burning  
-                     wobber-hight 
-                     wobber-low 
-                     thermal-effect 
-                     Q-work-low 
-                     density 
-                     density-relative)) 
+(defpackage #:gases
+  (:use #:cl)
+  (:export molar-mass
+           molar-isobaric-heat-capacity 
+           molar-isochoric-heat-capacity 
+           molar-enthalpy 
+           molar-entropy 
+           adiabatic-index 
+           molar-fraction-summ 
+           mass-fraction-summ  
+           mix-composition 
+           check-mole-fraction 
+           check-mass-fraction 
+           reference 
+           elemental-mass-fraction 
+           dump 
+           adapt-mole-fractions 
+           adapt-mass-fractions 
+           insert 
+           combustion-reaction 
+           relativ-oxigen-mass-for-burning 
+           relativ-air-mass-for-burning  
+           wobber-hight 
+           wobber-low 
+           thermal-effect 
+           Q-work-low 
+           density 
+           density-relative)
+  (:export <molecule>
+           <molecule>-name-en-short
+           <molecule>-formula print-table
+           <molecule>-μcp-a-b-c
+           <molecule>-name-ru
+           <molecule>-mass
+           <molecule>-note
+           <molecule>-smile
+           <molecule>-name-en
+           )
+  (:export <sp>-name
+           sp-reccords
+           <sp>-phase
+           sp-comments
+           sp-rec-integration-constants
+           sp-number-temperature-intervals
+           sp-rec-coefficients
+           sp-rec-polynomial-exponents
+           sp-rec-temperature-range
+           sp-chemical-formula get-sp
+           sp-rec-number-coeff
+           sp-molar-mass
+           sp-rec-h_298.15-h-0 
+           cp/r-new
+           mole-fraction
+
+           )
+  (:export make-instance-component
+           make-instance-composition
+           )
+  (:export <sp>
+           <sp-rec>
+           <product>
+           <component>
+           <composition>
+           <reactant>
+           <reaction>
+
+   
+           species
+           composition-components
+
+           culc-mass-fractions
+           h/rt-old
+           h/rt-new
+           mass-fraction
+           elements
+
+           sp-heat-formation
+             
+           clear-db
+
+           init-db
+             
+           *t-normal*
+           *p-normal*
+           s/r-new
+             
+           reaction-products
+             
+           moles-number
+
+           get-db
+           sp-reference-date-code
+
+
+           culc-molar-fractions
+             
+           cp/r-old reaction-reactants
+
+           *c-0*
+           *kal*             
+           *t-standard*
+           *p-standard*
+           *rμ*
+           find-atoms q-of find-by-atoms
+
+           )) 
 
 
 ;;;; (declaim (optimize (compilation-speed 0) (debug 3) (safety 0) (space 0) (speed 0)))

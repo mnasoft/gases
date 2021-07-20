@@ -415,7 +415,7 @@
 		       (mass-fraction el))
 		    (sp-molar-mass (species ref))))
 	     (setf (gethash
-		    (sp-name (species el))
+		    (<sp>-name (species el))
 		    (composition-components cmp))
 		   el))
 	 (mapcar
@@ -450,7 +450,7 @@
 		       (mass-fraction el))
 		    (sp-molar-mass ref)))
 	     (setf (gethash
-		    (sp-name (species el))
+		    (<sp>-name (species el))
 		    (composition-components cmp))
 		   el))
 	 (mapcar
@@ -539,12 +539,12 @@
  в формате TermoBuild.
 "
   (labels ((rec () (first (sp-reccords sp))))
-    (format s "~16A  ~62A~%" (sp-name sp) (sp-comments sp))
+    (format s "~16A  ~62A~%" (<sp>-name sp) (sp-comments sp))
     (format s "~2D ~6A ~{~2A~6,2F~}~2D~13,7f~15,3f~%"
 	    (sp-number-temperature-intervals sp)
 	    (sp-reference-date-code sp) 
 	    (apply #'append (sp-chemical-formula sp))
-	    (sp-phase sp) 
+	    (<sp>-phase sp) 
 	    (sp-molar-mass sp) 
 	    (sp-heat-formation sp))
     (when (/= 0 (sp-number-temperature-intervals sp))
@@ -560,12 +560,12 @@
 
 (defmethod dump+ ((sp <sp>) s)
   (labels ((rec () (first (sp-reccords sp))))
-    (format s "~16A  ~62A~%" (sp-name sp) (sp-comments sp))
+    (format s "~16A  ~62A~%" (<sp>-name sp) (sp-comments sp))
     (format s "~2D ~6A ~{~2A~6,2F~}~2D~13,7f~15,3f~%"
 	    (sp-number-temperature-intervals sp)
 	    (sp-reference-date-code sp) 
 	    (apply #'append (sp-chemical-formula sp))
-	    (sp-phase sp) 
+	    (<sp>-phase sp) 
 	    (sp-molar-mass sp) 
 	    (sp-heat-formation sp))
     (when (/= 0 (sp-number-temperature-intervals sp))
@@ -581,12 +581,12 @@
 
 (defmethod dump+d->e ((sp <sp>) s)
   (labels ((rec () (first (sp-reccords sp))))
-    (format s "~16A  ~62A~%" (sp-name sp) (sp-comments sp))
+    (format s "~16A  ~62A~%" (<sp>-name sp) (sp-comments sp))
     (format s "~2D ~6A ~{~2A~6,2F~}~2D~13,7f~15,3f~%"
 	    (sp-number-temperature-intervals sp)
 	    (sp-reference-date-code sp) 
 	    (apply #'append (sp-chemical-formula sp))
-	    (sp-phase sp) 
+	    (<sp>-phase sp) 
 	    (sp-molar-mass sp) 
 	    (sp-heat-formation sp))
     (when (/= 0 (sp-number-temperature-intervals sp))
@@ -733,8 +733,8 @@ defaults to CHAR= (for case-sensitive comparison)."
 		       sp-str sp-str+ sp-str+d->e)
 	       nil))))
 
-(defmethod check-sp ((sp-name string))
-  (check-sp (get-sp sp-name)))
+(defmethod check-sp ((<sp>-name string))
+  (check-sp (get-sp <sp>-name)))
 
 (defun check-db ()
   (let ((rezult t)
@@ -803,7 +803,7 @@ defaults to CHAR= (for case-sensitive comparison)."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod insert ((c <component>) (cmp <composition>))
-  (setf (gethash (sp-name (species c)) (composition-components cmp)) c)
+  (setf (gethash (<sp>-name (species c)) (composition-components cmp)) c)
   cmp)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -863,11 +863,11 @@ defaults to CHAR= (for case-sensitive comparison)."
 	(reactants nil)
 	(products  nil))
     (block not-combastor-sp
-      (when (gethash (sp-name sp) *not-combasted-sp*)
+      (when (gethash (<sp>-name sp) *not-combasted-sp*)
 	(return-from combustion-reaction
 	  (make-instance 'gases:<reaction>
-			 :reactant-names (list (gases:sp-name sp))
-			 :product-names  (list (gases:sp-name sp))))))
+			 :reactant-names (list (gases:<sp>-name sp))
+			 :product-names  (list (gases:<sp>-name sp))))))
     (block check-and-make-reaction
       (maphash
        #'(lambda (key value)
@@ -891,7 +891,7 @@ defaults to CHAR= (for case-sensitive comparison)."
       (block compose-reaction
 	(block compose-reactants
 	  (push "O2" reactants)
-	  (push (sp-name sp) reactants))
+	  (push (<sp>-name sp) reactants))
 	(block compose-products
 	  (when (reference "N" cmp) (push "N2" products ))
 	  (when (reference "S" cmp) (push "SO2" products ))

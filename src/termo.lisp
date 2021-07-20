@@ -226,7 +226,7 @@
   (clear-db)
   (mapc #'(lambda (el)
 	    (let ((sp-elem (make-instance-sp el)))
-	      (setf (get-sp (sp-name sp-elem)) sp-elem)))
+	      (setf (get-sp (<sp>-name sp-elem)) sp-elem)))
 	(make-element-table)))
 
 (block init-db

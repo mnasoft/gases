@@ -128,7 +128,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(gases:molar-mass                   *Way-Chzou*  ) ; => 20.1957304485625d0
+(gases:molar-mass                   *Way-Chzou*) ; => 20.1957304485625d0
 (gases:adiabatic-index              *Way-Chzou* (+ 273.15 15)) ; => 1.2596807623575537d0 (125.96807623575536d0%)
 (gases:Q-work-low                   *Way-Chzou*)
 (gases:relativ-air-mass-for-burning *Way-Chzou*)
@@ -136,7 +136,7 @@
 (gases:molar-mass                   *Way-Chzou-1*  )  ; => 24.38570891141071d0
 (gases:adiabatic-index              *Way-Chzou-1* (+ 273.15 50)) ; => 1.21145303407712d0 (121.14530340771199d0%)
 (gases:Q-work-low                   *Way-Chzou-1*) ; => -44755.68000335859d0
-(gases:relativ-air-mass-for-burning *Way-Chzou-1*)
+;;; (gases:relativ-air-mass-for-burning *Way-Chzou-1*)
 
 (gases:molar-mass                   *Way-Chzou-2*  )  ; => 24.597293909120197d0
 (gases:adiabatic-index              *Way-Chzou-2* (+ 273.15 50)) 
@@ -147,3 +147,5 @@
 (gases:adiabatic-index              *Way-Chzou-3* (+ 273.15 15))  ; => 1.2868344212928924d0 (128.68344212928923d0%)
 (gases:Q-work-low                   *Way-Chzou-3*)   ; => -46979.08236386708d0
 (gases:relativ-air-mass-for-burning *Way-Chzou-3*) 
+
+*air*

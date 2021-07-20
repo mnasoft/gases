@@ -139,19 +139,19 @@ component of entropy, respectively."))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (export '<sp>)
-(export 'sp-name)
+(export '<sp>-name)
 (export 'sp-comments)
 (export 'sp-number-temperature-intervals)
 (export 'sp-reference-date-code)
 (export 'sp-chemical-formula)
-(export 'sp-phase)
+(export '<sp>-phase)
 (export 'sp-molar-mass)
 (export 'sp-heat-formation)
 (export 'sp-reccords)
 
 (defclass <sp> ()
-  ((sp-name
-    :accessor sp-name :initarg :name :initform ""
+  ((name
+    :accessor <sp>-name :initarg :name :initform ""
     :documentation
     "Species name/formula (cols 1-15, 15str). 
 This serves as an ID. Note that 'l' is represented by L and 
@@ -186,7 +186,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
  number pairs. In the vast majority of cases the numbers are integers but
  in some cases they are non-integer, so floats are used.")
    (sp-phase
-    :accessor sp-phase :initarg :phase :initform ""
+    :accessor <sp>-phase :initarg :phase :initform ""
     :documentation
     "Phase (col 52, int). Zero for gas, nonzero for condensed phases.")
    (sp-molar-mass
@@ -212,21 +212,21 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 (defmethod print-object :before ((x <sp>) s)
   (format s
 	  "#<sp>(
- sp-name=~S
+ <sp>-name=~S
  sp-comments=~S
  sp-number-temperature-intervals=~S
  sp-reference-date-code=~S
  sp-chemical-formula=~S
- sp-phase=~S
+ <sp>-phase=~S
  sp-molar-mass=~S
  sp-heat-formation=~S
  sp-reccords=~S~%"
-	  (sp-name x)
+	  (<sp>-name x)
 	  (sp-comments x)
 	  (sp-number-temperature-intervals x)
 	  (sp-reference-date-code x)
 	  (sp-chemical-formula x)
-	  (sp-phase x)
+	  (<sp>-phase x)
 	  (sp-molar-mass x)
 	  (sp-heat-formation x)
 	  (sp-reccords x)))
@@ -258,7 +258,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 (defmethod print-object :before ((x <component>) s)
   (format s
 	  "#<component>(name=~S mole-fraction=~S mass-fraction=~S"
-	  (sp-name (species x)) (mole-fraction x) (mass-fraction x)))
+	  (<sp>-name (species x)) (mole-fraction x) (mass-fraction x)))
 
 (defmethod print-object         ((x <component>) s) (format s "" ))
 
@@ -326,7 +326,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
    "Представляет реактант химической реакции."))
 
 (defmethod print-object ((rt <reactant>) s)
-  (format s "~A*~A" (moles-number rt) (sp-name (species rt))))
+  (format s "~A*~A" (moles-number rt) (<sp>-name (species rt))))
 
 (defmethod elements ((rt <reactant>))
   (elements (species rt)))
@@ -345,7 +345,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
    "Представляет продукт химической реакции."))
 
 (defmethod print-object ((pt <product>) s)
-  (format s "~A*~A" (moles-number pt) (sp-name (species pt))))
+  (format s "~A*~A" (moles-number pt) (<sp>-name (species pt))))
 
 (defmethod elements ((pt <product>))
   (labels ((minus (lst)
