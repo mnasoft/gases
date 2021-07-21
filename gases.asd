@@ -34,7 +34,7 @@
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
   :depends-on (#:gases) ;;;; #:cl-annot
-  :components ((:module "molecule/src"
+  :components ((:module "src/molecule"
 		:serial t
 		:components ((:file "molecule")))))
 
