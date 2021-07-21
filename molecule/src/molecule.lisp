@@ -1,8 +1,18 @@
-;;;; elements.lisp
+;;;; classes.lisp
 
-(defpackage #:gases-molecule (:use #:cl)
-	    (:nicknames "G-M")
-	    (:documentation "Позволяет вычислять:
+(defpackage #:gases/molecule
+  (:use #:cl)
+  (:nicknames "G-M")
+  (:export <molecule> 
+           <molecule>-name-en-short
+           <molecule>-formula           
+           <molecule>-μcp-a-b-c
+           <molecule>-name-ru 
+           <molecule>-mass
+           <molecule>-note
+           <molecule>-smile
+           <molecule>-name-en)
+  (:documentation "Позволяет вычислять:
 1) Для отдельных компонентов:
  - молекулярную массу компонента - μ;
  - Мольную (массовую) изобарную теплоёмкость - μCp (Cp);
@@ -16,57 +26,40 @@
 
 Данные взяты из файла ./doc/111.jpg (см. мультитехнический справочник)."))
 
-(in-package :gases-molecule)
+(in-package :gases/molecule)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(export '<molecule>)
-
-(export '<molecule>-name-ru)
-
-(export '<molecule>-name-en)
-
-(export '<molecule>-name-en-short)
-
-(export '<molecule>-smile)
-
-(export '<molecule>-mass)
-
-(export '<molecule>-μcp-a-b-c)
-
-(export '<molecule>-formula)
-
-(export '<molecule>-note)
-
-(defclass <molecule> nil
-  ((molecule-name-ru
+(defclass <molecule> ()
+  ((name-ru
     :accessor <molecule>-name-ru :initarg :name-ru
     :initform ""
     :documentation
     "Обозначение русскоязычное")
-   (molecule-name-en
+   (name-en
     :accessor <molecule>-name-en
     :initarg :name-en
     :initform "" :documentation
     "Обозначение англоязычное")
-   (molecule-name-en-short
+   (name-en-short
     :accessor <molecule>-name-en-short :initarg
     :name-en-short :initform ""
     :documentation
     "Короткое англоязычное обозначение")
-   (molecule-smile
+   (smile
     :accessor <molecule>-smile :initarg :smile :initform "" :documentation "Smile")
-   (molecule-mass
+   (mass
     :accessor <molecule>-mass :initarg :mass :initform ""
     :documentation "Молекулярная масса кг/моль")
-   (molecule-μcp-a-b-c
+   (μcp-a-b-c
     :accessor <molecule>-μcp-a-b-c :initarg :μcp-a-b-c
     :initform ""
     :documentation
     "Коэффициенты для расчета мольной теплоемкости ккал/(моль*К). 
 Данные взяты из файла ./doc/111.jpg (см. мультитехнический справочник Интернет).")
-   (molecule-formula
+   (formula
     :accessor <molecule>-formula :initarg :formula
     :initform "" :documentation "Химическая формула")
-   (molecule-note :accessor <molecule>-note :initarg :note :initform ""
+   (note :accessor <molecule>-note :initarg :note :initform ""
                   :documentation "Примечание"))
   (:documentation "Представляет молекулу вещества."))
 
@@ -84,31 +77,30 @@
 (defmethod print-object :after  ((x <molecule>) s) (format s ")" ))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;;; "Данные взяты из файла ./doc/111.jpg (см. мультитехнический справочник)."
 (progn
 (export '*Air*) (defparameter *Air*          (make-instance '<molecule> :name-en-short "Air"          :μcp-a-b-c '( 6.557    1.477   -0.2148 ) :mass 0.02896      :name-ru "Воздух"              :formula "Воздух"     :note "0.02896"))
 (export '*NH3*) (defparameter *NH3*          (make-instance '<molecule> :name-en-short "NH3"          :μcp-a-b-c '( 6.086    8.812   -1.506  ) :mass 0.0170306    :name-ru "Аммиак"              :formula "NH3"        :note "(+ 14 3)"))
 (export '*Br2*) (defparameter *Br2*          (make-instance '<molecule> :name-en-short "Br2"          :μcp-a-b-c '( 8.4228   0.9739  -0.3555 ) :mass 0.159808     :name-ru "Бром"                :formula "Br2"        :note "(* 79.904 2)"))
 (export '*CO2*) (defparameter *CO2*          (make-instance '<molecule> :name-en-short "CO2"          :μcp-a-b-c '( 6.214   10.396   -3.545  ) :mass 0.04401      :name-ru "Двуокись углерода"   :formula "CO2"        :note "(+ (* 12 1) (* 16 2))"))
-(export '*CO*) (defparameter *CO*           (make-instance '<molecule> :name-en-short "CO"           :μcp-a-b-c '( 6.420    1.665   -0.196  ) :mass 0.02801      :name-ru "Окись углерода"      :formula "CO"         :note "(+ (* 12 1) (* 16 1))"))
+(export '*CO*)  (defparameter *CO*           (make-instance '<molecule> :name-en-short "CO"           :μcp-a-b-c '( 6.420    1.665   -0.196  ) :mass 0.02801      :name-ru "Окись углерода"      :formula "CO"         :note "(+ (* 12 1) (* 16 1))"))
 (export '*Cl2*) (defparameter *Cl2*          (make-instance '<molecule> :name-en-short "Cl2"          :μcp-a-b-c '( 7.5755   2.4244  -0.9650 ) :mass 0.070903     :name-ru "Хлор"                :formula "Cl2"        :note "(+ 35.446 35.457)"))
-(export '*H2*) (defparameter *H2*           (make-instance '<molecule> :name-en-short "H2"           :μcp-a-b-c '( 6.9469  -0.1999   0.4808 ) :mass 0.0020159502 :name-ru "Водород"             :formula "H2"         :note "(+ 1.00784 1.00811)"))
+(export '*H2*)  (defparameter *H2*           (make-instance '<molecule> :name-en-short "H2"           :μcp-a-b-c '( 6.9469  -0.1999   0.4808 ) :mass 0.0020159502 :name-ru "Водород"             :formula "H2"         :note "(+ 1.00784 1.00811)"))
 (export '*HBr*) (defparameter *HBr*          (make-instance '<molecule> :name-en-short "HBr"          :μcp-a-b-c '( 5.5776   0.9549   0.1581 ) :mass 0.08091      :name-ru "Бромистый водород"   :formula "HBr"        :note "80.91"))
 (export '*HCl*) (defparameter *HCl*          (make-instance '<molecule> :name-en-short "HCl"          :μcp-a-b-c '( 6.732    0.4325   0.3697 ) :mass 0.0364606    :name-ru "Хлористый водород"   :formula "HCl"        :note "36.46061"))
 (export '*H2S*) (defparameter *H2S*          (make-instance '<molecule> :name-en-short "H2S"          :μcp-a-b-c '( 6.662    5.134   -0.854  ) :mass 0.034082     :name-ru "Сероводород"         :formula "H2S"        :note "34.082"))
-(export '*N2*) (defparameter *N2*           (make-instance '<molecule> :name-en-short "N2"           :μcp-a-b-c '( 6.4492   1.4125  -0.0807 ) :mass 0.02801371   :name-ru "Азот"                :formula "N2"         :note "(+ 14.00643 14.00728)"))
-(export '*NO*) (defparameter *NO*           (make-instance '<molecule> :name-en-short "NO"           :μcp-a-b-c '( 6.440    2.069   -0.4206 ) :mass 0.0300061    :name-ru "Оксид азота"         :formula "NO"         :note "30.0061"))
+(export '*N2*)  (defparameter *N2*           (make-instance '<molecule> :name-en-short "N2"           :μcp-a-b-c '( 6.4492   1.4125  -0.0807 ) :mass 0.02801371   :name-ru "Азот"                :formula "N2"         :note "(+ 14.00643 14.00728)"))
+(export '*NO*)  (defparameter *NO*           (make-instance '<molecule> :name-en-short "NO"           :μcp-a-b-c '( 6.440    2.069   -0.4206 ) :mass 0.0300061    :name-ru "Оксид азота"         :formula "NO"         :note "30.0061"))
 (export '*N2O*) (defparameter *N2O*          (make-instance '<molecule> :name-en-short "N2O"          :μcp-a-b-c '( 6.529   10.515   -3.571  ) :mass 0.0440128    :name-ru "Закись азота"        :formula "N2O"        :note "44.0128"))
-(export '*O2*) (defparameter *O2*           (make-instance '<molecule> :name-en-short "O2"           :μcp-a-b-c '( 6.0954   3.2533  -1.0171 ) :mass 0.0319988    :name-ru "Кислород"            :formula "O2"         :note "O2 (+ 15.99903 15.99977)"))
+(export '*O2*)  (defparameter *O2*           (make-instance '<molecule> :name-en-short "O2"           :μcp-a-b-c '( 6.0954   3.2533  -1.0171 ) :mass 0.0319988    :name-ru "Кислород"            :formula "O2"         :note "O2 (+ 15.99903 15.99977)"))
 (export '*PH3*) (defparameter *PH3*          (make-instance '<molecule> :name-en-short "PH3"          :μcp-a-b-c '( 4.496   14.372   -4.072  ) :mass 0.03400      :name-ru "Фосфин"              :formula "PH3"        :note "34.00"))
 (export '*SO2*) (defparameter *SO2*          (make-instance '<molecule> :name-en-short "SO2"          :μcp-a-b-c '( 7.116    9.512   -3.511  ) :mass 0.0640540    :name-ru "Двуокись серы"       :formula "SO2"        :note "64.054"))
 (export '*SO3*) (defparameter *SO3*          (make-instance '<molecule> :name-en-short "SO3"          :μcp-a-b-c '( 6.077   23.537   -9.687  ) :mass 0.08006      :name-ru "Серный ангидрид"     :formula "SO3"        :note "80.06"))
 (export '*H2O*) (defparameter *H2O*          (make-instance '<molecule> :name-en-short "H2O"          :μcp-a-b-c '( 7.256    2.298    0.283  ) :mass 0.01801528   :name-ru "Вода"                :formula "H2O"        :note "!!! (+ (* 16 1) 2)"))
 
-(export '*C1*) (defparameter *C1*           (make-instance '<molecule> :name-en-short "C1"           :μcp-a-b-c '( 3.381   18.044   -4.300 ) :mass 0.01604      :name-ru "Метан"               :formula "CH4"        :note "!!! (+ (* 12 1) 4)" ))
-(export '*C2*) (defparameter *C2*           (make-instance '<molecule> :name-en-short "C2"           :μcp-a-b-c '( 2.247   38.201  -11.049 ) :mass 0.03007      :name-ru "Этан"                :formula "C2H6"       :note "(+ (* 12 2) 6)"))
-(export '*C3*) (defparameter *C3*           (make-instance '<molecule> :name-en-short "C3"           :μcp-a-b-c '( 2.410   57.195  -17.533 ) :mass 0.04410      :name-ru "Пропан"              :formula "C3H8"       :note "(+ (* 12 3) 8)"))
+(export '*C1*)  (defparameter *C1*           (make-instance '<molecule> :name-en-short "C1"           :μcp-a-b-c '( 3.381   18.044   -4.300 ) :mass 0.01604      :name-ru "Метан"               :formula "CH4"        :note "!!! (+ (* 12 1) 4)" ))
+(export '*C2*)  (defparameter *C2*           (make-instance '<molecule> :name-en-short "C2"           :μcp-a-b-c '( 2.247   38.201  -11.049 ) :mass 0.03007      :name-ru "Этан"                :formula "C2H6"       :note "(+ (* 12 2) 6)"))
+(export '*C3*)  (defparameter *C3*           (make-instance '<molecule> :name-en-short "C3"           :μcp-a-b-c '( 2.410   57.195  -17.533 ) :mass 0.04410      :name-ru "Пропан"              :formula "C3H8"       :note "(+ (* 12 3) 8)"))
 (export '*nC4*) (defparameter *nC4*          (make-instance '<molecule> :name-en-short "nC4"          :μcp-a-b-c '( 4.453   72.270  -22.214 ) :mass 0.05812      :name-ru "н-Бутан"             :formula "C4H10"      :note "(+ (* 12 4) 10)"))
 (export '*iC4*) (defparameter *iC4*          (make-instance '<molecule> :name-en-short "iC4"          :μcp-a-b-c '( 3.332   75.214  -23.734 ) :mass 0.05812      :name-ru "2-Метил-Пропан"      :formula "C4H10"      :note "изо-Бутан (+ (* 12 4) 10)"))
 
@@ -136,6 +128,7 @@
 )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 
 (export 'μ )
 

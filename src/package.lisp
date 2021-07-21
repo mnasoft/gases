@@ -28,16 +28,6 @@
            Q-work-low 
            density 
            density-relative)
-  (:export <molecule>
-           <molecule>-name-en-short
-           <molecule>-formula print-table
-           <molecule>-μcp-a-b-c
-           <molecule>-name-ru
-           <molecule>-mass
-           <molecule>-note
-           <molecule>-smile
-           <molecule>-name-en
-           )
   (:export <sp>
            <sp>-name
            <sp>-reccords

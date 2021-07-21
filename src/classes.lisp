@@ -2,67 +2,6 @@
 
 (in-package :gases)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(export '<molecule>)
-(export '<molecule>-name-ru)
-(export '<molecule>-name-en)
-(export '<molecule>-name-en-short)
-(export '<molecule>-smile)
-(export '<molecule>-mass)
-(export '<molecule>-μcp-a-b-c)
-(export '<molecule>-formula)
-(export '<molecule>-note)
-
-(defclass <molecule> ()
-  ((name-ru
-    :accessor <molecule>-name-ru :initarg :name-ru
-    :initform ""
-    :documentation
-    "Обозначение русскоязычное")
-   (name-en
-    :accessor <molecule>-name-en
-    :initarg :name-en
-    :initform "" :documentation
-    "Обозначение англоязычное")
-   (name-en-short
-    :accessor <molecule>-name-en-short :initarg
-    :name-en-short :initform ""
-    :documentation
-    "Короткое англоязычное обозначение")
-   (smile
-    :accessor <molecule>-smile :initarg :smile :initform "" :documentation "Smile")
-   (mass
-    :accessor <molecule>-mass :initarg :mass :initform ""
-    :documentation "Молекулярная масса кг/моль")
-   (μcp-a-b-c
-    :accessor <molecule>-μcp-a-b-c :initarg :μcp-a-b-c
-    :initform ""
-    :documentation
-    "Коэффициенты для расчета мольной теплоемкости ккал/(моль*К). 
-Данные взяты из файла ./doc/111.jpg (см. мультитехнический справочник Интернет).")
-   (formula
-    :accessor <molecule>-formula :initarg :formula
-    :initform "" :documentation "Химическая формула")
-   (note :accessor <molecule>-note :initarg :note :initform ""
-                  :documentation "Примечание"))
-  (:documentation "Представляет молекулу вещества."))
-
-(defmethod print-object :before ((x <molecule>) s)
-  (format s " #<molecule>(~S ~S ~S ~S ~S ~S"
-	  (<molecule>-name-en-short x)
-	  (<molecule>-name-ru x)
-	  (<molecule>-μcp-a-b-c x)
-	  (<molecule>-mass x)
-	  (<molecule>-formula x)
-	  (<molecule>-note x)))
-
-(defmethod print-object         ((x <molecule>) s) (format s "" ))
-
-(defmethod print-object :after  ((x <molecule>) s) (format s ")" ))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
- 
 (defclass <sp-rec> nil
   ((temperature-range
     :accessor <sp-rec>-temperature-range
