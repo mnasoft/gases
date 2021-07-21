@@ -6,6 +6,7 @@
 *.lisp-temp
 build
 \#*\#
+\.#*
 
 README.pdf
 README.tex
