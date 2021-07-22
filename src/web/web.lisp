@@ -2,12 +2,16 @@
 
 (in-package :cl-user)
 
-(defpackage #:gases.web
+(defpackage #:gases/web
   (:use #:cl)
-  (:export html-out make-table-periodic)
-  )
+  (:export html-out
+           make-table-periodic
+           filter-not-checked-elements 
+           query-map 
+           query-item 
+           ))
 
-(in-package :gases.web)
+(in-package :gases/web)
 
 (defparameter *tbl-colors*
   '((:c01 "#f66"    "Щёлочные металлы")
@@ -162,7 +166,7 @@
 					:min "1"
 					:max "100"))))))))
 
-(defmethod html-out ((mm math:<matrix>) s)
+(defmethod html-out ((mm math/arr-matr:<matrix>) s)
   "Новая версия"
   (let ((o-str (make-string-output-stream)))
     (format o-str "~%<table>")
@@ -179,31 +183,30 @@
     (format o-str "~%</table>")
     (format s "~A" (get-output-stream-string o-str))))
 
-(export 'make-table-periodic )
 (defun make-table-periodic ()
   (let ((tbl-perodic-long
-	  (make-instance 'math:<matrix>
+	  (make-instance 'math/arr-matr:<matrix>
 			 :dimensions '(10 19)
 			 :initial-element nil)))
       
     (loop :for i :from 0 :below (math:rows tbl-perodic-long) :do
       (loop :for j :from 0 :below (math:cols tbl-perodic-long) :do
-	(setf (math:mref tbl-perodic-long i j) nil)))
+	(setf (math/arr-matr:mref tbl-perodic-long i j) nil)))
   
     (loop :for i :from 1 :to 112 :do
       (let ((t-p-g (period-group-long i)))
 	(when (and t-p-g (eq :M (first t-p-g)))
-	  (setf (math:mref tbl-perodic-long
+	  (setf (math/arr-matr:mref tbl-perodic-long
 			   (1- (second t-p-g))
 			   (1- (third  t-p-g)))
 		(elements:atomic-number-element i)))
 	(when (and t-p-g (eq :LA (first t-p-g)))
-	  (setf (math:mref tbl-perodic-long
+	  (setf (math/arr-matr:mref tbl-perodic-long
 			   (+ (second t-p-g) 1)
 			   (1- (third  t-p-g)))
 		(elements:atomic-number-element i)))
 	(when (and t-p-g (eq :AC (first t-p-g)))
-	  (setf (math:mref tbl-perodic-long
+	  (setf (math/arr-matr:mref tbl-perodic-long
 			   (+ (second t-p-g) 2)
 			   (1- (third  t-p-g)))
 		(elements:atomic-number-element i)))))
@@ -220,7 +223,6 @@
 		      (:td (cl-who:str (gases:<sp>-molar-mass sp)))
 		      (:td (cl-who:str (gases:<sp>-comments   sp)))))))))
 
-(export 'filter-not-checked-elements )
 (defun filter-not-checked-elements (lst)
   (remove-if
    #'(lambda (el)
@@ -229,14 +231,12 @@
 	      (string= "" (cdr (assoc "num"   al :test #'string=))))))
    lst))
 
-(export 'query-map )
 (defun query-map (lst)
   (eval
    `(gases:find-by-atoms
      ,(cons 'and (mapcar #'query-item
 			 lst)))))
 
-(export 'query-item )
 (defun query-item (lst)
   (let ((element (string-upcase (car lst)))
 	(ch-box  (cdr (assoc "ch-box" (cdr lst) :test #'string=)))

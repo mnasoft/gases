@@ -4,26 +4,39 @@
   :version "0.2.0"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on ("cl-utilities"
-               "half-div"
-               "math"
-               
+  :depends-on (
+               "gases/core"
                "gases/molecule"
-               "gases/gas-dynamics") 
-  :components ((:module "src"
+               "gases/gas-dynamics"
+               "gases/wet-air"
+               "gases/web"))
+
+(defsystem "gases/core"
+  :version "0.2.0"
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
+  :depends-on ("cl-utilities" "half-div" "math" "gases/const") 
+  :components ((:module "src/core"
 		:serial t
 		:components
 		((:file "package")
-		 (:file "gases")
-		 (:file "defparameters")
-		 (:file "classes")
-		 (:file "termo")
-		 (:file "defgenerics")
-		 (:file "defmethods")
-		 (:file "burning")
-                                        ;(:file "example-gas")
-		 (:file "select"))))
+                 ;; (:file "example-gas")
+		 )))
   :description "Проект содержит некоторые формулы термодинамики"
+  :in-order-to ((test-op (test-op "gases/tests"))))
+
+(defsystem "gases/const"
+  :version "0.2.0"
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
+;;  :depends-on () 
+  :components ((:module "src/const"
+		:serial t
+		:components
+		((:file "const")
+                 ;; (:file "example-gas")
+		 )))
+  :description "Определяет некторые физические константы."
   :in-order-to ((test-op (test-op "gases/tests"))))
 
 (defsystem "gases/tests"
@@ -47,10 +60,10 @@
   :version "0.2.0"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on (#:cl-annot #:gases)
+;;  :depends-on () ;; "gases" #:cl-annot
   :components ((:module "src/wet-air"
 		:serial t
-		:components ((:file "air")))))
+		:components ((:file "wet-air")))))
 
 (defsystem "gases/gas-dynamics"
   :version "0.1.0"
@@ -66,7 +79,7 @@
   :version "0.0.1"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on ("gases" "math" "periodic-table" "caveman" "cl-who") ;; "cl-annot"
+  :depends-on ("math" "periodic-table" "caveman" "cl-who") ;; "gases" "cl-annot"
   :components ((:module "src/web"
 		:serial t
 		:components
