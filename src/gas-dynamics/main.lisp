@@ -2,19 +2,37 @@
 
 (in-package #:cl-user)
 
-(defpackage #:gases.gasodinamic
+(defpackage #:gases/gas-dynamics
   (:use #:cl)
-  (:nicknames "gasodinamic" "gd")
-  )
+  (:nicknames "gas-dynamics" "g-d")
+  (:export Mah-by-lambda 
+           Lambda-by-mah 
+           tau-by-lambda 
+           1/tau-by-mah 
+           pi-by-lambda 
+           epsilon-by-lambda 
+           q-by-lambda 
+           lambda-upper-bound 
+           lambda-by-q 
+           lambda-by-tau 
+           lambda-by-pi 
+           lambda-by-epsilon 
+           *Rmu*
+           R-by-mu 
+           m-by-k-mu 
+           q-by-MFR-T-P-A-k-mu 
+           a*-by-T-k-mu 
+           a0-by-T-k-mu 
+           a*-by-a0-k 
+           ro-by-p-t-lambda-k-mu 
+           w-by-lambda-temperature ))
 
-(in-package #:gases.gasodinamic)
+(in-package :gases/gas-dynamics)
 
 ;;;;
 ;;;; Число Маха - отношение скорости потока к местной скорости звука.
 ;;;; Приведенная скорость (коэффициент скорости) - отношение скорости потока к критической скорости.
-
-(export 'Mah-by-lambda )
-
+ 
 (defun Mah-by-lambda (lam k)
 "@b(Описание:) возвращает значение числа Маха по значению приведенной скорости lam и коэффициента адиабаты k.
 @b(Переменые:)
@@ -31,9 +49,7 @@
   (/
    (* lam (sqrt (/ 2 (+ k 1))))
    (sqrt (- 1 (* (/ (- k 1) (+ k 1)) (expt lam 2))))))
-
-(export 'Lambda-by-mah )
-
+ 
 (defun Lambda-by-mah (Mah k)
 "@b(Описание:) lambda-by-mah - газодинамическая функция идеального газа 
 возвращает значение приведенной скорости lam по значению числа Маха и коэффициента адиабаты k.
@@ -53,9 +69,7 @@
      (sqrt (+ 1 (* (/ (- k 1) 2) (expt Mah 2))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(export 'tau-by-lambda )
-
+ 
 (defun tau-by-lambda (lam k)
 "@b(Описание:) Газодинамическая функция идеального газа
 возвращает отношение температуры в данном сечении к температуре заторможенного потока T/T0.
@@ -72,9 +86,7 @@
 @end(code)
 "
   (- 1 (* (/ (- k 1) (+ k 1)) (expt lam 2))))
-
-(export '1/tau-by-mah )
-
+ 
 (defun 1/tau-by-mah (mah k)
 "@b(Описание:) 1/tau-by-mah - газодинамическая функция идеального газа
 возвращает отношение температуры в данном сечении к температуре заторможенного потока T0/T.
@@ -94,9 +106,7 @@
 @end(code)
 "
   (+ 1 (* (- k 1) 1/2 (expt mah 2))))
-
-(export 'pi-by-lambda )
-
+ 
 (defun pi-by-lambda (Lam k)
 "@b(Описание:) pi-by-lambda - газодинамическая функция идеального газа
 возвращает отношение давления в данном сечении к давлению заторможенного потока P/P0.
@@ -107,9 +117,7 @@
 @end(code)
 "
   (expt (- 1 (* (/ (- k 1) (+ k 1)) (expt Lam 2))) (/ k (- k 1))))
-
-(export 'epsilon-by-lambda )
-
+ 
 (defun epsilon-by-lambda (Lam k)
 "@b(Описание:) epsilon-by-lambda - газодинамическая функция идеального газа
 возвращает отношение плотности в данном сечении к плотности заторможенного потока ρ/ρ0.
@@ -120,9 +128,7 @@
 @end(code)
 "
   (expt (- 1 (* (/ (- k 1) (+ k 1)) (expt Lam 2))) (/ 1 (- k 1))))
-
-(export 'q-by-lambda )
-
+ 
 (defun q-by-lambda (lam k)
 "@b(Описание:) q-by-lambda - газодинамическая функция идеального газа
 возвращает отношение массового потока в данном сечении к массовому потоку в критическом сечении
@@ -144,15 +150,11 @@
       (* (/ (+ k 1) 2)
 	 (- 1 (* (/ (- k 1) (+ k 1)) (expt lam 2))))
       (/ 1 (- k 1)))))
-
-(export 'lambda-upper-bound )
-
+ 
 (defun lambda-upper-bound (k)
 "Определяет верхнюю границу для диапазода значений lambda."
   (sqrt (/ (+ k 1) (- k 1))))
-
-(export 'lambda-by-q )
-
+ 
 (defun lambda-by-q (q k)
 "lambda-by-q - функция обранная q-by-lambda при постоянном значении k.
 Функция возвращает два значения:
@@ -170,9 +172,7 @@
 		     (closure-lambda-by-q q k))
      (half-div:h-div 1.0 (lambda-upper-bound k)
 		     (closure-lambda-by-q q k)))))
-
-(export 'lambda-by-tau )
-
+ 
 (defun lambda-by-tau (tau k)
 "@begin[lang=lisp](code)
  (lambda-by-tau 0.9583333 1.4)
@@ -185,9 +185,7 @@
 	     (- (tau-by-lambda lam k) tau))))
     (half-div:h-div 0.0 (lambda-upper-bound k)
 		    (closure-lambda-by-tau tau k))))
-
-(export 'lambda-by-pi )
-
+ 
 (defun lambda-by-pi (pii k)
 "@b(Пример использования:)
 @begin[lang=lisp](code)
@@ -203,9 +201,7 @@
 	     (- (pi-by-lambda lam k) pii))))
     (half-div:h-div 0.0 (lambda-upper-bound k)
 		    (closure-lambda-by-pi pii k))))
-
-(export 'lambda-by-epsilon )
-
+ 
 (defun lambda-by-epsilon (epsilon k)
 "@b(Пример использования:)
 @begin[lang=lisp](code)
@@ -235,13 +231,9 @@
 	     (- (epsilon-by-lambda lam k) epsilon))))
     (half-div:h-div 0.0 (lambda-upper-bound k)
 		    (closure-lambda-by-epsilon epsilon k))))
-
-(export '*Rmu*)
-
+ 
 (defparameter *Rmu* 8.314 "Дж/(моль*К) универсальная газовая постоянная")
-
-(export 'R-by-mu )
-
+ 
 (defun R-by-mu (mu)
 "@b(Описание:) Вычисляет индивидуальную газовую постоянную 
 по молекулярной массе газа.
@@ -252,9 +244,7 @@
 @end(code)
 "
   (/ *Rmu* mu))
-
-(export 'm-by-k-mu )
-
+ 
 (defun m-by-k-mu (k mu)
 "@b(Описание:) Вычисляет индивидуальную газовую постоянную 
 по молекулярной массе газа.
@@ -269,9 +259,7 @@
       (expt (/ 2 (+ k 1))
 	    (/ (+ k 1)(- k 1)))
       (/ (R-by-mu mu)))))
-
-(export 'q-by-MFR-T-P-A-k-mu )
-
+ 
 (defun q-by-MFR-T-P-A-k-mu (MFR Temperature Pressure Area k mu)
 "@b(Описание:) определяет значение газодинамической функции q.
 
@@ -298,9 +286,7 @@
 		     (/ 4700.0 1000.0 1000.0)
 		     1.4
 		     0.02895)
-
-(export 'a*-by-T-k-mu )
-
+ 
 (defun a*-by-T-k-mu (Temperature k mu)
 "@b(Описание:) возвращает критическую скорость.
 
@@ -314,17 +300,13 @@
  (a*-by-T-k-mu (+ 273 15) 1.4 0.02895) => 310.635
 "
   (sqrt (/ (* 2 k (r-by-mu mu) Temperature) (+ k 1))))
-
-(export 'a0-by-T-k-mu )
-
+ 
 (defun a0-by-T-k-mu (temperature k mu)
 "Скорость звука в заторможенном потоке.
  (a0-by-T-k-mu (+ 273 15)  1.4 0.02895) => 340.2836
 "
   (sqrt (* k (r-by-mu mu) Temperature)))
-
-(export 'a*-by-a0-k )
-
+ 
 (defun a*-by-a0-k (a0 k)
 "@b(Описание:) возвращает критическую скорость.
 
@@ -340,9 +322,7 @@
 @end(code)
 "
   (* a0 (sqrt (/ 2 (+ k 1)))))
-
-(export 'ro-by-p-t-lambda-k-mu )
-
+ 
 (defun ro-by-p-t-lambda-k-mu (pressure temperature lam k mu)
 "@b(Описание:) возвращает плотность заза
 
@@ -357,9 +337,7 @@
 "
   (/ (* pressure (pi-by-lambda lam k))
      (* (r-by-mu mu) temperature (tau-by-lambda lam k))))
-
-(export 'w-by-lambda-temperature )
-
+ 
 (defun w-by-lambda-temperature (lam temperature k mu)
 "@b(Описание:) возвращает скорость заза, м/с.
 

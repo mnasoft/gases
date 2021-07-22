@@ -4,7 +4,12 @@
   :version "0.2.0"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on ("cl-utilities" "half-div" "math" "gases/molecule") 
+  :depends-on ("cl-utilities"
+               "half-div"
+               "math"
+               
+               "gases/molecule"
+               "gases/gas-dynamics") 
   :components ((:module "src"
 		:serial t
 		:components
@@ -16,7 +21,7 @@
 		 (:file "defgenerics")
 		 (:file "defmethods")
 		 (:file "burning")
-		 ;(:file "example-gas")
+                                        ;(:file "example-gas")
 		 (:file "select"))))
   :description "Проект содержит некоторые формулы термодинамики"
   :in-order-to ((test-op (test-op "gases/tests"))))
@@ -33,7 +38,7 @@
   :version "0.2.0"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on (#:gases) ;;;; #:cl-annot
+;;  :depends-on ("gases") 
   :components ((:module "src/molecule"
 		:serial t
 		:components ((:file "molecule")))))
@@ -43,7 +48,7 @@
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
   :depends-on (#:cl-annot #:gases)
-  :components ((:module "wet-air/src"
+  :components ((:module "src/wet-air"
 		:serial t
 		:components ((:file "air")))))
 
@@ -51,11 +56,9 @@
   :version "0.1.0"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"  
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on ("gases" "half-div")
-  :components ((:module
-		"gas-dynamics/src"
-		:components
-		((:file "main"))))
+  :depends-on ("half-div") ;; "gases"
+  :components ((:module "src/gas-dynamics"
+		:components ((:file "main"))))
   :description "Проект содержит некоторые газодинамические функции."
   :in-order-to ((test-op (test-op "gases/tests"))))
 
@@ -64,7 +67,7 @@
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
   :depends-on ("gases" "math" "periodic-table" "caveman" "cl-who") ;; "cl-annot"
-  :components ((:module "web/src"
+  :components ((:module "src/web"
 		:serial t
 		:components
 		((:file "web"))))

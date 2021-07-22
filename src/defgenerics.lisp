@@ -2,8 +2,6 @@
 
 (in-package :gases)
 
-
-
 (defgeneric molar-mass (species)
  (:documentation "Возвращает молекулярную массу, [g/mol]"))
 

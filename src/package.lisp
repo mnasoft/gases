@@ -101,6 +101,7 @@
    *p-standard*
    *rμ*
    find-atoms q-of find-by-atoms
+   print-table
 
    )) 
 

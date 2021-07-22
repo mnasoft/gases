@@ -1,6 +1,6 @@
 ;;;; test.lisp
 
-(in-package #:gases.gasodinamic)
+(in-package #:gases/gas-dynamics )
 
 (defconstant +F-GT+ 0.004780 "м2")
 
