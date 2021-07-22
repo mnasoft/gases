@@ -1,0 +1,33 @@
+@begin(section) @title(GASES/MOLECULE)
+
+Позволяет вычислять:
+1) Для отдельных компонентов:
+ - молекулярную массу компонента - μ;
+ - Мольную (массовую) изобарную теплоёмкость - μCp (Cp);
+ - Мольную (массовую) изохорную теплоёмкость - μCv (Cv);
+ - Коэффициент адиабаты - k.
+2) Для смеси компонетов, заданной мольными долями:
+ - кажущуюся молекулярную массу - μ-mixture;
+ - массовую изобарную теплоёмкость - Cp-mixture;
+ - массовую изохорную теплоёмкость - Cv-mixture;
+ - Коэффициент адиабаты - k-mixture.
+
+Данные взяты из файла ./doc/111.jpg (см. мультитехнический справочник).@begin(section)
+ @title(Функции)
+ @cl:with-package[name="GASES/MOLECULE"](
+  @cl:doc(function cp-mixture)
+  @cl:doc(function cv-mixture)
+  @cl:doc(function k-mixture)
+  @cl:doc(function μ-mixture))
+@end(section)
+@begin(section)
+ @title(Методы)
+ @cl:with-package[name="GASES/MOLECULE"](
+  @cl:doc(method cp (mol <molecule>) temp)
+  @cl:doc(method cv (mol <molecule>) temp)
+  @cl:doc(method k (mol <molecule>) temp)
+  @cl:doc(method μ (mol <molecule>))
+  @cl:doc(method μcp (mol <molecule>) temp)
+  @cl:doc(method μcv (mol <molecule>) temp))
+@end(section)
+@end(section)
