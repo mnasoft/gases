@@ -3,68 +3,17 @@
 (defpackage #:gases/molecule
   (:use #:cl)
   (:nicknames "G/MOL")
-  (:export <molecule> 
-           <molecule>-name-en-short
-           <molecule>-formula           
-           <molecule>-μcp-a-b-c
-           <molecule>-name-ru 
-           <molecule>-mass
-           <molecule>-note
-           <molecule>-smile
-           <molecule>-name-en)
-  (:export μ 
-           μCp 
-           μCv 
-           Cp 
-           Cv 
-           k 
-           μ-mixture 
-           Cp-mixture 
-           Cv-mixture 
-           k-mixture )
-  (:export *Air*
-           *NH3*
-           *Br2*
-           *CO2*
-           *CO*
-           *Cl2*
-           *H2*
-           *HBr*
-           *HCl*
-           *H2S*
-           *N2*
-           *NO*
-           *N2O*
-           *O2*
-           *PH3*
-           *SO2*
-           *SO3*
-           *H2O*
-           *C1*
-           *C2*
-           *C3*
-           *nC4*
-           *iC4*
-           *nC5*
-           *iC5*
-           *nC6*
-           *nC7*
-           *nC8*
-           *C2H4*
-           *C3H6*
-           *1-C4H8*
-           *cys-2-C4H8*
-           *trans-2-C4H8*
-           *C2H2*
-           *C3H4*
-           *2-C4H6*
-           *Бензол*
-           *Толуол*
-           *Стирол*
-           *Cyclo_C5*
-           *Cyclo_C6*
-           *Mcyclo_C5*
-           *Mcyclo_C6*)
+  (:export <molecule> <molecule>-name-en-short <molecule>-formula
+           <molecule>-μcp-a-b-c <molecule>-name-ru <molecule>-mass
+           <molecule>-note <molecule>-smile <molecule>-name-en)
+  (:export μ μCp μCv Cp Cv k μ-mixture Cp-mixture Cv-mixture
+           k-mixture)
+  (:export *Air* *NH3* *Br2* *CO2* *CO* *Cl2* *H2* *HBr* *HCl* *H2S*
+           *N2* *NO* *N2O* *O2* *PH3* *SO2* *SO3* *H2O*)
+  (:export *C1* *C2* *C3* *nC4* *iC4* *nC5* *iC5* *nC6* *nC7* *nC8*
+           *C2H4* *C3H6* *1-C4H8* *cys-2-C4H8* *trans-2-C4H8* *C2H2* *C3H4*
+           *2-C4H6* *Бензол* *Толуол* *Стирол* *Cyclo_C5* *Cyclo_C6*
+           *Mcyclo_C5* *Mcyclo_C6*)
   (:export *running-gas*)
   (:documentation "Пакет позволяет вычислять:
 

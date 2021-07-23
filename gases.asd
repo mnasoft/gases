@@ -9,13 +9,13 @@
                "gases/molecule"
                "gases/gas-dynamics"
                "gases/wet-air"
-               "gases/web"))
+               #+nil "gases/web" ))
 
 (defsystem "gases/core"
   :version "0.2.0"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on ("cl-utilities" "half-div" "math" "gases/const") 
+  :depends-on ("cl-utilities" "half-div" "math" "gases/const" "gases/db") 
   :components ((:module "src/core"
 		:serial t
 		:components
@@ -37,6 +37,18 @@
                  ;; (:file "example-gas")
 		 )))
   :description "Определяет некторые физические константы."
+  :in-order-to ((test-op (test-op "gases/tests"))))
+
+(defsystem "gases/db"
+  :version "0.2.0"
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
+  :depends-on ("gases/const") 
+  :components ((:module "src/db"
+		:serial t
+		:components
+		((:file "db"))))
+  :description "Определяет интерфейс к базе данных."
   :in-order-to ((test-op (test-op "gases/tests"))))
 
 (defsystem "gases/tests"
@@ -69,14 +81,14 @@
   :version "0.1.0"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"  
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on ("half-div") ;; "gases"
+  :depends-on ("half-div" "gases/const") ;; "gases"
   :components ((:module "src/gas-dynamics"
 		:components ((:file "main"))))
   :description "Проект содержит некоторые газодинамические функции."
   :in-order-to ((test-op (test-op "gases/tests"))))
 
 (defsystem "gases/web"
-  :version "0.0.1"
+  :version "0.0.2"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
   :depends-on ("math" "periodic-table" "caveman" "cl-who") ;; "gases" "cl-annot"
