@@ -1,7 +1,7 @@
 ;;;; ./src/db/db.lisp
 
-(defpackage #:gases/db
-  (:use #:cl #:gases/const)
+(defpackage gases/db
+  (:use cl)
   (:export <sp-rec> <sp-rec>-polynomial-exponents
            <sp-rec>-temperature-range <sp-rec>-number-coeff
            <sp-rec>-h_298.15-h-0 <sp-rec>-coefficients
@@ -9,9 +9,8 @@
   (:export <sp> <sp>-name <sp>-comments
            <sp>-number-temperature-intervals <sp>-reference-date-code
            <sp>-chemical-formula <sp>-phase <sp>-molar-mass
-           <sp>-heat-formation <sp>-reccords))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+           <sp>-heat-formation <sp>-reccords)
+  (:export get-db clear-db get-sp init-db))
 
 (defclass <sp-rec> nil
   ((temperature-range
@@ -77,8 +76,6 @@ component of entropy, respectively."))
 (defmethod print-object         ((x <sp-rec>) s) (format s "" ))
 
 (defmethod print-object :after  ((x <sp-rec>) s) (format s ")" ))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defclass <sp> ()
   ((name
@@ -168,8 +165,6 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 
 (defmethod print-object :after  ((x <sp>) s) (format s ")" ))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defparameter *not-combasted-sp-names* '("N2" "O2" "H2O" "CO2" "SO2" "SO3" "He" "Ar" "Kr" "Xe" "Rd")
   "Список имен компонентов неучаствующих в реакции окисления кислородом O2.")
 
@@ -235,7 +230,6 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 	  (format os str-format line)
 	  (setf str-format "~%~A"))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;read-formated-data
 
 (defun read-string (str &optional (ft 's))
@@ -292,7 +286,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
     (append r-1 r-2 (list (reverse t-int)))))
 
 (defun make-element-table ()
-"@b(Описание:) функция @b(make-element-table)
+  "@b(Описание:) функция @b(make-element-table)
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -311,26 +305,23 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
     rez-lst))
 
 (clean-termo-inp)
+
 (make-element-table)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(export 'get-db )
 (defun get-db ()
-"Возвращает базу данных компонентов."
- *sp-db*)
-(export 'clear-db )
+  "Возвращает базу данных компонентов."
+  *sp-db*)
+
 (defun clear-db ()
   (clrhash (get-db)))
 
-(export 'get-sp )
 (defun get-sp (name)
-"Возвращает компонент по имени."
- (gethash name (get-db)))
+  "Возвращает компонент по имени."
+  (gethash name (get-db)))
+
 (defun (setf get-sp) (value name)
   (setf (gethash name (get-db)) value))
 
-(export 'init-db )
 (defun init-db ()
   (clean-termo-inp)
   (clear-db)
@@ -346,8 +337,6 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 	   (setf (gethash el *not-combasted-sp*) (get-sp el)))
        *not-combasted-sp-names*))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defun append-some-value-to-length (new-len value lst)
   (loop :for i :from 0 :below new-len
 	:collect
@@ -355,7 +344,7 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 	  (if  l l value))))
 
 (defmethod dump ((sp <sp>) s)
-"@b(Описание:) метод @b(dump) выполняет вывод объекта sp в поток s.
+  "@b(Описание:) метод @b(dump) выполняет вывод объекта sp в поток s.
  Вывод должен осуществляться в форме пригодной для последующего считывания 
  в формате TermoBuild.
 "
@@ -426,13 +415,11 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
  (lst-from-below 0 5 0d0 '( 1 2 3 4 5 6 7 ))
  (lst-from-below 5 8 (make-string 16 :initial-element #\Space) '( 1 2 3 4 5 6 7 ))
 "
-    (substitute
-     replace-nil-with nil 
-     (loop :for i :from from :below below
-	   :collect
-	   (nth i lst))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  (substitute
+   replace-nil-with nil 
+   (loop :for i :from from :below below
+	 :collect
+	 (nth i lst))))
 
 (defmethod dump ((rec <sp-rec>) s)
   (labels ((fmt-16-9 (lst)
@@ -458,8 +445,6 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 			     (<sp-rec>-coefficients rec)))
 	    (fmt-16-9 (<sp-rec>-integration-constants rec)))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (defmethod dump+ ((rec <sp-rec>) s)
   (labels ((fmt-16-9 (lst)
 	     (mapcar
@@ -481,9 +466,6 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 	     (lst-from-below 5 8 0.0d0
 			     (<sp-rec>-coefficients rec)))
 	    (fmt-16-9 (<sp-rec>-integration-constants rec)))))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 (defmethod dump+d->e ((rec <sp-rec>) s)
   (labels ((fmt-16-9 (lst)
@@ -507,17 +489,13 @@ formation calculations are indicated by Ref-Elm or Ref-Sp.")
 			     (<sp-rec>-coefficients rec)))
 	    (fmt-16-9 (<sp-rec>-integration-constants rec)))))
 
-
-
-
 (defmethod dump ((ht hash-table) s)
-"Сброс БД, загруженной в хештаблицу, в поток s."
+  "Сброс БД, загруженной в хештаблицу, в поток s."
   (maphash
    #'(lambda (key value)
        (declare (ignore key))
        (dump value s))
    ht))
-
 
 (defun file-get-contents (filename)
   (with-open-file (stream filename)
@@ -533,7 +511,6 @@ defaults to CHAR= (for case-sensitive comparison)."
   (search (string needle)
           (string haystack)
           :test test))
-
 
 (defun get-db-as-string ()
   (when (null *str-db*)
@@ -576,7 +553,3 @@ defaults to CHAR= (for case-sensitive comparison)."
      (get-db))
     (when bad-keys (format t "~&~S~%" bad-keys))
     (values rezult bad-keys)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-

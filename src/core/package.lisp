@@ -1,7 +1,7 @@
 ;;;; package.lisp
 
-(defpackage #:gases
-  (:use #:cl #:gases/const #:gases/db)
+(defpackage gases
+  (:use cl )
   (:export molar-mass
            molar-isobaric-heat-capacity 
            molar-isochoric-heat-capacity 
@@ -15,7 +15,7 @@
            check-mass-fraction 
            reference 
            elemental-mass-fraction 
-           dump 
+           ;;dump 
            adapt-mole-fractions 
            adapt-mass-fractions 
            insert 
@@ -29,7 +29,6 @@
            density 
            density-relative)
   (:export 
-           
            get-sp
            cp/r-new
            mole-fraction
@@ -616,15 +615,17 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 - в зависимости от температуры (temperature), [K]"
 		  ))
 (defgeneric molar-fraction-summ (species)
-  (:documentation"Возвращает сумму мольных долей смеси газов <composition>.
-Значение должно равняться единице."))
+  (:documentation "Возвращает сумму мольных долей смеси газов
+<composition>.  Значение должно равняться единице."))
 
 (defgeneric mass-fraction-summ  (species)
-  (:documentation "Возвращает сумму ммассовых долей смеси газов <composition>.
-Значение должно равняться единице."))
+  (:documentation
+   "Возвращает сумму ммассовых долей смеси газов <composition>.
+  Значение должно равняться единице."))
 
 (defgeneric mix-composition (composition-1 mfr-1 composition-2 mfr-2)
-  (:documentation "Возвращает композицию газов как результат смешения 2-х составов с массовыми расходами."))
+  (:documentation "Возвращает композицию газов как результат смешения
+  2-х составов с массовыми расходами."))
 
 (defgeneric check-mole-fraction (species)
   (:documentation "Проверка правильности задания мольных долей."))
@@ -633,64 +634,73 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
   (:documentation "Проверка правильности задания массовых долей."))
 
 (defgeneric reference (key container)
-  (:documentation "Получает ссылку на элемент, находящийся в конлейнере по ключу."))
+  (:documentation "Получает ссылку на элемент, находящийся в
+  конлейнере по ключу."))
+
 (defgeneric elemental-mass-fraction (reference)
-  (:documentation "@b(Описание:) метод @b(elemental-mass-fraction) возвращает 
- атомарный состав reference."))
+  (:documentation "@b(Описание:) метод @b(elemental-mass-fraction)
+ возвращает атомарный состав reference."))
 
 (defgeneric dump (reference stream)
-  (:documentation "@b(Описание:) метод @b(dump) сбравывает символьное представление
- reference в символьный поток stream."))
+  (:documentation "@b(Описание:) метод @b(dump) сбравывает символьное
+ представление reference в символьный поток stream."))
 
 (defgeneric adapt-mole-fractions (reference)
-  (:documentation "@b(Описание:) метод @b(adapt-mass-fractions) выполняет подгонку 
-состава смеси, заданной ммольными долями."))
+  (:documentation "@b(Описание:) метод @b(adapt-mass-fractions)
+выполняет подгонку состава смеси, заданной ммольными долями."))
 
 (defgeneric  adapt-mass-fractions (reference)
-  (:documentation "@b(Описание:) метод @b(adapt-mass-fractions) выполняет подгонку 
-состава смеси, заданной массовыми долями."))
+  (:documentation "@b(Описание:) метод @b(adapt-mass-fractions)
+выполняет подгонку состава смеси, заданной массовыми долями."))
 
 (defgeneric insert (obj collection)
-  (:documentation "@b(Описание:) обобщенная_функция @b(insert) вставляет объект obj 
-в коллекцию collection. "))
+  (:documentation "@b(Описание:) обобщенная_функция @b(insert)
+вставляет объект obj в коллекцию collection. "))
 
 (defgeneric combustion-reaction (species)
   (:documentation "@b(Описание:) обобщенная_функция @b(combustion-reaction)"))
 
 (defgeneric relativ-oxigen-mass-for-burning (species)
- (:documentation "@b(Описание:) обобщенная_функция @b(relativ-oxigen-mass-for-burning)
-возвращает количество килограмм кислорода (кг), необходимого для сжигания 
-одного килограмма топлива."))
+ (:documentation "@b(Описание:) обобщенная_функция
+ @b(relativ-oxigen-mass-for-burning) возвращает количество килограмм
+ кислорода (кг), необходимого для сжигания одного килограмма
+ топлива."))
 
 (defgeneric relativ-air-mass-for-burning  (species)
- (:documentation "@b(Описание:) обобщенная_функция @b(relativ-air-mass-for-burning)
-возвращает количество килограмм воздуха (кг), необходимого для сжигания 
-одного килограмма топлива. "))
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(relativ-air-mass-for-burning)
+ возвращает количество килограмм воздуха (кг), необходимого для
+ сжигания одного килограмма топлива. "))
 
 (defgeneric wobber-hight (species)
-  (:documentation "@b(Описание:) обобщенная_функция @b(wobber-hight) возвращает
- число Воббе высшее относительное (по воздуху)."))
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(wobber-hight) возвращает число
+ Воббе высшее относительное (по воздуху)."))
 
 (defgeneric wobber-low (species)
-  (:documentation "@b(Описание:) обобщенная_функция @b(wobber-low) возвращает
- число Воббе низшее относительное (по воздуху). "))
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(wobber-low) возвращает число
+ Воббе низшее относительное (по воздуху). "))
 
 (defgeneric thermal-effect (species)
-  (:documentation "@b(Описание:) обобщенная_функция @b(thermal-effect) возвращает
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(thermal-effect) возвращает
  тепловой эффект при создании вещества или при химической реакции. "))
 
 (defgeneric Q-work-low (species)
- (:documentation "@b(Описание:) обобщенная_функция @b(Q-work-low) возвращает
- низшую теплотворную способность топлива кДж/кг. "))
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(Q-work-low) возвращает низшую
+ теплотворную способность топлива кДж/кг. "))
 
 (defgeneric density (species pressure temperature)
-  (:documentation "@b(Описание:) обобщенная_функция @b(Q-work-low) возвращает
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(Q-work-low) возвращает
  плотность в кг/м3. "))
 
 (defgeneric density-relative (species pressure temperature &key base-species)
-  (:documentation "@b(Описание:) обобщенная_функция @b(Q-work-low) возвращает
+  (:documentation
+   "@b(Описание:) обобщенная_функция @b(Q-work-low) возвращает
  относительную плотность в кг/кг. "))
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; defmethods.lisp
@@ -746,7 +756,7 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 (defmethod molar-isobaric-heat-capacity ((x <sp-rec>) temperature)
 "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]"
   (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7)  (values-list (<sp-rec>-coefficients x))
-    (* +Rμ+ (Cp/R-new temperature a1 a2 a3 a4 a5 a6 a7))))
+    (* gases/const:+rμ+ (Cp/R-new temperature a1 a2 a3 a4 a5 a6 a7))))
 
 (defmethod molar-isobaric-heat-capacity ((x <sp>) temperature)
 "Возвращает мольную изобарную теплоемкость muCp, [kJ/(mol*K)]"
@@ -780,10 +790,10 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 
 (defmethod molar-isochoric-heat-capacity ((x <sp-rec>) temperature)
 "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
-  (- (molar-isobaric-heat-capacity x temperature) +Rμ+))
+  (- (molar-isobaric-heat-capacity x temperature) gases/const:+Rμ+))
 (defmethod molar-isochoric-heat-capacity ((x <sp>) temperature)
 "Возвращает мольную изохорную теплоемкость muCv, [kJ/(mol*K)]"
-  (- (molar-isobaric-heat-capacity x temperature) +Rμ+))
+  (- (molar-isobaric-heat-capacity x temperature) gases/const:+Rμ+))
 (defmethod molar-isochoric-heat-capacity ((x <component>) temperature)
 "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]" 
   (* (mole-fraction x)
@@ -812,7 +822,7 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 	'list
 	(<sp-rec>-coefficients x)
 	(list (first (<sp-rec>-integration-constants x)))))
-       (* +Rμ+ temperature (H/RT-new temperature a1 a2 a3 a4 a5 a6 a7 a8))))
+       (* gases/const:+Rμ+ temperature (H/RT-new temperature a1 a2 a3 a4 a5 a6 a7 a8))))
 
 (defmethod molar-enthalpy ((x <sp>) temperature)
 "Возвращает мольную энтальпию muΗ, [J/(mol*K)]"
@@ -852,7 +862,7 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 	'list
 	(<sp-rec>-coefficients x)
 	(list (second (<sp-rec>-integration-constants x)))))
-    (* +Rμ+ (S/R-new temperature a1 a2 a3 a4 a5 a6 a7 a9))))
+    (* gases/const:+Rμ+ (S/R-new temperature a1 a2 a3 a4 a5 a6 a7 a9))))
 
 (defmethod molar-entropy ((x <sp>) temperature)
 "Возвращает мольную энтропию muS, [J/(mol*K)]"
@@ -1215,23 +1225,23 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 	   (mapcar
 	    #'(lambda (el)
 		(list el
-		      (/ (molar-isobaric-heat-capacity  xx (+ +C-0+ el)) +kal+)
- 		      (/ (molar-isochoric-heat-capacity xx (+ +C-0+ el)) +kal+)
+		      (/ (molar-isobaric-heat-capacity  xx (+ gases/const:+c-0+ el)) gases/const:+kal+)
+ 		      (/ (molar-isochoric-heat-capacity xx (+ gases/const:+c-0+ el)) gases/const:+kal+)
 ;;;;		    
-		      (/ (molar-isobaric-heat-capacity  xx (+ +C-0+ el))
-			 +kal+ (molar-mass xx))	      
-		      (/ (molar-isochoric-heat-capacity xx (+ +C-0+ el))
-			 +kal+ (molar-mass xx))
+		      (/ (molar-isobaric-heat-capacity  xx (+ gases/const:+c-0+ el))
+			 gases/const:+kal+ (molar-mass xx))	      
+		      (/ (molar-isochoric-heat-capacity xx (+ gases/const:+c-0+ el))
+			 gases/const:+kal+ (molar-mass xx))
 ;;;;		    
-		      (/ (- (molar-enthalpy xx (+ +C-0+ el)) (molar-enthalpy xx +C-0+)) 
-			 +kal+)
-		      (/ (- (molar-enthalpy xx (+ +C-0+ el)) (molar-enthalpy xx +C-0+))
-			 +kal+ (molar-mass xx))
+		      (/ (- (molar-enthalpy xx (+ gases/const:+c-0+ el)) (molar-enthalpy xx gases/const:+c-0+)) 
+			 gases/const:+kal+)
+		      (/ (- (molar-enthalpy xx (+ gases/const:+c-0+ el)) (molar-enthalpy xx gases/const:+c-0+))
+			 gases/const:+kal+ (molar-mass xx))
 ;;;;		    
-		      (/ (- (molar-entropy xx (+ +C-0+ el)) (molar-entropy xx +C-0+)) 
-			 +kal+)
-		      (/ (- (molar-entropy xx (+ +C-0+ el)) (molar-entropy xx +C-0+))
-			 +kal+ (molar-mass xx))
+		      (/ (- (molar-entropy xx (+ gases/const:+c-0+ el)) (molar-entropy xx gases/const:+c-0+)) 
+			 gases/const:+kal+)
+		      (/ (- (molar-entropy xx (+ gases/const:+c-0+ el)) (molar-entropy xx gases/const:+c-0+))
+			 gases/const:+kal+ (molar-mass xx))
 		      ))
 	    (loop :for i :from 0.0 :to 2500 :by 100.0 :collect i)))
      (push '("  °C" "kal/K*mol" "kal/K*mol"
@@ -1324,8 +1334,8 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
       (when (gethash (<sp>-name sp) *not-combasted-sp*)
 	(return-from combustion-reaction
 	  (make-instance 'gases:<reaction>
-			 :reactant-names (list (gases:<sp>-name sp))
-			 :product-names  (list (gases:<sp>-name sp))))))
+			 :reactant-names (list (<sp>-name sp))
+			 :product-names  (list (<sp>-name sp))))))
     (block check-and-make-reaction
       (maphash
        #'(lambda (key value)
@@ -1433,17 +1443,17 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 
 (defmethod density ((sp <sp>) pressure temperature)
   (/ (* (molar-mass sp) pressure)
-     (* +Rμ+ temperature)
+     (* gases/const:+Rμ+ temperature)
      1000))
 
 (defmethod density ((c-t <component>) pressure temperature)
   (/ (* (molar-mass c-t) pressure)
-     (* +Rμ+ temperature)
+     (* gases/const:+Rμ+ temperature)
      1000))
 
 (defmethod density ((c-n <composition>) pressure temperature)
   (/ (* (molar-mass c-n) pressure)
-     (* +Rμ+ temperature)
+     (* gases/const:+Rμ+ temperature)
      1000))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1482,8 +1492,8 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 ;;;; Число Воббе низшее
 
 (defmethod wobber-low ((sp <sp>))
-  (let ((ρ-f (density sp +P-normal+ +t-normal+))
-	(ρ-a (density *air* +P-normal+ +t-normal+)))
+  (let ((ρ-f (density sp gases/const:+p-normal+ gases/const:+t-normal+))
+	(ρ-a (density *air* gases/const:+p-normal+ gases/const:+t-normal+)))
     (/ (* (Q-work-low sp) ρ-f) (sqrt (/ ρ-f ρ-a)))))
 
 (defmethod wobber-low ((c-t <component>))
@@ -1491,8 +1501,8 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
   )
 
 (defmethod wobber-low ((c-n <composition>))
-  (let ((ρ-f (density c-n +P-normal+ +t-normal+))
-	(ρ-a (density *air* +P-normal+ +t-normal+)))
+  (let ((ρ-f (density c-n gases/const:+p-normal+ gases/const:+t-normal+))
+	(ρ-a (density *air* gases/const:+p-normal+ gases/const:+t-normal+)))
     (/ (* (Q-work-low c-n) ρ-f) (sqrt (/ ρ-f ρ-a)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

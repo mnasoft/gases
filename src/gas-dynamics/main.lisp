@@ -1,7 +1,8 @@
 ;;;; gasodinamic-func.lisp
 
-(defpackage #:gases/gas-dynamics
-  (:use #:cl #:gases/const)
+(defpackage gases/gas-dynamics
+  (:use cl gases/const)
+;;  (:import-from gases/const +Rμ+ )
   (:nicknames "gas-dynamics" "g-d")
   (:export Mah-by-lambda 
            Lambda-by-Μah 
