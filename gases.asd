@@ -4,12 +4,23 @@
   :version "0.2.0"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on (
+  :depends-on ("gases/const"
+               "gases/db"
                "gases/core"
+               "gases/reac"
                "gases/molecule"
                "gases/gas-dynamics"
                "gases/wet-air"
-               #+nil "gases/web" ))
+               #+nil "gases/web" )
+  :description "Система содержит функции, предназначенные для
+  определения термодинамических свойств
+@begin(list)
+ @item(- простых веществ; )
+ @item(- газовых смесей; )
+ @item(- влажного воздуха. )
+@end(list)
+"
+  )
 
 (defsystem "gases/core"
   :version "0.2.0"
@@ -19,10 +30,27 @@
   :components ((:module "src/core"
 		:serial t
 		:components
-		((:file "package")
+		((:file "core")
                  ;; (:file "example-gas")
 		 )))
-  :description "Проект содержит некоторые формулы термодинамики"
+  :description "Система содержит функции, предназначенные для
+  определения термодинамических свойств простых веществ и газовых
+  смесей."
+  :in-order-to ((test-op (test-op "gases/tests"))))
+
+(defsystem "gases/reac"
+  :version "0.2.0"
+  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
+  :depends-on ("cl-utilities" "half-div" "math" "gases/const" "gases/db" "gases/core") 
+  :components ((:module "src/reac"
+		:serial t
+		:components
+		((:file "reac")
+
+		 )))
+  :description "Система содержит функции, предназначенные для
+  определения описания реакций."
   :in-order-to ((test-op (test-op "gases/tests"))))
 
 (defsystem "gases/const"
@@ -48,7 +76,8 @@
 		:serial t
 		:components
 		((:file "db"))))
-  :description "Определяет интерфейс к базе данных."
+  :description "Система определяет интерфейс к базе данных
+  термодинамических свойств простых веществ."
   :in-order-to ((test-op (test-op "gases/tests"))))
 
 (defsystem "gases/tests"
@@ -66,16 +95,19 @@
 ;;  :depends-on ("gases") 
   :components ((:module "src/molecule"
 		:serial t
-		:components ((:file "molecule")))))
+		:components ((:file "molecule"))))
+  :description "Система содержит функции для определения тепловых
+  свойств вещества." )
 
 (defsystem "gases/wet-air"
   :version "0.2.0"
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-;;  :depends-on () ;; "gases" #:cl-annot
+  ;;  :depends-on () ;; "gases" #:cl-annot
   :components ((:module "src/wet-air"
 		:serial t
-		:components ((:file "wet-air")))))
+		:components ((:file "wet-air"))))
+  :description "Система содержит функции для определения свойств влажного воздуха.")
 
 (defsystem "gases/gas-dynamics"
   :version "0.1.0"
@@ -84,7 +116,7 @@
   :depends-on ("half-div" "gases/const") ;; "gases"
   :components ((:module "src/gas-dynamics"
 		:components ((:file "main"))))
-  :description "Проект содержит некоторые газодинамические функции."
+  :description "Система содержит газодинамические функции."
   :in-order-to ((test-op (test-op "gases/tests"))))
 
 (defsystem "gases/web"
@@ -96,12 +128,14 @@
 		:serial t
 		:components
 		((:file "web"))))
-  :description "Проект содержит некоторые газодинамические функции."
+  :description "@b(Описание:) система @b(gases/web) определяет
+  WEB-интерфейс для выбора простых веществ из базы данных."
 ;;  :in-order-to ((test-op (test-op "gases/tests")))
   )
 
 (defsystem "gases/docs"
-  :description "Зависимости для сборки документации"
+  :description "@b(Описание:) система @b(gases/docs) содержит
+  зависимости для сборки документации."
   :author "Nick Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :depends-on ("gases" "mnas-package" "codex")

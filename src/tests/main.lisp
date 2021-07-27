@@ -77,22 +77,22 @@
     (is-true (math/arr-matr:semi-equal
 	      (gases:mole-fraction
 	       (gethash "N2"
-			(gases:composition-components +air+)))
+			(gases:<composition>-components +air+)))
 	      0.780840))
     (is-true (math/arr-matr:semi-equal
 	      (gases:mole-fraction
 	       (gethash "O2"
-			(gases:composition-components +air+)))
+			(gases:<composition>-components +air+)))
 	      0.209476))
     (is-true (math/arr-matr:semi-equal
 	      (gases:mole-fraction
 	       (gethash "CO2"
-			(gases:composition-components +air+)))
+			(gases:<composition>-components +air+)))
 	      0.000319))
     (is-true (math/arr-matr:semi-equal
 	      (gases:mole-fraction
 	       (gethash "Ar"
-			(gases:composition-components +air+)))
+			(gases:<composition>-components +air+)))
 	      0.009365))))
 
 (def-test molar-fraction-summ-test ()
@@ -159,13 +159,13 @@
 			       :product-names(list "WF6" "WOF4" "NO" "H2O"))))
       (is-true
        (and
-	(= 2  (gases:moles-number (first  (gases:reaction-reactants reac))))
-	(= 4  (gases:moles-number (second (gases:reaction-reactants reac))))
-	(= 10 (gases:moles-number (third  (gases:reaction-reactants reac))))
-	(= 1  (gases:moles-number (first  (gases:reaction-products  reac))))
-	(= 1  (gases:moles-number (second (gases:reaction-products  reac))))
-	(= 4  (gases:moles-number (third  (gases:reaction-products  reac))))
-	(= 7  (gases:moles-number (fourth (gases:reaction-products  reac)))))))))
+	(= 2  (gases:moles-number (first  (gases:<reaction>-reactants reac))))
+	(= 4  (gases:moles-number (second (gases:<reaction>-reactants reac))))
+	(= 10 (gases:moles-number (third  (gases:<reaction>-reactants reac))))
+	(= 1  (gases:moles-number (first  (gases:<reaction>-products  reac))))
+	(= 1  (gases:moles-number (second (gases:<reaction>-products  reac))))
+	(= 4  (gases:moles-number (third  (gases:<reaction>-products  reac))))
+	(= 7  (gases:moles-number (fourth (gases:<reaction>-products  reac)))))))))
 
 (def-test 2*W+4*NaOH+3*O2=>2*Na2WO4+2*H2O-test ()
   "  2*W + 4*NaOH + 3*O2 => 2*Na2WO4 + 2*H2O  "
@@ -175,11 +175,11 @@
 			       :product-names (list "Na2WO4" "H2O"))))
       (is-true
        (and
-	(= 2  (gases:moles-number (first  (gases:reaction-reactants reac))))
-	(= 4  (gases:moles-number (second (gases:reaction-reactants reac))))
-	(= 3  (gases:moles-number (third  (gases:reaction-reactants reac))))
-	(= 2  (gases:moles-number (first  (gases:reaction-products  reac))))
-	(= 2  (gases:moles-number (second (gases:reaction-products  reac)))))))))
+	(= 2  (gases:moles-number (first  (gases:<reaction>-reactants reac))))
+	(= 4  (gases:moles-number (second (gases:<reaction>-reactants reac))))
+	(= 3  (gases:moles-number (third  (gases:<reaction>-reactants reac))))
+	(= 2  (gases:moles-number (first  (gases:<reaction>-products  reac))))
+	(= 2  (gases:moles-number (second (gases:<reaction>-products  reac)))))))))
 
 (def-test 1*W+2*NaOH+3*NaNO3=>1*Na2WO4+3*NaNO2+1*H2O-test ()
   "  1*W + 2*NaOH + 3*NaNO3 => 1*Na2WO4 + 3*NaNO2 + 1*H2O  "
@@ -189,12 +189,12 @@
 			       :product-names  (list "Na2WO4" "NaNO2" "H2O"))))
       (is-true
        (and
-	(= 1  (gases:moles-number (first  (gases:reaction-reactants reac))))
-	(= 2  (gases:moles-number (second (gases:reaction-reactants reac))))
-	(= 3  (gases:moles-number (third  (gases:reaction-reactants reac))))
-	(= 1  (gases:moles-number (first  (gases:reaction-products  reac))))
-	(= 3  (gases:moles-number (second (gases:reaction-products  reac))))
-	(= 1  (gases:moles-number (third  (gases:reaction-products  reac)))))))))
+	(= 1  (gases:moles-number (first  (gases:<reaction>-reactants reac))))
+	(= 2  (gases:moles-number (second (gases:<reaction>-reactants reac))))
+	(= 3  (gases:moles-number (third  (gases:<reaction>-reactants reac))))
+	(= 1  (gases:moles-number (first  (gases:<reaction>-products  reac))))
+	(= 3  (gases:moles-number (second (gases:<reaction>-products  reac))))
+	(= 1  (gases:moles-number (third  (gases:<reaction>-products  reac)))))))))
 
 (def-test 2*H2+1*O2=>2*H2O-test ()
   "  2*H2 + 1*O2 => 2*H2O  "
@@ -204,9 +204,9 @@
 			       :product-names  (list "H2O"))))
       (is-true
        (and
-	(= 2  (gases:moles-number (first  (gases:reaction-reactants reac))))
-	(= 1  (gases:moles-number (second (gases:reaction-reactants reac))))
-	(= 2  (gases:moles-number (first  (gases:reaction-products  reac)))))))))
+	(= 2  (gases:moles-number (first  (gases:<reaction>-reactants reac))))
+	(= 1  (gases:moles-number (second (gases:<reaction>-reactants reac))))
+	(= 2  (gases:moles-number (first  (gases:<reaction>-products  reac)))))))))
 
 (def-test 2*KMnO4+H2O2+3*H2SO4=>3*O2+4*H2O+2*MnSO4+K2SO4-test ()
   " 2*KMnO4+H2O2+3*H2SO4=>3*O2+4*H2O+2*MnSO4+K2SO4  "
@@ -224,13 +224,13 @@
 			     :product-names  (list  "O2"  "H2O" "MnSO4" "K2SO4" ))))
     (is-true
        (and
-	(= 2  (gases:moles-number (first  (gases:reaction-reactants reac))))
-	(= 1  (gases:moles-number (second (gases:reaction-reactants reac))))
-	(= 3  (gases:moles-number (third  (gases:reaction-reactants reac))))
-	(= 3  (gases:moles-number (first  (gases:reaction-products  reac))))
-	(= 4  (gases:moles-number (second (gases:reaction-products  reac))))
-	(= 2  (gases:moles-number (third  (gases:reaction-products  reac))))
-	(= 1  (gases:moles-number (fourth (gases:reaction-products  reac))))))))
+	(= 2  (gases:moles-number (first  (gases:<reaction>-reactants reac))))
+	(= 1  (gases:moles-number (second (gases:<reaction>-reactants reac))))
+	(= 3  (gases:moles-number (third  (gases:<reaction>-reactants reac))))
+	(= 3  (gases:moles-number (first  (gases:<reaction>-products  reac))))
+	(= 4  (gases:moles-number (second (gases:<reaction>-products  reac))))
+	(= 2  (gases:moles-number (third  (gases:<reaction>-products  reac))))
+	(= 1  (gases:moles-number (fourth (gases:<reaction>-products  reac))))))))
 
 (def-test 2*KMnO4+H2O2+3*H2SO4=>3*O2+2*MnSO4+4*H2O+K2SO4-test ()
   " 2*KMnO4+H2O2+3*H2SO4=>3*O2+2*MnSO4+4*H2O+K2SO4  "
@@ -248,13 +248,13 @@
 			     :product-names  (list  "O2"  "MnSO4" "H2O" "K2SO4" ))))
     (is-true
        (and
-	(= 2  (gases:moles-number (first  (gases:reaction-reactants reac))))
-	(= 1  (gases:moles-number (second (gases:reaction-reactants reac))))
-	(= 3  (gases:moles-number (third  (gases:reaction-reactants reac))))
-	(= 3  (gases:moles-number (first  (gases:reaction-products  reac))))
-	(= 2  (gases:moles-number (second (gases:reaction-products  reac))))
-	(= 4  (gases:moles-number (third  (gases:reaction-products  reac))))
-	(= 1  (gases:moles-number (fourth (gases:reaction-products  reac))))))))
+	(= 2  (gases:moles-number (first  (gases:<reaction>-reactants reac))))
+	(= 1  (gases:moles-number (second (gases:<reaction>-reactants reac))))
+	(= 3  (gases:moles-number (third  (gases:<reaction>-reactants reac))))
+	(= 3  (gases:moles-number (first  (gases:<reaction>-products  reac))))
+	(= 2  (gases:moles-number (second (gases:<reaction>-products  reac))))
+	(= 4  (gases:moles-number (third  (gases:<reaction>-products  reac))))
+	(= 1  (gases:moles-number (fourth (gases:<reaction>-products  reac))))))))
 
 (def-test 3*FeCl2+2*Na3PO4=>1*Fe3[PO4]2+6*NaCL-test ()
   " 3*FeCl2+2*Na3PO4=>1*Fe3(PO4)2+6*NaCL  "
@@ -279,10 +279,10 @@
 			       :product-names  (list "Fe3(PO4)2" "NaCL"))))
     (is-true
      (and
-      (= 3  (gases:moles-number (first  (gases:reaction-reactants reac))))
-      (= 2  (gases:moles-number (second (gases:reaction-reactants reac))))
-      (= 1  (gases:moles-number (first  (gases:reaction-products  reac))))
-      (= 6  (gases:moles-number (second (gases:reaction-products  reac))))))))
+      (= 3  (gases:moles-number (first  (gases:<reaction>-reactants reac))))
+      (= 2  (gases:moles-number (second (gases:<reaction>-reactants reac))))
+      (= 1  (gases:moles-number (first  (gases:<reaction>-products  reac))))
+      (= 6  (gases:moles-number (second (gases:<reaction>-products  reac))))))))
 
 
 (def-test 3*FeCl2+2*Na3PO4=>1*Fe3[PO4]2+6*NaCL-test ()
@@ -296,10 +296,10 @@
 			     :product-names  (list "CO2" "H2O" "N2"))))
     (is-true
      (and
-      (= 1  (gases:moles-number (first  (gases:reaction-reactants reac))))
-      (= 2  (gases:moles-number (second (gases:reaction-reactants reac))))
-      (= 1  (gases:moles-number (first  (gases:reaction-products  reac))))
-      (= 6  (gases:moles-number (second (gases:reaction-products  reac))))))))
+      (= 1  (gases:moles-number (first  (gases:<reaction>-reactants reac))))
+      (= 2  (gases:moles-number (second (gases:<reaction>-reactants reac))))
+      (= 1  (gases:moles-number (first  (gases:<reaction>-products  reac))))
+      (= 6  (gases:moles-number (second (gases:<reaction>-products  reac))))))))
 
 (def-test test-err-test ()
   (is-true nil))

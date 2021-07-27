@@ -25,7 +25,7 @@
            ro-by-p-t-lambda-k-mu 
            w-by-lambda-temperature ))
 
-(in-package :gases/gas-dynamics)
+(in-package gases/gas-dynamics)
 
 ;;;;
 ;;;; Число Маха - отношение скорости потока к местной скорости звука.
@@ -303,7 +303,7 @@
  @b(Переменые:)
 @begin(list)
  @item(temperature - температура торможения, К;) 
- @item(k  - коэффициект адиабаты cp/cv;
+ @item(k  - коэффициект адиабаты cp/cv;)
  @item(mu - молекулярная масса газа, кг/моль;)
 @end(list)
 
@@ -323,7 +323,7 @@
  @b(Переменые:)
 @begin(list)
  @item(a0 - скорость звука в заторможенном потоке, м/с;) 
- @item(k  - коэффициект адиабаты cp/cv;
+ @item(k  - коэффициект адиабаты cp/cv;)
 @end(list)
 
  @b(Пример использования:)

@@ -10,7 +10,14 @@
            <sp>-number-temperature-intervals <sp>-reference-date-code
            <sp>-chemical-formula <sp>-phase <sp>-molar-mass
            <sp>-heat-formation <sp>-reccords)
-  (:export get-db clear-db get-sp init-db))
+  (:export get-db clear-db get-sp init-db dump dump+ dump+d->e)
+  (:export *not-combasted-sp-names* *not-combasted-sp* *sp-db* *str-db*))
+
+(in-package gases/db)
+
+(defgeneric dump (reference stream)
+  (:documentation "@b(Описание:) метод @b(dump) сбравывает символьное
+ представление reference в символьный поток stream."))
 
 (defclass <sp-rec> nil
   ((temperature-range

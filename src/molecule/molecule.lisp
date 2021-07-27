@@ -1,7 +1,7 @@
 ;;;; classes.lisp
 
-(defpackage #:gases/molecule
-  (:use #:cl)
+(defpackage :gases/molecule
+  (:use cl)
   (:nicknames "G/MOL")
   (:export <molecule> <molecule>-name-en-short <molecule>-formula
            <molecule>-μcp-a-b-c <molecule>-name-ru <molecule>-mass
@@ -15,26 +15,28 @@
            *2-C4H6* *Бензол* *Толуол* *Стирол* *Cyclo_C5* *Cyclo_C6*
            *Mcyclo_C5* *Mcyclo_C6*)
   (:export *running-gas*)
-  (:documentation "Пакет позволяет вычислять:
-
-@begin(enum)
-@item(Для отдельных компонентов:
+  (:documentation
+   "
+ Для простых веществ пакет позволяет вычислять:
  @begin(list)
   @item(μ - молекулярную массу компонента;)
   @item(μCp (Cp) - мольную (массовую) изобарную теплоёмкость;)
   @item(μCv (Cv) - мольную (массовую) изохорную теплоёмкость;)
   @item(k - коэффициент адиабаты.)
- @end(list))
-@item(Для смеси компонетов, заданной мольными долями:
+ @end(list)
+
+ Для смеси веществ пакет позволяет вычислять:
  @begin(list)
   @item(μ-mixture - кажущуюся молекулярную массу;)
   @item(Cp-mixture - массовую изобарную теплоёмкость;) 
   @item(Cv-mixture - массовую изохорную теплоёмкость;)
   @item(k-mixture - коэффициент адиабаты.)
- @end(list))
-@end(enum)
+ @end(list)
 
- Данные взяты из файла ./doc/111.jpg (см. мультитехнический справочник)."))
+ Данные взяты из файла ./doc/111.jpg (см. мультитехнический справочник).
+"
+   ))
+
 
 (in-package :gases/molecule)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

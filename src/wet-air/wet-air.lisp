@@ -1,8 +1,11 @@
 ;;;; air.lisp
 
-(defpackage #:gases-wet-air (:use #:cl)
-	    (:nicknames "W-A" "WET-AIR")
-	    (:documentation "
+(defpackage gases/wet-air
+  (:use cl)
+  (:nicknames "W-A" "WET-AIR")
+  (:export d-wet-air d-wet-air-by-temp p-wet-air-water-full-1
+           j-wet-air p-wet-air-water-full)
+  (:documentation "
 Файл содержит некоторые формулы для определения термодинамических
 свойств влажного воздуха.
 
@@ -20,11 +23,10 @@
 @end(code)
 ")) 
 
-(in-package :gases-wet-air)
+(in-package gases/wet-air)
 
 (defparameter *torr* 133.322 "Один торр = 133.322 Па")
 
-(export 'J-wet-air )
 (defun J-wet-air (temerature d)
 "Возвращает энтальпию влажного воздуха 
 
@@ -41,7 +43,7 @@
    "kJ/kg")
   )
 
-(export 'p-wet-air-water-full )
+
 (defun p-wet-air-water-full (temerature)
 "@b(Описание:) функция @b(p-wet-air-water-full) возвращает
 давление насыщения водяных паров от температуры, Па.
@@ -66,7 +68,7 @@
 	   (/ (+ 156.0 (* 8.12 temerature))
 	      (+ 236 temerature)))))
 
-(export 'p-wet-air-water-full-1 )
+
 (defun p-wet-air-water-full-1 (temerature)
 "@b(Описание:) функция @b(p-wet-air-water-full-1)
 
@@ -83,12 +85,12 @@
      (expt 10.0
 	   (+ 0.622 (/ (* 7.5 temerature) (+ 238.0 temerature))))))
 
-(export 'd-wet-air )
+
 (defun d-wet-air (p-b p-w)
 "@b(Описание:) функция @b(d-wet-air) возвращает влагосодержание
 влажного воздуха, г/кг."
   (values (* 622.0 (/ p-w (- p-b p-w))) "g/kg"))
-(export 'd-wet-air-by-temp )
+
 (defun d-wet-air-by-temp (temp &key (fi 0.6) (p-b 101325.0))
 "@b(Описание:) функция @b(d-wet-air-by-temp) влагосодержание влажного воздуха
 от температуры и давления, "

@@ -5,22 +5,45 @@
   (:documentation "Пакет @b(ases/docs) содержит функции
   генерирования и публикации документации."))
 
-(in-package :gases/docs)
+(in-package gases/docs)
 
 (defun make-document ()
+  "@b(Описание:) функция @b(make-document) выполняет формирование
+ файлов-сценариев.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (make-document)
+@end(code)
+"
   (loop
     :for i :in
-    '((:gases                :gases)
-      (:gases/molecule       nil)
+    '((:gases/const        :gases/const)
+      (:gases/db           :gases/db)
+      (:gases/core         :gases/core)
+      (:gases/reac         :gases/reac)
+      (:gases/gas-dynamics :gases/gas-dynamics)
+      (:gases/molecule     :gases/molecule)
+      (:gases/wet-air      :gases/wet-air)
       )
     :do (apply #'mnas-package:document i)))
 
 (defun make-graphs ()
+  "
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (make-graphs)
+@end(code)
+"
   (loop
     :for i :in
-    '(:gases
+    '(:gases/const
+      :gases/db
+      :gases/core
+      :gases/reac
+      :gases/gas-dynamics
       :gases/molecule
-      )
+      :gases/wet-air)
     :do (mnas-package:make-codex-graphs i i)))
 
 (defun make-all ()
@@ -31,6 +54,7 @@
 "
   (make-document)
   (make-graphs)
+  #+nil
   (mnas-package::make-mainfest-lisp
    '(:gases :gases/docs)
    "Gases"
