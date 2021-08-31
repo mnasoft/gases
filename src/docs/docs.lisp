@@ -46,21 +46,29 @@
       :gases/wet-air)
     :do (mnas-package:make-codex-graphs i i)))
 
-(defun make-all ()
+(defun make-all (&aux
+                   (of (if (find (uiop:hostname)
+                                 mnas-package:*intranet-hosts*
+                                 :test #'string=)
+                           '(:type :multi-html :template :gamma)
+                           '(:type :multi-html :template :minima))))
   "@b(Описание:) функция @b(make-all) служит для создания документации.
 
  Пакет документации формируется в каталоге
 ~/public_html/Common-Lisp-Programs/gases.
 "
+  (mnas-package:make-html-path :gases)
   (make-document)
   (make-graphs)
-  #+nil
-  (mnas-package::make-mainfest-lisp
-   '(:gases :gases/docs)
+  (mnas-package:make-mainfest-lisp
+   '(:gases)
    "Gases"
    '("Nick Matvyeyev")
-   (mnas-package::find-sources "gases"))
+   (mnas-package:find-sources "gases")
+   :output-format of)
   (codex:document :gases)
-  (make-graphs))
+  (make-graphs)
+  (mnas-package:copy-doc->public-html "gases")
+  (mnas-package:rsync-doc "gases"))
 
 ;;;; (make-all)

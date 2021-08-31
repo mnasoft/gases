@@ -126,6 +126,126 @@
      ("C4H10,n-butane"   0.0005)
      ("CO2"              0.0212))))
 
+(defparameter *CASE-1*
+  (make-instance-composition
+   '(("N2"               0.0160)
+     ("CO2"              0.0120)
+     ("CH4"              0.8150)
+     ("C2H6"             0.0690)
+     ("C3H8"             0.0470)
+     ("C4H10,isobutane"  0.0110)
+     ("C4H10,n-butane"   0.0140)
+     ("C5H12,i-pentane"  0.0050)
+     ("C5H12,n-pentane"  0.0030)
+     ("C6H14,n-hexane"   0.0030)
+     ("C7H16,n-heptane"  0.0025)
+     ("H2O"              0.0025)
+     )))
+
+(defparameter *CASE-2*
+  (make-instance-composition
+   '(("N2"               0.0010)
+     ("CO2"              0.0207)
+     ("CH4"              0.8423)
+     ("C2H6"             0.0728)
+     ("C3H8"             0.0372)
+     ("C4H10,isobutane"  0.0067)
+     ("C4H10,n-butane"   0.0104)
+     ("C5H12,i-pentane"  0.0031)
+     ("C5H12,n-pentane"  0.0027)
+     ("C6H14,n-hexane"   0.0024)
+     ("C7H16,n-heptane"  0.0001)
+     ("H2O"              0.0006)
+     )))
+
+(defparameter *CASE-3*
+  (make-instance-composition
+   '(("N2"               0.0190)
+     ;;("CO2"              0.0000)
+     ("CH4"              0.9770)
+     ("C2H6"             0.0040)
+     ;;("C3H8"             0.0000)
+     ;;("C4H10,isobutane"  0.0000)
+     ;;("C4H10,n-butane"   0.0000)
+     ;;("C5H12,i-pentane"  0.0000)
+     ;;("C5H12,n-pentane"  0.0000)
+     ;;("C6H14,n-hexane"   0.0000)
+     ;;("C7H16,n-heptane"  0.0000)
+     ;;("H2O"              0.0000)
+     )))
+
+(defparameter *CASE-4*
+  (make-instance-composition
+   '(("N2"               0.0010)
+     ;;("CO2"              0.0000)
+     ("CH4"              0.9950)
+     ("C2H6"             0.0040)
+     ;; ("C3H8"             0.0000)
+     ;; ("C4H10,isobutane"  0.0000)
+     ;; ("C4H10,n-butane"   0.0000)
+     ;; ("C5H12,i-pentane"  0.0000)
+     ;; ("C5H12,n-pentane"  0.0000)
+     ;; ("C6H14,n-hexane"   0.0000)
+     ;; ("C7H16,n-heptane"  0.0000)
+     ;; ("H2O"              0.0000)
+     )))
+
+(defparameter *CASE-5*
+  (make-instance-composition
+   '(("N2"               0.0170)
+     ("CO2"              0.0130)
+     ("CH4"              0.8930)
+     ("C2H6"             0.0750)
+     ("C3H8"             0.0020)
+     ;; ("C4H10,isobutane"  0.0000)
+     ;; ("C4H10,n-butane"   0.0000)
+     ;; ("C5H12,i-pentane"  0.0000)
+     ;; ("C5H12,n-pentane"  0.0000)
+     ;; ("C6H14,n-hexane"   0.0000)
+     ;; ("C7H16,n-heptane"  0.0000)
+     ;; ("H2O"              0.0000)
+     )))
+
+"
+| Компонент         | CASE-1 | CASE - 2 | CASE - 3 | CASE-4 | CASE-5 |
+|                   |  Мол % |    Мол % |    Мол % |        |  Мол % |
+| Азот              |   1.60 |     0.10 |     1.90 |    0.1 |    1.7 |
+| Двуокись углерода |   1.20 |     2.07 |     0.00 |      0 |    1.3 |
+| Сульфид водорода  |   0.00 |     0.00 |     0.00 |      0 |      0 |
+| Метан             |  81.50 |    84.23 |    97.70 |   99.5 |   89.3 |
+| Этан              |   6.90 |     7.28 |     0.40 |    0.4 |    7.5 |
+| Пропан            |   4.70 |     3.72 |     0.00 |      0 |    0.2 |
+| l-бутан           |   1.10 |     0.67 |     0.00 |      0 |      0 |
+| N-бутан           |   1.40 |     1.04 |     0.00 |      0 |      0 |
+| l-пентан          |   0.50 |     0.31 |     0.00 |      0 |      0 |
+| N-пентан          |   0.30 |     0.27 |     0.00 |      0 |      0 |
+| N-гексан          |   0.30 |     0.24 |     0.00 |      0 |      0 |
+| N-гептан+         |   0.25 |     0.01 |     0.00 |      0 |      0 |
+| Вода              |   0.25 |     0.06 |     0.00 |      0 |      0 |
+| Всего             | 100.00 |   100.00 |   100.00 |    100 |    100 |
+"
+
+(gases/reac:q-work-low *CASE-1*) ; => -46389.00241685833d0
+(gases/reac:wobber-low *CASE-1*) ; => -50778.84832399529d0
+(gases/core:density *CASE-1* 101325.0 273.0)  ; => 0.9277216319527446d0 (92.77216319527446d0%)
+
+(gases/reac:q-work-low *CASE-2*) ; => -46690.605455714656d0
+(gases/reac:wobber-low *CASE-2*) ; => -50038.40995470803d0
+(gases/core:density *CASE-2* 101325.0 273.0) ; => 0.889262639526845d0 (88.92626395268451d0%)
+
+(gases/reac:q-work-low *CASE-3*) ; => -48377.86197467065d0
+(gases/reac:wobber-low *CASE-3*) ; => -46935.95050879597d0
+(gases/core:density *CASE-3* 101325.0 273.0) ; => 0.7287858780495047d0 (72.87858780495047d0%)
+
+(gases/reac:q-work-low *CASE-4*) ; => -49921.59868862762d0
+(gases/reac:wobber-low *CASE-4*) ; => -48112.99139507732d0
+(gases/core:density *CASE-4* 101325.0 273.0) ; => 0.7191670915213143d0 (71.91670915213143d0%)
+
+(gases/reac:q-work-low *CASE-5*) ; => -46728.72809775131d0
+(gases/reac:wobber-low *CASE-5*) ; => -47228.671437333716d0
+(gases/core:density *CASE-1* 101325.0 273.0) ; => 0.9277216319527446d0 (92.77216319527446d0%)
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (gases/reac:molar-mass                   *Way-Chzou*) ; => 20.1957304485625d0
@@ -153,11 +273,8 @@
 #+nil
 (gases/reac:relativ-air-mass-for-burning *Way-Chzou-3*) 
 
-
 (gases/reac:relativ-air-mass-for-burning *H2*)
 (gases/reac:q-work-low *H2*) ; => -119960.51352263031d0
 (gases/reac:relativ-air-mass-for-burning *H2*)
 (gases/core::adiabatic-index             *H2* (+ 273.15 15)) ; => 1.4066457489295208d0 
 (gases/reac:combustion-reaction          *H2*)
-
-

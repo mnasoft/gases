@@ -195,13 +195,13 @@
   (let ((rez 
 	  (make-instance
 	   'math/arr-matr:<matrix>
-	   :dimensions (list (1- (math:cols mm)) (math:cols mm))))
+	   :dimensions (list (1- (math/arr-matr:cols mm)) (math/arr-matr:cols mm))))
 	(index nil)
 	(skiped-rows 0))
-    (loop :for r :from 0 :below (math:rows rez) :do
+    (loop :for r :from 0 :below (math/arr-matr:rows rez) :do
       (block cols
-	(loop :for c :from r :below (math:cols rez) :do
-	  (if (>= (- r skiped-rows ) (math:rows mm))
+	(loop :for c :from r :below (math/arr-matr:cols rez) :do
+	  (if (>= (- r skiped-rows ) (math/arr-matr:rows mm))
 	      (progn
 		(setf (math/arr-matr:mref rez r r) 1)
 		(push r index)
@@ -219,7 +219,7 @@
 (defun set-last-col-values (m1 rows vals)
   (loop :for r :in rows
 	:for v :in vals :do
-	  (setf (math/arr-matr:mref m1 r (1- (math:cols m1))) v))
+	  (setf (math/arr-matr:mref m1 r (1- (math/arr-matr:cols m1))) v))
   m1)
 
 (defmethod matr-col-row ((matr math/arr-matr:<matrix>))
@@ -227,7 +227,7 @@
     (let ((lay-iter (make-layer-iterator (length rows))))
       (loop :for i :from 0 :to (expt 1000 (length rows)) :do
 	(let ((koeff
-		(math:row (math/ls-gauss:solve-linear-system-gauss-backward-run 
+		(math/arr-matr:row (math/ls-gauss:solve-linear-system-gauss-backward-run 
 			   (set-last-col-values mm rows (funcall lay-iter))) 
 			  0)))
 	  (when (every #'(lambda (el) (and (integerp el) (plusp el)))
