@@ -107,7 +107,16 @@
   :components ((:module "src/wet-air"
 		:serial t
 		:components ((:file "wet-air"))))
-  :description "Система содержит функции для определения свойств влажного воздуха.")
+  :description
+  "@b(Описание:) система @b(gases/wet-air) содержит функции для
+ определения термодинамических свойств влажного воздуха: 
+
+@begin(list)
+ @item(влагосодержание влажного воздуха;) 
+ @item(давление насыщения водяных паров;) 
+ @item(температура точки росы;) 
+ @item(энтальпия влажного воздуха.) 
+@end(list)")
 
 (defsystem "gases/gas-dynamics"
   :version "0.1.0"
