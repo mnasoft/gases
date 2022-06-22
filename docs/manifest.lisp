@@ -2,7 +2,7 @@
    :scriba
    :systems (:GASES)
    :documents ((:title "Gases"
-	        :authors ("Nick Matvyeyev")
+	        :authors ("Mykola Matvyeyev")
 	        :output-format (:TYPE :MULTI-HTML :TEMPLATE :GAMMA) 
                 :sources ("gases-reac.scr" "gases-molecule.scr"
                           "gases-gas-dynamics.scr" "gases-db.scr"

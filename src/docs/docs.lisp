@@ -63,7 +63,7 @@
   (mnas-package:make-mainfest-lisp
    '(:gases)
    "Gases"
-   '("Nick Matvyeyev")
+   '("Mykola Matvyeyev")
    (mnas-package:find-sources "gases")
    :output-format of)
   (codex:document :gases)

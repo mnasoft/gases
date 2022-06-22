@@ -2,7 +2,7 @@
 
 (defsystem "gases"
   :version "0.2.0"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
   :depends-on ("gases/const"
                "gases/db"
@@ -24,7 +24,7 @@
 
 (defsystem "gases/core"
   :version "0.2.0"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
   :depends-on ("cl-utilities" "half-div" "math" "gases/const" "gases/db") 
   :components ((:module "src/core"
@@ -40,7 +40,7 @@
 
 (defsystem "gases/reac"
   :version "0.2.0"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
   :depends-on ("cl-utilities" "half-div" "math" "gases/const" "gases/db" "gases/core") 
   :components ((:module "src/reac"
@@ -55,7 +55,7 @@
 
 (defsystem "gases/const"
   :version "0.2.0"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
 ;;  :depends-on () 
   :components ((:module "src/const"
@@ -69,7 +69,7 @@
 
 (defsystem "gases/db"
   :version "0.2.0"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
   :depends-on ("gases/const") 
   :components ((:module "src/db"
@@ -90,7 +90,7 @@
 
 (defsystem "gases/molecule"
   :version "0.2.0"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
 ;;  :depends-on ("gases") 
   :components ((:module "src/molecule"
@@ -101,7 +101,7 @@
 
 (defsystem "gases/wet-air"
   :version "0.2.0"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
   ;;  :depends-on () ;; "gases" #:cl-annot
   :components ((:module "src/wet-air"
@@ -120,7 +120,7 @@
 
 (defsystem "gases/gas-dynamics"
   :version "0.1.0"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"  
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"  
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
   :depends-on ("half-div" "gases/const") ;; "gases"
   :components ((:module "src/gas-dynamics"
@@ -130,7 +130,7 @@
 
 (defsystem "gases/web"
   :version "0.0.2"
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
   :depends-on ("math" "periodic-table" "caveman" "cl-who") ;; "gases" "cl-annot"
   :components ((:module "src/web"
@@ -145,7 +145,7 @@
 (defsystem "gases/docs"
   :description "@b(Описание:) система @b(gases/docs) содержит
   зависимости для сборки документации."
-  :author "Nick Matvyeyev <mnasoft@gmail.com>"
+  :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"  
   :depends-on ("gases" "mnas-package" "codex")
   :components ((:module "src/docs"
