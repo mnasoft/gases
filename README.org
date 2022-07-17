@@ -154,41 +154,50 @@
 #+BEGIN_SRC lisp
   ;;;;(require :gases)
   ;;;; Определение низшей рабочей теплоты сгорания отдельного компонента.
-  (gases:q-work-low (gases:get-sp "H2"))  ; => -119960.51352263031d0 кДж/кг
-  (gases:q-work-low (gases:get-sp "CH4")) ; => -50027.36488044851d0 кДж/кг
+  (gases/reac:q-work-low (gases/db:get-sp "H2"))  ; => -119960.51352263031d0 кДж/кг
+  (gases/reac:q-work-low (gases/db:get-sp "CH4")) ; => -50027.36488044851d0 кДж/кг
 
-  (/ (gases:q-work-low
-      (gases:make-instance-composition
+  (/ (gases/reac:q-work-low
+      (gases/core:make-instance-composition
        `(("CH4" ,(* 0.01 3.42))
-	 ("CO"  ,(* 0.01 8.89))
-	 ("CO2" ,(* 0.01 17.96))
-	 ("H2O" ,(* 0.01 47.38))
-	 ("H2"  ,(* 0.01 0.37))
-	 ("N2"  ,(* 0.01 21.98)))
+         ("CO"  ,(* 0.01 8.89))
+         ("CO2" ,(* 0.01 17.96))
+         ("H2O" ,(* 0.01 47.38))
+         ("H2"  ,(* 0.01 0.37))
+         ("N2"  ,(* 0.01 21.98)))
        :mass))
      4.1868)  ; => -729.1752384783745d0
 
-  (gases:q-work-low
-   (gases:make-instance-composition
+  (gases/reac:q-work-low
+   (gases/core:make-instance-composition
     `(("CH4" ,(* 0.01 3.42))
       ("CO"  ,(* 0.01 8.89))
-
-
-      ("H2"  ,(* 0.01 0.37))
-  )
+    
+      ("H2"  ,(* 0.01 0.37)))
     :mass))
 
-  (/ (gases:thermal-effect (gases:combustion-reaction (gases:get-sp "H2"))) 0.002)
+  (/ (gases/reac:thermal-effect
+      (gases/reac:combustion-reaction
+       (gases/db:get-sp "H2")))
+     0.002)
 
-  '(("CH4" 0.78) ("H2" 0.22)) :mass)
+  '((("CH4" 0.78) ("H2" 0.22)) :mass)
 
-  (gases:combustion-reaction (gases:get-sp "O2"))
+  (gases/reac:combustion-reaction
+   (gases/db:get-sp "O2"))
 
-  (gases:Q-work-low (gases:get-sp "H2O"))
+  (gases/reac:q-work-low
+   (gases/db:get-sp "H2O"))
 
-  (make-instance 'gases:<reaction>
-  :reactant-names (list (gases:sp-name (gases:get-sp "N2")))
-  :product-names (list (gases:sp-name (gases:get-sp "N2"))))
+  (make-instance
+   'gases/reac:<reaction>
+   :reactant-names
+   (list (gases/db:<sp>-name
+          (gases/db:get-sp "N2")))
+   :product-names
+   (list
+    (gases/db:<sp>-name
+     (gases/db:get-sp "N2"))))
 #+END_SRC
 * Замечания
 ** Запись <sp> в БД TermoBuild при количестве диапазонов равном 0 (нуль) принимает особый смысл.
