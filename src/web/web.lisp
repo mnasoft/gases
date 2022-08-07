@@ -166,7 +166,7 @@
 					:min "1"
 					:max "100"))))))))
 
-(defmethod html-out ((mm math/arr-matr:<matrix>) s)
+(defmethod html-out ((mm math/matr:<matrix>) s)
   "Новая версия"
   (let ((o-str (make-string-output-stream)))
     (format o-str "~%<table>")
@@ -185,28 +185,28 @@
 
 (defun make-table-periodic ()
   (let ((tbl-perodic-long
-	  (make-instance 'math/arr-matr:<matrix>
+	  (make-instance 'math/matr:<matrix>
 			 :dimensions '(10 19)
 			 :initial-element nil)))
       
     (loop :for i :from 0 :below (math:rows tbl-perodic-long) :do
       (loop :for j :from 0 :below (math:cols tbl-perodic-long) :do
-	(setf (math/arr-matr:mref tbl-perodic-long i j) nil)))
+	(setf (math/matr:mref tbl-perodic-long i j) nil)))
   
     (loop :for i :from 1 :to 112 :do
       (let ((t-p-g (period-group-long i)))
 	(when (and t-p-g (eq :M (first t-p-g)))
-	  (setf (math/arr-matr:mref tbl-perodic-long
+	  (setf (math/matr:mref tbl-perodic-long
 			   (1- (second t-p-g))
 			   (1- (third  t-p-g)))
 		(elements:atomic-number-element i)))
 	(when (and t-p-g (eq :LA (first t-p-g)))
-	  (setf (math/arr-matr:mref tbl-perodic-long
+	  (setf (math/matr:mref tbl-perodic-long
 			   (+ (second t-p-g) 1)
 			   (1- (third  t-p-g)))
 		(elements:atomic-number-element i)))
 	(when (and t-p-g (eq :AC (first t-p-g)))
-	  (setf (math/arr-matr:mref tbl-perodic-long
+	  (setf (math/matr:mref tbl-perodic-long
 			   (+ (second t-p-g) 2)
 			   (1- (third  t-p-g)))
 		(elements:atomic-number-element i)))))

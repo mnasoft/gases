@@ -702,11 +702,11 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 
 (defmethod check-mole-fraction ((cmp <composition>))
 "Проверка правильности задания мольных долей."
-  (math/arr-matr:semi-equal (molar-fraction-summ cmp) 1.0))
+  (math/matr:semi-equal (molar-fraction-summ cmp) 1.0))
 
 (defmethod check-mass-fraction ((cmp <composition>))
 "Проверка правильности задания массовых долей."
-  (math/arr-matr:semi-equal (mass-fraction-summ cmp) 1.0))
+  (math/matr:semi-equal (mass-fraction-summ cmp) 1.0))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
