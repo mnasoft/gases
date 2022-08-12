@@ -171,7 +171,7 @@
 @end(code)
 "
   (let ((p (partial-pressure x pressure)))
-    (half-div:h-div
+    (math/half-div:h-div
      0.0
      150.0
      #'(lambda (temperature)

@@ -180,9 +180,9 @@
        #'(lambda (lam)
 	   (- (q-by-lambda lam k) q))))
     (values
-     (half-div:h-div 0.0 1.0
+     (math/half-div:h-div 0.0 1.0
 		     (closure-lambda-by-q q k))
-     (half-div:h-div 1.0 (lambda-upper-bound k)
+     (math/half-div:h-div 1.0 (lambda-upper-bound k)
 		     (closure-lambda-by-q q k)))))
  
 (defun lambda-by-tau (tau k)
@@ -195,7 +195,7 @@
       ((closure-lambda-by-tau (tau k)
 	 #'(lambda (lam)
 	     (- (tau-by-lambda lam k) tau))))
-    (half-div:h-div 0.0 (lambda-upper-bound k)
+    (math/half-div:h-div 0.0 (lambda-upper-bound k)
 		    (closure-lambda-by-tau tau k))))
  
 (defun lambda-by-pi (pii k)
@@ -211,7 +211,7 @@
       ((closure-lambda-by-pi (pii k)
 	 #'(lambda (lam)
 	     (- (pi-by-lambda lam k) pii))))
-    (half-div:h-div 0.0 (lambda-upper-bound k)
+    (math/half-div:h-div 0.0 (lambda-upper-bound k)
 		    (closure-lambda-by-pi pii k))))
  
 (defun lambda-by-epsilon (epsilon k)
@@ -241,7 +241,7 @@
       ((closure-lambda-by-epsilon (epsilon k)
 	 #'(lambda (lam)
 	     (- (epsilon-by-lambda lam k) epsilon))))
-    (half-div:h-div 0.0 (lambda-upper-bound k)
+    (math/half-div:h-div 0.0 (lambda-upper-bound k)
 		    (closure-lambda-by-epsilon epsilon k))))
 
 (defun R-by-mu (mu)
