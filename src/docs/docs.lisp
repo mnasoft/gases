@@ -17,6 +17,7 @@
 @end(code)
 "
   (loop
+    :for j :from 1
     :for i :in
     '((:gases/const        :gases/const)
       (:gases/db           :gases/db)
@@ -26,7 +27,9 @@
       (:gases/molecule     :gases/molecule)
       (:gases/wet-air      :gases/wet-air)
       )
-    :do (apply #'mnas-package:document i)))
+    :do (progn
+          (apply #'mnas-package:document i)
+          (format t "~A ~A~%" j i))))
 
 (defun make-graphs ()
   "
@@ -36,6 +39,7 @@
 @end(code)
 "
   (loop
+    :for j :from 1
     :for i :in
     '(:gases/const
       :gases/db
@@ -44,7 +48,9 @@
       :gases/gas-dynamics
       :gases/molecule
       :gases/wet-air)
-    :do (mnas-package:make-codex-graphs i i)))
+    :do (progn
+          (mnas-package:make-codex-graphs i i)
+          (format t "~A ~A~%" j i))))
 
 (defun make-all (&aux
                    (of (if (find (uiop:hostname)

@@ -8,7 +8,7 @@
                           "gases-molecule.scr" "gases-gas-dynamics.scr"
                           "gases-db.scr" "gases-core.scr" "gases-const.scr"
                           "gases-const-graph.scr" "gases-db-graph.scr"
-                          "gases-core-graph.scr" "gases-reac-graph.scr"
-                          "gases-gas-dynamics-graph.scr"
-                          "gases-molecule-graph.scr" "gases-wet-air-graph.scr")
+                          "gases-core-graph.scr" "gases-gas-dynamics-graph.scr"
+                          "gases-reac-graph.scr" "gases-molecule-graph.scr"
+                          "gases-wet-air-graph.scr")
                 )))
