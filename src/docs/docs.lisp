@@ -5,7 +5,7 @@
   (:documentation "Пакет @b(ases/docs) содержит функции
   генерирования и публикации документации."))
 
-(in-package gases/docs)
+(in-package :gases/docs)
 
 (defun make-document ()
   "@b(Описание:) функция @b(make-document) выполняет формирование
