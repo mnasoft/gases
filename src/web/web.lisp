@@ -2,7 +2,7 @@
 
 (in-package :cl-user)
 
-(defpackage #:gases/web
+(defpackage :gases/web
   (:use #:cl)
   (:export html-out
            make-table-periodic

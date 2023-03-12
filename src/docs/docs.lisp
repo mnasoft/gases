@@ -1,4 +1,4 @@
-(defpackage #:gases/docs
+(defpackage :gases/docs
   (:use #:cl ) 
   (:nicknames "GASES/DOCS")
   (:export make-all)
