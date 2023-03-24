@@ -1,6 +1,6 @@
 ;;;; ./web/src/test.lisp
 
-(in-package :gases.web)
+(in-package :gases/web)
 
 (defparameter *rec* '(("H" ("ch-box" . "on") ("l-e-b" . ">") ("num" . "9"))
 		      ("He" ("l-e-b" . "") ("num" . ""))

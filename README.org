@@ -86,15 +86,15 @@
 
 #+name: d-wet-air
 #+BEGIN_SRC lisp :exports results
-    (require :gases)
+  ,#+nil(ql:quickload :gases)
   (append (list (list "P_{В.П}" "d, г/кг" "P_{В.П}" "d, г/кг" "P_{В.П}" "d, г/кг" ))
-	  (mapcar #'append  
-		  (loop :for i :from 0 :to 100 :by 5
-		     :collect (list i (gases:d-wet-air 101325 i)))
-		  (loop :for i :from 100 :to 1000 :by 50
-		     :collect (list i (gases:d-wet-air 101325 i)))
-		  (loop :for i :from 2000 :to 20000 :by 1000
-		     :collect (list i (gases:d-wet-air 101325 i)))))
+          (mapcar #'append  
+                  (loop :for i :from 0 :to 100 :by 5
+                     :collect (list i (gases/wet-air:d-wet-air 101325 i)))
+                  (loop :for i :from 100 :to 1000 :by 50
+                     :collect (list i (gases/wet-air:d-wet-air 101325 i)))
+                  (loop :for i :from 2000 :to 20000 :by 1000
+                     :collect (list i (gases/wet-air:d-wet-air 101325 i)))))
 #+END_SRC
 #+caption: Влагосодержание при нормальном атмосферном давленни P_{Б}=760 мм рт.ст.
 #+RESULTS: d-wet-air
@@ -168,11 +168,12 @@
        :mass))
      4.1868)  ; => -729.1752384783745d0
 
+  ,#+nil
   (gases/reac:q-work-low
    (gases/core:make-instance-composition
     `(("CH4" ,(* 0.01 3.42))
       ("CO"  ,(* 0.01 8.89))
-    
+
       ("H2"  ,(* 0.01 0.37)))
     :mass))
 

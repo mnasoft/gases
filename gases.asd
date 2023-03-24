@@ -132,7 +132,7 @@
   :version "0.0.2"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on ("math" "periodic-table" "caveman" "cl-who") ;; "gases" "cl-annot"
+  :depends-on ("math" "periodic-table" "caveman2" "cl-who") ;; "gases" "cl-annot"
   :components ((:module "src/web"
 		:serial t
 		:components
