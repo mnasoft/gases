@@ -26,7 +26,7 @@
   :version "0.2.0"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on ("cl-utilities" "half-div" "math" "gases/const" "gases/db") 
+  :depends-on ("cl-utilities" "math" "gases/const" "gases/db" "math/half-div") 
   :components ((:module "src/core"
 		:serial t
 		:components
@@ -42,7 +42,7 @@
   :version "0.2.0"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on ("cl-utilities" "half-div" "math" "gases/const" "gases/db" "gases/core") 
+  :depends-on ("cl-utilities" "math/half-div" "math" "gases/const" "gases/db" "gases/core") 
   :components ((:module "src/reac"
 		:serial t
 		:components
@@ -122,7 +122,7 @@
   :version "0.1.0"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"  
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on ("half-div" "gases/const") ;; "gases"
+  :depends-on ("math/half-div" "gases/const") ;; "gases"
   :components ((:module "src/gas-dynamics"
 		:components ((:file "main"))))
   :description "Система содержит газодинамические функции."
@@ -132,7 +132,7 @@
   :version "0.0.2"
   :author "Mykola Matvyeyev <mnasoft@gmail.com>"
   :license "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or later"
-  :depends-on ("math" "periodic-table" "caveman" "cl-who") ;; "gases" "cl-annot"
+  :depends-on ("math" "periodic-table" "caveman2" "cl-who") ;; "gases" "cl-annot"
   :components ((:module "src/web"
 		:serial t
 		:components
@@ -152,6 +152,6 @@
 		:serial nil
                 :components ((:file "docs")))))
 
-;;;;(:module "gas-dynamics" :depends-on (#:half-div) :components ((:file "src/main")))
+;;;;(:module "gas-dynamics" :depends-on (#:math/half-div) :components ((:file "src/main")))
 
 ;;;;/home/namatv/quicklisp/local-projects/clisp/gases/gases/src/main.lisp:

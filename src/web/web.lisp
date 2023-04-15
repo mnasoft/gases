@@ -1,7 +1,10 @@
 ;;;; web.lisp
+<<<<<<< HEAD
 
 (in-package :cl-user)
 
+=======
+>>>>>>> a6f74355141d554fc1cef78ac6c7eb24957b6563
 (defpackage :gases/web
   (:use #:cl)
   (:export html-out
@@ -9,7 +12,24 @@
            filter-not-checked-elements 
            query-map 
            query-item 
-           ))
+           )
+  (:documentation
+   "@b(Описание:) пакет @b(gases/web) создается для отбора химических
+веществ на основании состава их молекул по:
+@begin(list)
+ @item(присутствию атома в сосаве молекулы;)
+ @item(присутствию точного большего или меньшего количества атомов в составе молекулы;)
+@end(list)
+
+Состояние проекта - пока не дописан.
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+(with-open-file (stream \"~/table-periodic.html\" :direction :output)
+    (html-out (make-table-periodic) stream))
+@end(code)
+
+"))
 
 (in-package :gases/web)
 
@@ -170,8 +190,8 @@
   "Новая версия"
   (let ((o-str (make-string-output-stream)))
     (format o-str "~%<table>")
-    (loop :for i :from 0 :below (math:rows mm) :do
-      (let ((rr (math:row mm i)))
+    (loop :for i :from 0 :below (math/matr:rows mm) :do
+      (let ((rr (math/matr:row mm i)))
 	(format o-str "~%<tr>")
 	(map nil
 	     #'(lambda (el)
@@ -189,8 +209,13 @@
 			 :dimensions '(10 19)
 			 :initial-element nil)))
       
+<<<<<<< HEAD
     (loop :for i :from 0 :below (math:rows tbl-perodic-long) :do
       (loop :for j :from 0 :below (math:cols tbl-perodic-long) :do
+=======
+    (loop :for i :from 0 :below (math/matr:rows tbl-perodic-long) :do
+      (loop :for j :from 0 :below (math/matr:cols tbl-perodic-long) :do
+>>>>>>> a6f74355141d554fc1cef78ac6c7eb24957b6563
 	(setf (math/matr:mref tbl-perodic-long i j) nil)))
   
     (loop :for i :from 1 :to 112 :do
@@ -212,16 +237,16 @@
 		(elements:atomic-number-element i)))))
     tbl-perodic-long))
 
-(defmethod html-out ((sp gases:<sp>) s)
+(defmethod html-out ((sp gases/db:<sp>) s)
   "Короткая версия для вывода элемента"
   (format s "~A"
 	  (cl-who:with-html-output-to-string (o-str nil :indent t)
 	    (:div
 	     (:table :bordercolor "\\#ff0" :border "2"
 		     (:tr
-		      (:td (cl-who:str (gases:<sp>-name       sp)))
-		      (:td (cl-who:str (gases:<sp>-molar-mass sp)))
-		      (:td (cl-who:str (gases:<sp>-comments   sp)))))))))
+		      (:td (cl-who:str (gases/db:<sp>-name       sp)))
+		      (:td (cl-who:str (gases/db:<sp>-molar-mass sp)))
+		      (:td (cl-who:str (gases/db:<sp>-comments   sp)))))))))
 
 (defun filter-not-checked-elements (lst)
   (remove-if
@@ -233,7 +258,7 @@
 
 (defun query-map (lst)
   (eval
-   `(gases:find-by-atoms
+   `(gases/core:find-by-atoms
      ,(cons 'and (mapcar #'query-item
 			 lst)))))
 
@@ -251,18 +276,18 @@
 	       (string= ch-box "on")
 	       (member l-e-b '("<" ">" "=") :test #'string=)
 	       (<= 1 (parse-integer num :junk-allowed t)))
-      `(gases:q-of
+      `(gases/core:q-of
 	,element
 	,(cond ((string= l-e-b ">") '>=)
 	       ((string= l-e-b "=") '=)
 	       ((string= l-e-b "<") '<=))
 	,(parse-integer num :junk-allowed t)))))
 
-;;;; (gases:find-by-atoms (and (gases:q-of "H" >= 2) (gases:q-of "H" <= 8) (gases:q-of "C" = 1))) 
+;;;; (gases/core:find-by-atoms (and (gases/core:q-of "H" >= 2) (gases/core:q-of "H" <= 8) (gases/core:q-of "C" = 1))) 
 
-;;;; (html-out (gases:get-sp "C2H5OH") t)
-;;;; (gases:<sp>-molar-mass
-;;;; (gases:find-by-atoms (and (gases:q-of "H" >= 2) (gases:q-of "H" <= 8) (gases:q-of "C" = 1))) 
+;;;; (html-out (gases/db:get-sp "C2H5OH") t)
+;;;; (gases/db:<sp>-molar-mass
+;;;; (gases/core:find-by-atoms (and (gases/core:q-of "H" >= 2) (gases/core:q-of "H" <= 8) (gases/core:q-of "C" = 1))) 
 ;;;; (html-out (make-table-periodic) t)
 ;;;; (period-group-long 1)
 ;;;; (elements:element-name (elements:atomic-number-element 12)) ; => "Magnesium"
@@ -272,7 +297,7 @@
 ;;;; (query-map '(("Ne" ("ch-box" . "on") ("l-e-b" . "=") ("num" . "1"))))
 
 ;;;; (query-item '("Ne" ("ch-box" . "on") ("l-e-b" . "=") ("num" . "1")))
-;;;; (GASES:Q-OF "Ne" = 1)
+;;;; (gases/core:q-of "Ne" = 1)
 
 
 (defparameter *bag* '(0 1000 0))
@@ -293,4 +318,5 @@
 (silver)
 (gold)
 
-20
+(with-open-file (stream "~/table-periodic.html" :direction :output)
+    (html-out (make-table-periodic) stream))

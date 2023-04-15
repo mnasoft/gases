@@ -1,0 +1,240 @@
+#+options: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+options: author:t broken-links:nil c:nil creator:nil
+#+options: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:t
+#+options: p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:t
+#+options: timestamp:t title:t toc:t todo:t |:t
+#+title: CRITICAL-CONSTANTS-OF-INORGANIC-COMPOUNDS
+#+date: <2023-03-29 Ср>
+#+author:
+#+email: namatv@N142013
+#+language: en
+#+select_tags: export
+#+exclude_tags: noexport
+#+creator: Emacs 28.2 (Org mode 9.5.5)
+#+cite_export:
+#+options: html-link-use-abs-url:nil html-postamble:auto
+#+options: html-preamble:t html-scripts:nil html-style:t
+#+options: html5-fancy:nil tex:t
+#+html_doctype: xhtml-strict
+#+html_container: div
+#+html_content_class: content
+#+description:
+#+keywords:
+#+html_link_home:
+#+html_link_up:
+#+html_mathjax:
+#+html_equation_reference_format: \eqref{%s}
+#+html_head:
+#+html_head_extra:
+#+subtitle:
+#+infojs_opt:
+#+creator: <a href="https://www.gnu.org/software/emacs/">Emacs</a> 28.2 (<a href="https://orgmode.org">Org</a> mode 9.5.5)
+#+latex_header:
+
+* CRITICAL CONSTANTS OF INORGANIC COMPOUNDS
+
+The parameters of the liquid-gas critical point are important
+constants in determining the behavior of fluids. This table lists the
+critical temperature, pressure, and molar volume, as well as the
+normal boiling point, for over 140 inorganic substances. The
+properties and their units are:
+
+T_{b}: Normal boiling point in K at a pressure of 101.325 kPa (1
+atmosphere); an “sp” following the value indicates a sublimation point
+(temperature at which the solid is in equilibrium with the gas at a
+pressure of 101.325 kPa)
+
+T_{c}: Critical temperature in K
+
+P_{c}: Critical pressure in MPa
+
+V_{c}: Critical molar volume in cm^{3} mol^{–1}
+
+The number of digits given for T_{b}, T_{c}, and P_{c} indicates the
+estimated accuracy of these quantities; however, values of T_{c} greater
+than 750 K may be in error by 10 K or more. Although most V_{c} values
+are given to three figures, they cannot be assumed accurate to better
+than a few percent.
+
+All values are experimentally determined except for a few values,
+indicated by an asterisk *, that are based on extrapolations.  Methods
+of measurement are described and critiqued in Reference 1. Compounds
+are listed alphabetically by name.
+
+#+begin_src lisp :var data=critical-constants-of-inorganic-compounds :exports results
+  ;;(ql:quickload :mnas-string)
+
+  (defun foo (formula)
+    (let (rez)
+      (loop :for ch :in (coerce formula 'list)
+            :do
+               (cond
+                 ((digit-char-p ch)
+                  (push #\_ rez)
+                  (push #\{ rez)
+                  (push ch rez)
+                  (push #\} rez))
+                 ((alpha-char-p ch)
+                  (push ch rez))))
+      (mnas-string:replace-all (coerce (nreverse rez) 'string)"}_{" "")))
+
+  (loop :for (name formula T_{b}/K T_{c}/K  P_{c}/MPa  V_{c}/cm^3*mol^-1   Ref. ) :in data
+        :collect `(,name
+                   ,(foo
+                     (apply #'concatenate 'string (mnas-string:split "_{}" formula)))
+                   ,T_{b}/K
+                   ,T_{c}/K
+                   ,P_{c}/MPa
+                   ,V_{c}/cm^3*mol^-1
+                   ,Ref. ))
+#+end_src
+
+* Data-table                                                       :noexport:
+
+#+name:critical-constants-of-inorganic-compounds
+| Name                                | Formula |    T_{b}/K | T_{c}/K | P_{c}/MPa | V_{c}/cm^3*mol^-1 |  Ref. |
+|-------------------------------------+---------+------------+---------+-----------+-------------------+-------|
+| Aluminum                            | Al      |       2792 |  6700 * |           |                   |     2 |
+| Aluminum bromide                    | AlBr3   |        528 |     763 |      2.89 |               310 |     3 |
+| Aluminum chloride                   | AlCl3   |     453 sp |     620 |      2.63 |               257 |     3 |
+| Aluminum iodide                     | AlI3    |        655 |     983 |       408 |                   |     3 |
+| Ammonia                             | NH3     |     239.82 |  405.56 |    11.357 |              69.8 |   3,4 |
+| Ammonium chloride                   | NH4Cl   |     611 sp |    1155 |     163.5 |                   |     3 |
+| Antimony(III) bromide               | SbBr3   |        561 |     904 |       300 |                   |     3 |
+| Antimony(III) chloride              | SbCl3   |      493.5 |     794 |       272 |                   |     3 |
+| Antimony(III) iodide                | SbI3    |        673 |    1102 |           |                   |     3 |
+| Argon                               | Ar      |     87.302 | 150.687 |     4.863 |                75 |     3 |
+| Arsenic (gray)                      | As      |     889 sp |    1673 |      22.3 |                35 |     3 |
+| Arsenic(III) chloride               | AsCl3   |        403 |     654 |       252 |                   |     3 |
+| Arsine                              | AsH3    |      210.7 |   373.1 |           |                   |     3 |
+| Beryllium                           | Be      |       2741 |  5205 * |           |                   |     5 |
+| Bismuth                             | Bi      |       1837 |  4620 * |           |                   |     5 |
+| Bismuth tribromide                  | BiBr3   |        735 |    1220 |       301 |                   |     3 |
+| Bismuth trichloride                 | BiCl3   |        714 |    1179 |      12.0 |               261 |     3 |
+| Boron tribromide                    | BBr3    |      364.5 |     581 |       272 |                   |     3 |
+| Boron trichloride                   | BCl3    |      285.7 |     455 |      3.87 |               239 |     3 |
+| Boron trifluoride                   | BF3     |      173.3 |   260.8 |      4.98 |               115 |     3 |
+| Boron triiodide                     | BI3     |      482.7 |     773 |       356 |                   |     3 |
+| Bromine                             | Br2     |      332.0 |     588 |     10.34 |               127 |     3 |
+| Carbon dioxide                      | CO2     | 194.686 sp |  304.13 |     7.375 |                94 |     6 |
+| Carbon disulfide                    | CS2     |      319.4 |     552 |      7.90 |               173 |     3 |
+| Carbon monoxide                     | CO      |      81.64 |  132.86 |     3.494 |                93 | 3,7,8 |
+| Carbon oxysulfide                   | OCS     |      223.0 |     375 |      5.88 |               137 |   3,7 |
+| Cesium                              | Cs      |        944 |    1938 |       9.4 |               341 |     9 |
+| Chlorine                            | Cl2     |     239.11 |   417.0 |     7.991 |               123 |     3 |
+| Chlorine pentafluoride              | ClF5    |      260.1 |     416 |      5.27 |               233 |     3 |
+| Chlorotrifluorosilane               | SiClF3  |      203.2 |   307.7 |      3.46 |                   |     3 |
+| Diborane                            | B2H6    |     180.66 |   289.8 |      4.05 |                   |     3 |
+| Dichlorodifluorosilane              | SiCl2F2 |        241 |   369.0 |       3.5 |                   |     3 |
+| Difluoramine                        | NHF2    |        250 |     403 |           |                   |     3 |
+| cis-Difluorodiazine                 | N2F2    |     167.40 |     272 |      7.09 |                   |     3 |
+| trans-Difluorodiazine               | N2F2    |     161.70 |     260 |      5.57 |                   |     3 |
+| Fluorine                            | F2      |      85.04 |  144.41 |    5.1724 |                66 |     3 |
+| Fluorine monoxide                   | F2O     |      128.9 |     215 |           |                   |     3 |
+| Gallium(III) bromide                | GaBr3   |        552 |   806.7 |       303 |                   |     3 |
+| Gallium(III) chloride               | GaCl3   |        474 |     694 |       263 |                   |     3 |
+| Gallium(III) iodide                 | GaI3    |        613 |     951 |       395 |                   |     3 |
+| Germane                             | GeH4    |      185.1 |   312.2 |      4.95 |               147 |     3 |
+| Germanium                           | Ge      |       3106 |  9802 * |           |                   |     5 |
+| Germanium(IV) bromide               | GeBr4   |     459.50 |     718 |       392 |                   |     3 |
+| Germanium(IV) chloride              | GeCl4   |     359.70 |   553.2 |     3.861 |               330 |     3 |
+| Germanium(IV) iodide                | GeI4    |        621 |     973 |       500 |                   |     3 |
+| Hafnium(IV) bromide                 | HfBr4   |     596 sp |     746 |       415 |                   |     3 |
+| Hafnium(IV) chloride                | HfCl4   |     590 sp |   725.7 |      5.42 |               314 |     3 |
+| Hafnium(IV) iodide                  | HfI4    |     667 sp |     916 |       528 |                   |     3 |
+| Helium                              | He      |      4.222 |  5.1953 |   0.22746 |                57 |     3 |
+| Hydrazine                           | N2H4    |     386.70 |     653 |      14.7 |                   |     3 |
+| Hydrogen                            | H2      |     20.271 |  32.938 |    1.2858 |                65 |     3 |
+| Hydrogen bromide                    | HBr     |     206.77 |   363.2 |      8.55 |                   |     3 |
+| Hydrogen chloride                   | HCl     |        188 |   324.7 |      8.31 |                81 |     3 |
+| Hydrogen fluoride                   | HF      |        293 |     461 |      6.48 |                69 |     3 |
+| Hydrogen iodide                     | HI      |     237.60 |   424.0 |      8.31 |                   |     3 |
+| Hydrogen peroxide                   | H2O2    |      423.4 |   728 * |      22 * |                10 |       |
+| Hydrogen selenide                   | H2Se    |     231.90 |     411 |      8.92 |                   |     3 |
+| Hydrogen sulfide                    | H2S     |     213.60 |   373.1 |      9.00 |                99 |   3,7 |
+| Iodine                              | I2      |      457.6 |     819 |       155 |                   |     3 |
+| Iodine bromide                      | IBr     |    389 dec |     719 |       139 |                   |     3 |
+| Iron                                | Fe      |       3134 |  9340 * |           |                   |     5 |
+| Krypton                             | Kr      |    119.735 |  209.48 |     5.525 |                91 |   3,7 |
+| Lithium                             | Li      |       1615 |  3223 * |      67 * |                66 |    11 |
+| Manganese                           | Mn      |       2334 |  4325 * |           |                   |     5 |
+| Mercury                             | Hg      |    629.769 |    1764 |       167 |                43 |  3,12 |
+| Mercury(II) bromide                 | HgBr2   |        591 |    1012 |           |                   |     3 |
+| Mercury(II) chloride                | HgCl2   |        577 |     973 |       174 |                   |     3 |
+| Mercury(II) iodide (yellow)         | HgI2    |        624 |    1072 |           |                   |     3 |
+| Molybdenum(V) chloride              | MoCl5   |        541 |     850 |       369 |                   |     3 |
+| Molybdenum(VI) fluoride             | MoF6    |      307.2 |     473 |      4.75 |               226 |     3 |
+| Neon                                | Ne      |     27.104 | 44.4918 |    2.6786 |                42 |     3 |
+| Niobium(V) chloride                 | NbCl5   |      520.6 |   803.5 |      4.88 |               397 |     3 |
+| Niobium(V) fluoride                 | NbF5    |        507 |     737 |      6.28 |               155 |     3 |
+| Nitric oxide                        | NO      |     121.41 |     180 |      6.48 |                58 |     3 |
+| Nitrogen                            | N2      |     77.355 | 126.192 |    3.3958 |                90 |     3 |
+| Nitrogen chloride difluoride        | NClF2   |        206 |   337.5 |      5.15 |                   |     3 |
+| Nitrogen tetroxide                  | N2O4    |     294.30 |     431 |      10.1 |               167 |     3 |
+| Nitrogen trifluoride                | NF3     |     144.40 |   234.0 |      4.46 |               126 |     3 |
+| Nitrosyl chloride                   | NOCl    |      267.7 |     440 |           |                   |     3 |
+| Nitrous oxide                       | N2O     |     184.67 |  309.52 |     7.245 |                97 |   3,7 |
+| Nitryl fluoride                     | NO2F    |      200.8 |   349.5 |           |                   |     3 |
+| Osmium(VIII) oxide                  | OsO4    |      404.4 |     678 |           |                   |     3 |
+| Oxygen                              | O2      |     90.188 | 154.581 |    5.0430 |                73 |     3 |
+| Ozone                               | O3      |     161.80 |   261.1 |      5.57 |                89 |     3 |
+| Perchloryl fluoride                 | ClO3F   |     226.40 |   368.4 |      5.37 |               161 |     3 |
+| Phosphine                           | PH3     |     185.40 |   324.5 |      6.54 |                   |     3 |
+| Phosphonium chloride                | PH4Cl   |     246 sp |   322.3 |      7.37 |                   |     3 |
+| Phosphorothioc chloride difluoride  | PSClF2  |      279.5 |   439.2 |      4.14 |                   |     3 |
+| Phosphorothioc trifluoride          | PSF3    |     220.90 |   346.0 |      3.82 |                   |     3 |
+| Phosphorus (white)                  | P       |      553.7 |     994 |           |                   |     3 |
+| Phosphorus(III) bromide             | PBr3    |      446.4 |     711 |       300 |                   |     3 |
+| Phosphorus(III) chloride            | PCl3    |        349 |     563 |       264 |                   |     3 |
+| Phosphorus(V) chloride              | PCl5    |     433 sp |     646 |           |                 3 |       |
+| Phosphorus(III) chloride difluoride | PClF2   |      225.9 |   362.4 |      4.52 |                   |     3 |
+| Phosphorus(III) dichloride fluoride | PCl2F   |     287.00 |   463.0 |      4.96 |                   |     3 |
+| Phosphorus(III) fluoride            | PF3     |      171.4 |   271.2 |      4.33 |                   |     3 |
+| Potassium                           | K       |       1032 |  2223 * |      16 * |               209 |    11 |
+| Radon                               | Rn      |      211.5 |     377 |      6.28 |                   |     3 |
+| Rhenium(VII) oxide                  | Re2O7   |        633 |     942 |       334 |                   |     3 |
+| Rhenium(VI) oxytetrachloride        | ReOCl4  |        496 |     781 |       362 |                   |     3 |
+| Rubidium                            | Rb      |        961 |  2093 * |      16 * |               247 |    11 |
+| Selenium (gray)                     | Se      |        958 |    1766 |      27.2 |                   |     3 |
+| Selenium hexafluoride               | SeF6    |   226.6 sp |   345.5 |           |                   |     3 |
+| Selenium oxychloride                | SeOCl2  |        450 |     730 |      7.09 |               235 |     3 |
+| Silver                              | Ag      |       2435 |  6410 * |           |                   |     5 |
+| Sodium                              | Na      |   1156.090 |  2573 * |      35 * |               116 |    11 |
+| Sulfur (rhombic)                    | S       |     717.76 |    1314 |      20.7 |              57.0 |     3 |
+| Sulfur chloride pentafluoride       | SF5Cl   |     254.10 |   390.9 |           |                   |     3 |
+| Sulfur dioxide                      | SO2     |     263.13 |  430.64 |     7.884 |               122 |   3,7 |
+| Sulfur hexafluoride                 | SF6     |   209.4 sp | 318.723 |      3.77 |               197 |  3,14 |
+| Sulfur tetrafluoride                | SF4     |     232.70 |     364 |           |                   |     3 |
+| Sulfur trioxide (β-form)            | SO3     |      317.7 |   491.0 |       8.2 |               127 |     3 |
+| Tantalum(V) bromide                 | TaBr5   |      622.0 |     974 |       461 |                   |     3 |
+| Tantalum(V) chloride                | TaCl5   |        512 |     767 |       402 |                   |     3 |
+| Tellurium                           | Te      |       1261 |  2329 * |           |                   |     5 |
+| Tellurium hexafluoride              | TeF6    |   234.3 sp |     356 |           |                   |     3 |
+| Tellurium tetrachloride             | TeCl4   |        660 |    1002 |      8.56 |               310 |     3 |
+| Tetrabromosilane                    | SiBr4   |        427 |     663 |       382 |                   |     3 |
+| Tetrachlorosilane                   | SiCl4   |     330.80 |   508.1 |     3.593 |               326 |     3 |
+| Tetrafluorohydrazine                | N2F4    |        199 |     309 |      3.75 |                   |     3 |
+| Tetrafluorosilane                   | SiF4    |        187 |   259.0 |      3.72 |                   |     3 |
+| Tetraiodosilane                     | SiI4    |     560.50 |     944 |       558 |                   |     3 |
+| Tin(IV) bromide                     | SnBr4   |        478 |     744 |       417 |                   |     3 |
+| Tin(IV) chloride                    | SnCl4   |     387.30 |   591.9 |      3.75 |               351 |     3 |
+| Tin(IV) iodide                      | SnI4    |     637.50 |     968 |       531 |                   |     3 |
+| Titanium(IV) bromide                | TiBr4   |      506.7 |   795.7 |       391 |                   |     3 |
+| Titanium(IV) chloride               | TiCl4   |     409.60 |     638 |      4.66 |               339 |     3 |
+| Titanium(IV) iodide                 | TiI4    |        650 |    1040 |       505 |                   |     3 |
+| Tribromosilane                      | SiHBr3  |        382 |   610.0 |       305 |                   |     3 |
+| Trichlorofluorosilane               | SiCl3F  |     285.40 |   438.6 |      3.58 |                   |     3 |
+| Trichlorosilane                     | SiHCl3  |        306 |     479 |       268 |                   |     3 |
+| Trifluoramine oxide                 | NOF3    |      185.7 |     303 |      6.43 |               147 |     3 |
+| Tungsten(VI) chloride               | WCl6    |        610 |     923 |       422 |                   |     3 |
+| Tungsten(VI) fluoride               | WF6     |      290.3 |     444 |      4.34 |               233 |     3 |
+| Tungsten(VI) oxytetrachloride       | WOCl4   |        503 |     782 |       338 |                   |     3 |
+| Uranium(VI) fluoride                | UF6     |   329.7 sp |   505.8 |      4.66 |               250 |     3 |
+| Vanadyl chloride                    | VOCl    |        400 |     636 |       171 |                   |     3 |
+| Water                               | H2O     |    373.124 |  647.10 |     22.06 |                56 |     3 |
+| Xenon                               | Xe      |    165.051 | 289.733 |    5.8420 |               118 |  7,15 |
+| Xenon difluoride                    | XeF2    |  387.50 sp |     631 |      9.32 |               148 |     3 |
+| Xenon tetrafluoride                 | XeF4    |  388.90 sp |     612 |      7.04 |               188 |     3 |
+| Zirconium(IV) bromide               | ZrBr4   |     633 sp |     805 |       424 |                   |     3 |
+| Zirconium(IV) chloride              | ZrCl4   |     604 sp |     778 |      5.77 |               319 |     3 |
+| Zirconium(IV) iodide                | ZrI4    |     704 sp |     960 |       530 |                   |     3 |

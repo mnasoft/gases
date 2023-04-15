@@ -1,0 +1,962 @@
+* CRITICAL CONSTANTS OF ORGANIC COMPOUNDS
+* Chris D. Muzny, Vladimir Diky, Andrei Kazakov, Robert D. Chirico, and Michael Frenkel
+
+The parameters of the liquid-gas critical point are important
+constants in determining the behavior of fluids. This table lists
+the critical temperature, pressure, and molar volume, as well as
+the normal boiling point, for over 850 organic substances. The
+properties and their units are:
+
+Tb: Normal boiling point in K at a pressure of 101.325 kPa (1
+atmosphere); “sp” following the value indicates a sublimation
+point (temperature at which the solid is in equilibrium
+with the gas at a pressure of 101.325 kPa)
+
+T_{c}: Critical temperature in K
+
+P_{c}: Critical pressure in MPa
+
+V_{c}: Critical molar volume in cm3 mol–1
+
+The listed values of the critical constants are critically evaluated
+using the NIST ThermoData Engine, TDE (Ref. 1), designed
+to implement the dynamic data evaluation concept (Refs. 2–5).
+This concept requires large electronic databases capable of storing
+essentially all relevant experimental data known to date with
+detailed descriptions of metadata and uncertainties. The combination
+of these electronic databases with expert-system software,
+designed to automatically generate recommended property
+values based on available experimental and predicted data, leads
+to the ability to produce critically evaluated data dynamically
+or “to order.” The evaluated data have been generated only for
+compounds for which experimental data for critical properties
+are available. Group contribution methods such as Joback-Reed
+(Ref. 6), Constantinou-Gani (Ref. 7), Marrero-Pardillo (Ref. 8),
+and Wilson-Jasperson (Ref. 9) as well as quantitative structureproperty
+relationship (QSPR) methods (Ref. 5) were used within
+the TDE environment to validate available experimental data.
+Each recommended value in the table is characterized with a
+combined expanded uncertainty (Ref. 10) (level of confidence,
+approximately 95%) listed in parentheses. Only references to original
+experimental data actually used by TDE to generate critically
+evaluated data are indicated for each compound. Compounds are
+listed alphabetically by name.
+
+The values of the normal boiling temperatures provided in the
+table along with the combined expanded uncertainities listed
+in parentheses have also been critically evaluated using TDE.
+Additional details on the determination of the normal boiling
+temperatures using TDE can be found in the Physical Constants
+of Organic Compounds table in Section 3. The remaining values
+of the normal boiling temperatures (without uncertainities) are
+taken from the same table.
+
+6-67
+| Name                         | Mol. form. |   T_{b}/K |   T_{c}/K | P_{c}/MPa | V_{c}/cm3 mol-1 |       Ref. (see text) |
+|------------------------------+------------+-----------+-----------+-----------+-----------------+-----------------------|
+| Acetaldehyde                 | C2H4O      |  294.0(6) |    462(8) |   7.5(10) |          154(5) |                 11-13 |
+| Acetic acid                  | C2H4O2     |  391.1(2) |    593(2) |   5.79(3) |          171(2) |                 14-21 |
+| Acetic anhydride             | C4H6O3     |  412.7(3) |    606(1) |   4.00(8) |         294(12) |                    22 |
+| Acetone                      | C3H6O      | 329.23(7) |  508.1(2) |    4.7(1) |         221(20) |             18, 23-31 |
+| Acetonitrile                 | C2H3N      |  354.8(2) | 545.47(7) |   4.88(5) |         173(59) |                 32-40 |
+| Acetophenone                 | C8H8O      |  475.3(2) |  709.5(7) |   4.01(5) |         373(40) |                11, 41 |
+| Acetylene                    | C2H2       |  188.5 sp |  308.4(4) |   6.24(4) |         119(11) |                 42-48 |
+| Acrylonitrile                | C3H3N      |  350.4(2) |    540(2) |    4.6(1) |         211(10) |                    49 |
+| Allene                       | C3H4       |  238.4(3) |    394(4) |    6.5(7) |          167(8) |                    50 |
+| Allyl alcohol                | C3H6O      |  370.1(5) |  539.8(6) |   5.76(4) |          222(9) |                    51 |
+| Allylamine                   | C3H7N      |    327(2) |  540.0(7) |   4.83(3) |         217(11) |                    52 |
+| Allyl ethyl ether            | C5H10O     |    338(4) |   518(10) |   320(10) |                 |                    21 |
+| 2-Aminobiphenyl              | C12H11N    |  571.5(2) |    838(2) |   3.52(3) |         548(99) |                    53 |
+| 2-(2-Aminoethoxy)ethanol     | C4H11NO2   |  496.3(1) |    721(4) |  4.88(10) |         333(19) |                    54 |
+| N-(2-Aminoethyl)ethanolamine | C4H12N2O   |    515(5) |    739(2) |   4.53(9) |         340(17) |                    55 |
+| Aniline                      | C6H7N      |  457.3(4) |    704(7) |    5.3(1) |          291(3) |         39, 40, 58-60 |
+| Anisole                      | C7H8O      |  426.8(2) |  646.1(2) |    4.2(1) |         355(12) |        25, 39, 40, 49 |
+| Benzene                      | C6H6       | 353.23(7) |  562.0(1) |   4.90(2) |         257(11) | 19, 27, 28, 34, 61-97 |
+| Benzeneacetic acid           | C8H8O2     |    541(2) |    766(8) |    3.9(3) |         372(16) |                    98 |
+| Benzenebutanoic acid         | C10H12O2   |    569(2) |    783(8) |    3.2(2) |         493(18) |                    98 |
+| Benzenebutanol               | C10H14O    |    537(3) |   746(14) |    3.1(2) |         493(19) |                   584 |
+| Benzeneethanol               | C8H10O     |    493(3) |    724(4) |    4.0(2) |         390(15) |                    99 |
+| Benzeneheptanoic acid        | C13H18O2   |       585 |    798(8) |    2.5(3) |         662(21) |                    98 |
+| Benzenehexanoic acid         | C12H16O2   |       574 |    794(8) |    2.6(3) |         611(20) |                    98 |
+| Benzenepentanoic acid        | C11H14O2   |    583(1) |    790(8) |    3.1(2) |         526(19) |                    98 |
+| Benzenepropanoic acid        | C9H10O2    |    557(2) |    776(8) |    3.5(2) |         440(17) |                    98 |
+| Benzenepropanol              | C9H12O     |    514(4) |   732(14) |    3.4(5) |         450(14) |                   584 |
+| Benzonitrile                 | C7H5N      |    464(1) |    691(9) |   4.22(4) |          348(7) |      39, 40, 101, 102 |
+| Benzophenone                 | C13H10O    |  579.1(2) |    830(2) |    3.0(1) |         568(44) |                   101 |
+| Benzo[b]thiophene            | C8H6S      |  494.1(4) |    764(2) |   4.68(4) |         359(59) |                   100 |
+
+6-68
+| Name                                               | Mol. form. |   T_{b}/K |   T_{c}/K | P_{c}/MPa | V_{c}/cm3 mol-1 |         Ref. (see text) |
+|----------------------------------------------------+------------+-----------+-----------+-----------+-----------------+-------------------------|
+| Benzyl alcohol                                     | C7H8O      |  478.5(2) |    715(3) |    4.3(2) |         333(13) |                     103 |
+| [1,1'-Bicyclohexyl]-2-one                          | C12H20O    |       537 |   787(70) |   584(20) |                 |                     104 |
+| 1,1'-Bicyclopentyl                                 | C10H18     | 463.61(3) |    690(2) |   3.27(3) |         497(41) |                     105 |
+| Biphenyl                                           | C12H10     |  528.4(3) |    773(5) |   3.43(6) |         481(69) |             39, 106-109 |
+| Bis(2-aminoethyl)amine                             | C4H13N3    |  479.7(3) |    710(2) |   4.43(7) |         350(21) |                      55 |
+| 1,1-Bis(difluoromethoxy)-1,2,2,2-tetrafluoroethane | C4H2F8O2   |    319.78 |    450(1) |   2.40(8) |          410(4) |                     110 |
+| Bis(difluoromethyl) ether                          | C2H2F4O    |  278.7(4) |  420.2(1) |   4.16(6) |         223(13) |                     111 |
+| Bis(2-ethylhexyl) phthalate                        | C24H38O4   |       657 |    835(9) |    1.1(2) |        1495(27) |                     112 |
+| Bis(2-hydroxyethyl)methylamine                     | C5H13NO2   |    518(1) |    742(4) |    4.2(4) |         404(17) |                      54 |
+| Bis(2,2,2-trifluoroethyl) ether                    | C4H4F6O    |    336.91 | 476.31(9) |   2.78(5) |          365(5) |                     113 |
+| Bis(trimethylsilyl)methane                         | C7H20Si2   |       406 |  573.9(3) |           |                 |                     114 |
+| Bromochlorodifluoromethane                         | CBrClF2    |  269.3(7) |   428(12) |   4.31(5) |         229(16) |                     115 |
+| Bromodifluoromethane                               | CHBrF2     |  257.6(5) |  412.0(3) |    5.2(1) |         173(18) |                     116 |
+| Bromoethane                                        | C2H5Br     |  311.4(6) |  503.9(4) |    6.2(1) |         214(10) |                117, 118 |
+| 1-Bromo-2-fluorobenzene                            | C6H4BrF    |       427 |  669.6(6) |    4.3(6) |         342(18) |                     119 |
+| 1-Bromo-3-fluorobenzene                            | C6H4BrF    |       423 |  652.0(4) |    4.2(6) |         337(18) |                     119 |
+| 1-Bromo-4-fluorobenzene                            | C6H4BrF    |    423(2) |  654.8(4) |    4.2(2) |         338(18) |                     119 |
+| 1-Bromopropane                                     | C3H7Br     |  344.0(2) |  536.9(1) |   4.33(6) |          271(6) |                     120 |
+| Bromotrifluoromethane                              | CBrF3      |  215.4(4) | 340.06(5) |   3.96(1) |          199(6) |                     121 |
+| 1-Bromo-2-(trifluoromethyl)benzene                 | C7H4BrF3   |     440.7 |  656.5(4) |    3.3(8) |         415(24) |                     119 |
+| 1-Bromo-3-(trifluoromethyl)benzene                 | C7H4BrF3   |     424.7 |  627.1(4) |    3.2(7) |         413(24) |                     119 |
+| 1-Bromo-4-(trifluoromethyl)benzene                 | C7H4BrF3   |       433 |  629.8(4) |    3.2(8) |         413(24) |                     119 |
+| 1,3-Butadiene                                      | C4H6       |  268.6(2) |    425(1) |   4.35(7) |         221(23) |                122, 123 |
+| Butanal                                            | C4H8O      |  348.0(2) |    537(2) |    258(9) |                 |                104, 124 |
+| Butane                                             | C4H10      |  272.7(5) |  425.2(1) |   3.79(1) |          257(4) |             29, 125-139 |
+| 1,4-Butanediamine                                  | C4H12N2    |   429(10) |    651(7) |    4.5(5) |         317(14) |                     140 |
+| 1,2-Butanediol, (±)-                               | C4H10O2    | 469.57(6) |    680(2) |    5.4(1) |         298(12) |                     141 |
+| 1,3-Butanediol                                     | C4H10O2    |  481.4(1) |   679(17) |    4.7(1) |         302(67) |                 54, 141 |
+| 1,4-Butanediol                                     | C4H10O2    |  502.7(4) |    724(4) |    5.5(2) |         307(14) |                  49, 55 |
+| Butanenitrile                                      | C4H7N      |  390.8(4) | 585.40(7) |   3.82(5) |          265(6) |         35, 39, 40, 142 |
+| 1-Butanethiol                                      | C4H10S     |  371.6(5) |  570.1(6) |   4.01(2) |         324(12) |                143, 144 |
+| Butanoic acid                                      | C4H8O2     |  436.9(1) |    623(6) |    4.0(3) |         292(10) |                 145-147 |
+| 1-Butanol                                          | C4H10O     |  390.8(2) |  563.0(4) |   4.43(7) |         280(14) |         34, 80, 148-155 |
+| 2-Butanol                                          | C4H10O     |  372.6(2) |    535(4) |    4.2(1) |          269(4) |      148, 149, 153, 156 |
+| 2-Butanone                                         | C4H8O      |  352.8(2) |    537(1) |   4.18(2) |         274(30) | 25, 30, 33, 34, 38, 157 |
+| 1-Butene                                           | C4H8       |  266.9(2) |  419.3(1) |   4.00(5) |         236(14) |            123, 158-161 |
+| cis-2-Butene                                       | C4H8       | 276.87(8) |  435.7(2) |   4.23(2) |          235(4) |            86, 123, 158 |
+| trans-2-Butene                                     | C4H8       | 274.03(9) |  428.6(1) |   4.03(2) |          238(4) |            86, 123, 158 |
+| 2-Butoxyethanol                                    | C6H14O2    |    444(2) | 633.9(10) |    3.3(1) |         424(15) |                  11, 41 |
+| 1-tert-Butoxy-2-ethoxyethane                       | C8H18O2    |     421.3 |    585(3) |    2.5(4) |         546(14) |                     162 |
+| 2-Butoxyethyl acetate                              | C8H16O3    |  464.3(9) |    640(2) |    2.7(2) |         551(21) |                144, 163 |
+| 1-tert-Butoxy-2-methoxyethane                      | C7H16O2    |       404 |    574(1) |    2.8(7) |         480(13) |                     162 |
+| 1-Butoxy-2-propanol                                | C7H16O2    |    445(3) |    625(1) |    2.7(1) |         479(20) |                      32 |
+| Butyl acetate                                      | C6H12O2    |  399.2(1) |   578(10) |   3.16(6) |          403(6) |            162, 164-167 |
+| sec-Butyl acetate                                  | C6H12O2    |    381(4) |  571.1(5) |  3.01(10) |         398(14) |                164, 165 |
+| tert-Butyl acetate                                 | C6H12O2    | 371.1(10) |    541(4) |    3.0(1) |          399(7) |                      54 |
+| Butyl acrylate                                     | C7H12O2    |  419.8(6) |  597.4(6) |   2.76(3) |          445(7) |                      51 |
+| Butylamine                                         | C4H11N     |  350.2(2) |  531.9(2) |   4.20(4) |         291(13) |                     168 |
+| sec-Butylamine                                     | C4H11N     | 335.86(8) |  514.3(2) |    4.0(2) |         284(11) |                     168 |
+| tert-Butylamine                                    | C4H11N     | 317.17(7) |  483.7(6) |   3.85(6) |         293(23) |                      75 |
+| Butylbenzene                                       | C10H14     |  456.5(3) |  660.5(1) |   2.89(3) |         498(18) |              79, 86, 88 |
+| sec-Butylbenzene, (±)-                             | C10H14     |  446.5(4) |    652(1) |   2.94(3) |         488(39) |                      58 |
+| tert-Butylbenzene                                  | C10H14     |  442.3(3) |    648(1) |   3.00(3) |         474(30) |                  58, 64 |
+| Butyl benzoate                                     | C11H14O2   |    522(3) |   725(14) |    2.4(3) |         594(10) |                     169 |
+| Butyl butanoate                                    | C8H16O2    | 438.10(1) |    612(3) |    2.4(2) |          550(9) |                     162 |
+| Butylcyclohexane                                   | C10H20     |  454.1(6) |  653.1(4) |   2.57(7) |         547(14) |                170, 171 |
+| tert-Butylcyclohexane                              | C10H20     |  444.8(4) |  652.0(4) |   2.82(9) |         537(15) |                     170 |
+| tert-Butyl ethyl ether                             | C6H14O     |  345.9(1) |    509(2) |    3.0(2) |          394(4) |                     172 |
+| Butyl methyl ether                                 | C5H12O     |  343.3(3) |  512.7(1) |   3.37(2) |          340(2) |            25, 173, 174 |
+| Butyl propanoate                                   | C7H14O2    |  418.3(1) |    594(1) |    2.8(2) |         464(10) |                     162 |
+
+6-69
+| Name                                               | Mol. form. |   T_{b}/K |   T_{c}/K | P_{c}/MPa | V_{c}/cm3 mol-1 |                                              Ref. (see text) |
+|----------------------------------------------------+------------+-----------+-----------+-----------+-----------------+--------------------------------------------------------------|
+| Butyl silicate                                     | C16H36O4Si |       529 |   682(14) |           |                 |                                                           57 |
+| Butyl vinyl ether                                  | C6H12O     |    367(1) |    540(1) |   3.12(5) |         379(10) |                                                          175 |
+| γ-Butyrolactone                                    | C4H6O2     |  477.8(4) |    731(1) |      5(1) |         246(18) |                                                           49 |
+| Chlorobenzene                                      | C6H5Cl     |  404.8(2) |  632.4(1) |    4.5(1) |             19, |                                                       33, 34 |
+| 1-Chlorobutane                                     | C4H9Cl     |  351.6(2) |  539.2(6) |    4.1(2) |         303(11) |                                                          119 |
+| 2-Chlorobutane                                     | C4H9Cl     |    344(8) |  518.6(6) |    3.4(2) |         307(14) |                                                          119 |
+| 1-Chloro-2,4-difluorobenzene                       | C6H3ClF2   |       400 |  609.6(4) |    4.0(7) |         333(16) |                                                          119 |
+| 1-Chloro-2,5-difluorobenzene                       | C6H3ClF2   |       401 |  612.5(4) |    4.0(7) |         333(16) |                                                          119 |
+| 1-Chloro-3,4-difluorobenzene                       | C6H3ClF2   |       400 |  609.2(4) |    4.0(6) |         333(16) |                                                          119 |
+| 1-Chloro-3,5-difluorobenzene                       | C6H3ClF2   |     391.8 |  592.0(4) |    3.9(7) |         327(16) |                                                          119 |
+| 1-Chloro-1,1-difluoroethane                        | C2H3ClF2   | 264.03(7) | 410.31(5) |   4.06(3) |          230(6) |                                                 113, 176-178 |
+| 1-Chloro-2,2-difluoroethene                        | C2HClF2    |  254.4(5) |  400.5(7) |   4.54(7) |          197(6) |                                                          179 |
+| Chlorodifluoromethane                              | CHClF2     |  232.4(5) | 369.30(5) |   4.98(1) |          165(2) |                                                      180-191 |
+| 2-Chloro-2-(difluoromethoxy)-1,1,1-trifluoroethane | C3H2ClF5O  |     322.5 |  467.8(6) |   3.05(3) |         316(24) |                                                          192 |
+| Chloroethane                                       | C2H5Cl     |  285.5(2) |  460.3(4) |   5.24(4) |         198(11) |                                                          193 |
+| Chloroethene                                       | C2H3Cl     |  259.4(3) |    425(5) |   5.60(3) |          171(9) |                                                          194 |
+| 1-Chloro-2-fluorobenzene                           | C6H4ClF    |     410.8 |  633.8(4) |    4.3(6) |         319(21) |                                                          119 |
+| 1-Chloro-3-fluorobenzene                           | C6H4ClF    |   401(25) |  615.9(4) |    4.2(6) |         324(21) |                                                          119 |
+| 1-Chloro-4-fluorobenzene                           | C6H4ClF    |       403 |  620.1(4) |    4.2(4) |         322(18) |                                                          119 |
+| 1-Chloroheptane                                    | C7H15Cl    |    432(2) |    614(8) |    3.1(6) |         492(14) |                                                          119 |
+| 1-Chlorohexane                                     | C6H13Cl    |  408.2(5) |    599(3) |    3.3(3) |         422(12) |                                                          119 |
+| Chloromethane                                      | CH3Cl      |  249.1(3) | 416.24(4) |   6.72(3) |          136(2) |                                                     195, 196 |
+| 2-Chloro-2-methylbutane                            | C5H11Cl    |    358(1) |  509.1(6) |    3.2(5) |         397(15) |                                                          119 |
+| 3-Chloro-3-methylpentane                           | C6H13Cl    |       389 |    528(3) |           |         414(14) |                                                          119 |
+| 2-Chloro-2-methylpropane                           | C4H9Cl     |  324.1(5) |  497.8(1) |    3.7(4) |         308(13) |                                                           34 |
+| 1-Chlorooctane                                     | C8H17Cl    |    456(3) |    643(2) |    2.5(4) |         543(13) |                                                          119 |
+| Chloropentafluoroacetone                           | C3ClF5O    |  281.0(9) |  410.6(1) |   2.89(1) |         277(21) |                                                          197 |
+| Chloropentafluorobenzene                           | C6ClF5     |    391.11 |    570(1) |    3.2(2) |         367(25) |                                                          198 |
+| Chloropentafluoroethane                            | C2ClF5     |  234.0(2) |  353.0(2) | 3.141(10) |          255(4) |                                                     199, 200 |
+| 1-Chloropentane                                    | C5H11Cl    |  381.1(3) |  571.2(4) |    3.3(2) |         361(12) |                                                          119 |
+| 1-Chloropropane                                    | C3H7Cl     |  319.4(5) |  503.3(4) |   4.56(4) |         268(24) |                                           118, 193, 201, 202 |
+| 2-Chloropropane                                    | C3H7Cl     |  308.2(6) |  482.4(4) |   4.25(4) |         245(16) |                                                     201, 202 |
+| 1-Chloro-1,2,2,2-tetrafluoroethane                 | C2HClF4    | 261.19(9) | 395.43(6) |   3.62(1) |          244(4) |                                                     203, 204 |
+| 4-Chlorotoluene                                    | C7H7Cl     |  435.0(2) |  615.9(5) |   2.33(9) |         377(16) |                                                           88 |
+| 2-Chloro-1,1,1-trifluoroethane                     | C2H2ClF3   |  279.2(6) |  425.0(2) |   4.02(2) |          232(6) |                                                          205 |
+| Chlorotrifluoroethene                              | C2ClF3     |  244.9(3) |  380.1(1) |   3.95(3) |         214(12) |                                                     206, 207 |
+| 2-Chloro-1,1,2-trifluoroethyl difluoromethyl ether | C3H2ClF5O  |     330.0 |  475.0(6) |   2.98(3) |         343(25) |                                                          192 |
+| Chlorotrifluoromethane                             | CClF3      |    191.67 |  301.9(2) |   3.89(1) |        180.3(1) |                                                 191, 208-216 |
+| o-Cresol                                           | C7H8O      |  464.2(1) |  697.6(2) |    4.2(2) |         336(12) |                                                     217, 218 |
+| m-Cresol                                           | C7H8O      |  475.4(1) |  705.8(4) |    4.4(2) |         337(12) |                                             39, 40, 217, 218 |
+| p-Cresol                                           | C7H8O      |  475.1(1) |  704.6(3) |    4.1(2) |         349(13) |                                                     217, 218 |
+| Cyanogen                                           | C2N2       |     252.1 |    397(3) |    6.2(4) |          149(8) |                                                          219 |
+| Cycloheptane                                       | C7H14      |  392.0(2) |  604.2(1) |   3.85(4) |         361(12) |                                                 34, 220, 221 |
+| Cyclohexane                                        | C6H12      |  353.9(7) |  553.4(3) |   4.07(1) |         307(12) | 19, 34, 78, 82, 84, 88, 90, 144, 163, 170, 171, 220, 222-231 |
+| Cyclohexanol                                       | C6H12O     |  434.1(2) |  647.1(3) |    4.3(1) |         334(33) |                                                 49, 232, 233 |
+| Cyclohexanone                                      | C6H10O     |  428.6(1) |    665(1) |   4.61(9) |         354(12) |                                                     162, 166 |
+| Cyclohexene                                        | C6H10      |  356.1(2) | 560.45(5) |   4.43(8) |         290(20) |                                                 86, 201, 202 |
+| Cyclohexylamine                                    | C6H13N     |  406.8(5) |  626.8(9) |    3.9(6) |         349(15) |                                                          170 |
+| Cyclooctane                                        | C8H16      |  424.3(1) |  647.2(4) |   3.55(6) |         417(28) |                                            34, 170, 220, 221 |
+| Cyclopentane                                       | C5H10      |  322.4(1) |  511.7(2) |   4.51(7) |         264(10) |                                          34, 78, 90, 234-236 |
+| Cyclopentanol                                      | C5H10O     |  413.6(2) |    619(1) |    4.9(1) |         288(19) |                                                          233 |
+| Cyclopentanone                                     | C5H8O      |  403.7(2) |    624(2) |   4.59(5) |         276(17) |                                                          233 |
+| Cyclopentene                                       | C5H8       |  317.4(2) |  506.1(2) |   4.78(5) |         252(16) |                                       90, 144, 163, 201, 202 |
+| Cyclopropane                                       | C3H6       |    242(2) |  398.2(4) |   5.58(2) |          164(9) |                                                     237, 238 |
+| 2,2',3,3',4,4',5,5',6,6'-Decafluoro-1,1'-biphenyl  | C12F10     |    480(2) |    640(4) |    2.3(3) |         641(40) |                                                          239 |
+| cis-Decahydronaphthalene                           | C10H18     |  469.0(3) |    702(1) |    3.2(3) |         492(19) |                                                          241 |
+| trans-Decahydronaphthalene                         | C10H18     |  460.5(2) |    687(1) |    3.1(1) |         499(19) |                                                          241 |
+
+6-70
+| Name                                       | Mol. form.  |   T_{b}/K |   T_{c}/K | P_{c}/MPa | V_{c}/cm3 mol-1 |                  Ref. (see text) |
+|--------------------------------------------+-------------+-----------+-----------+-----------+-----------------+----------------------------------|
+| Decamethylcyclopentasiloxane               | C10H30O5Si5 |    486(3) |  617.4(3) |   1.04(2) |         1201(8) |                          34, 114 |
+| Decanal                                    | C10H20O     |    485(3) |    674(1) |    2.6(3) |         601(14) |                         163, 242 |
+| Decane                                     | C10H22      |  447.3(1) |  618.1(9) |   2.10(3) |         621(35) | 16, 33, 65, 78, 86, 131, 243-252 |
+| 1,10-Decanediamine                         | C10H24N2    |   535(12) |    736(8) |    2.4(3) |         654(28) |                              140 |
+| Decanedioic acid                           | C10H18O4    |    647(5) |   845(13) |    2.5(1) |         724(21) |                              253 |
+| Decanoic acid                              | C10H20O2    |    543(1) |    724(5) |           |         638(24) |                         145, 146 |
+| 1-Decanol                                  | C10H22O     |    502(3) |   690(10) |    2.3(1) |         624(87) |               149, 152, 254, 255 |
+| 2-Decanol                                  | C10H22O     |       484 |  668.5(3) |    2.3(5) |         646(13) |                              255 |
+| 3-Decanol                                  | C10H22O     |    490(7) |  666.1(3) |    2.3(3) |         643(13) |                              255 |
+| 4-Decanol                                  | C10H22O     |    487(3) |  663.7(3) |    2.3(1) |         643(13) |                              255 |
+| 5-Decanol                                  | C10H22O     |    489(5) |  663.2(4) |    2.3(4) |         646(13) |                              255 |
+| 2-Decanone                                 | C10H20O     |    484(3) |  671.8(5) |    2.2(3) |         625(25) |                              256 |
+| 3-Decanone                                 | C10H20O     |    485(4) |    668(1) |    2.2(2) |         628(15) |                              256 |
+| 4-Decanone                                 | C10H20O     |     479.7 |  662.9(5) |    2.2(2) |         636(18) |                              256 |
+| 5-Decanone                                 | C10H20O     |       477 |  661.0(4) |    2.2(2) |         628(25) |                              256 |
+| 1-Decene                                   | C10H20      |    444(1) |  616.0(3) |   2.16(5) |          594(3) |                              257 |
+| Decylbenzene                               | C16H26      |    571(1) |    752(8) |  1.72(10) |         879(29) |                              258 |
+| Decyl silicate                             | C40H84O4Si  |           |   849(16) |           |                 |                               57 |
+| Dibenzofuran                               | C12H8O      |  558.4(3) |    824(2) |   3.37(3) |         494(32) |                              259 |
+| Dibenzothiophene                           | C12H8S      |  604.8(4) |    897(2) |    3.9(2) |             260 |                                  |
+| 1,2-Dibromo-1-chloro-1,2,2-trifluoroethane | C2Br2ClF3   |  366.0(2) |  560.6(2) |   3.61(2) |          368(4) |                              261 |
+| 1,4-Dibromooctafluorobutane                | C4Br2F8     |   371(25) |    532(2) |    2.4(3) |         452(29) |                              198 |
+| Dibutylamine                               | C8H19N      |    435(2) |  607.5(2) |   3.11(3) |         532(21) |                              168 |
+| 1,4-Di-tert-butylbenzene                   | C14H22      |  510.5(5) |    708(2) |   2.23(1) |         732(70) |                              232 |
+| Dibutyl ether                              | C8H18O      |  414.8(3) |  584.1(2) |    2.4(2) |         521(12) |                              262 |
+| Dibutyl phthalate                          | C16H22O4    |    611(9) |    797(9) |    1.6(3) |         954(18) |                              112 |
+| m-Dichlorobenzene                          | C6H4Cl2     |    445(2) |  685.7(4) |    4.2(2) |         366(22) |                              119 |
+| p-Dichlorobenzene                          | C6H4Cl2     |  447.1(2) |    669(5) |   3.54(7) |         364(22) |                              263 |
+| Dichlorodiethylsilane                      | C4H10Cl2Si  |    403(2) |  595.7(6) |   3.06(3) |          455(4) |                              264 |
+| Dichlorodifluoromethane                    | CCl2F2      |  243.4(1) |  384.9(2) |   4.12(1) |         218(36) |                    191, 216, 265 |
+| Dichlorodimethylsilane                     | C2H6Cl2Si   |  343.7(5) |  520.3(6) |   3.49(3) |          350(5) |                              266 |
+| 1,1-Dichloroethane                         | C2H4Cl2     |  329.5(7) |  523.4(1) |    5.1(5) |         248(12) |                              267 |
+| 1,2-Dichloroethane                         | C2H4Cl2     |  356.6(1) |  561.5(4) |    5.4(1) |          225(8) |                 33, 34, 268, 269 |
+| cis-1,2-Dichloroethene                     | C2H2Cl2     |    333(2) |  535.8(4) |    5.4(3) |         220(15) |                               34 |
+| trans-1,2-Dichloroethene                   | C2H2Cl2     | 320.79(8) |  515.5(2) |    5.3(2) |         216(14) |                           33, 34 |
+| 1,1-Dichloro-1-fluoroethane                | C2H3Cl2F    | 305.20(9) |  477.3(1) |   4.20(2) |        253.7(6) |                         178, 270 |
+| Dichlorofluoromethane                      | CHCl2F      |     282.1 |  451.6(4) |   5.20(1) |          196(1) |                              271 |
+| 1,2-Dichloro-1,1,2,3,3,3-hexafluoropropane | C3Cl2F6     |    307(2) |  451.8(1) |   2.63(7) |         365(48) |                              272 |
+| Dichloromethane                            | CH2Cl2      |  313.0(3) |  508.0(2) |   6.35(5) |         177(13) |                              273 |
+| 1,2-Dichloropropane, (±)-                  | C3H6Cl2     |     369.6 |    578(2) |   4.63(6) |          292(6) |                         119, 232 |
+| 1,3-Dichloropropane                        | C3H6Cl2     |  394.0(3) |    615(3) |    4.7(5) |         299(16) |                              119 |
+| 1,1-Dichloro-1,2,2,2-tetrafluoroethane     | C2Cl2F4     |    276(1) |  418.6(8) |   3.31(3) |          294(8) |                              179 |
+| 1,2-Dichloro-1,1,2,2-tetrafluoroethane     | C2Cl2F4     |  276.8(5) | 418.74(6) |   3.25(2) |          295(3) |                         191, 274 |
+| 1,2-Dichloro-1,1,2-trifluoroethane         | C2HCl2F3    |  303.2(1) |  461.6(1) |   3.77(8) |        283.2(5) |                              178 |
+| 2,2-Dichloro-1,1,1-trifluoroethane         | C2HCl2F3    |  301.0(6) |  456.8(2) |   3.67(1) |          278(2) |                     182, 275-280 |
+| Didecyl phthalate                          | C28H46O4    |    736(4) |   870(10) |   0.94(5) |        1807(27) |                              112 |
+| 1,1-Diethoxyethane                         | C6H14O2     |    375(2) |  539.7(4) |   3.22(8) |         426(12) |                              166 |
+| 1,2-Diethoxyethane                         | C6H14O2     |  393.8(7) |    542(3) |   2.14(2) |         432(11) |                              162 |
+| Diethoxymethane                            | C5H12O2     |    359(2) |    532(1) |    3.4(5) |         370(10) |                              162 |
+| Diethylamine                               | C4H11N      |  328.6(1) |  499.5(4) |   3.75(2) |         304(32) |           38, 117, 133, 281, 282 |
+| p-Diethylbenzene                           | C10H14      |    457(1) | 657.90(5) |   2.80(8) |         494(12) |                           79, 86 |
+| Diethylene glycol                          | C4H10O3     |  518.7(2) |    753(4) |    4.8(2) |         325(19) |                              283 |
+| Diethylene glycol diethyl ether            | C8H18O3     |    458(4) |   612(10) |    2.4(7) |         587(18) |                              162 |
+| Diethylene glycol dimethyl ether           | C6H14O3     |    435(2) |    617(4) |    3.0(6) |         450(16) |                              162 |
+| Diethylene glycol monobutyl ether          | C8H18O3     |    505(4) |    692(3) |    2.8(6) |         546(26) |                               41 |
+| Diethylene glycol monobutyl ether acetate  | C10H20O4    |    521(2) |    694(2) |   2.15(5) |         627(20) |                               55 |
+| Diethylene glycol monoethyl ether          | C6H14O3     |    475(3) |    670(4) |    3.2(1) |         427(23) |                               49 |
+
+6-71
+| Name                                           | Mol. form. |   T_{b}/K |   T_{c}/K | P_{c}/MPa | V_{c}/cm3 mol-1 |               Ref. (see text) |
+|------------------------------------------------+------------+-----------+-----------+-----------+-----------------+-------------------------------|
+| Diethylene glycol monoethyl ether acetate      | C8H16O4    |    491(1) |   670(12) |   2.50(6) |         524(18) |                        49, 55 |
+| Diethylene glycol monomethyl ether             | C5H12O3    |    467(2) |    672(2) |    3.7(2) |         378(25) |                            49 |
+| Diethylene glycol monopropyl ether             | C7H16O3    |  488.0(4) |    680(2) |   3.05(7) |         495(18) |                       41, 104 |
+| Diethyl ether                                  | C4H10O     |  307.6(5) |  466.8(3) |   3.64(1) |          280(5) | 19, 77, 95, 155, 196, 284-301 |
+| Diethyl oxalate                                | C6H10O4    |    459(1) |    618(2) |   2.14(2) |         464(37) |                           101 |
+| Diethyl phthalate                              | C12H14O4   |    571(2) |    776(9) |    2.2(2) |         687(15) |                           112 |
+| Diethyl succinate                              | C8H14O4    |    490(1) |   663(30) |   2.26(2) |         567(44) |                      101, 302 |
+| Diethyl sulfide                                | C4H10S     |  365.3(2) | 557.5(10) |    4.0(1) |          322(8) |                  32, 303, 304 |
+| o-Difluorobenzene                              | C6H4F2     |  367.1(5) |  566.0(4) |   4.28(7) |         290(21) |                           119 |
+| m-Difluorobenzene                              | C6H4F2     |  356.2(5) |  548.4(4) |   4.20(7) |         289(21) |                           119 |
+| p-Difluorobenzene                              | C6H4F2     |  362.1(3) |  556.9(4) |   4.28(7) |         297(22) |                           119 |
+| 1,1-Difluoroethane                             | C2H4F2     |    249.13 |  386.4(1) |   4.52(1) |          178(2) |        178, 180, 185, 305-307 |
+| 1,1-Difluoroethene                             | C2H2F2     |  187.7(8) |  302.9(6) |   4.48(5) |          155(4) |                      179, 215 |
+| 2,2-Difluoroethylbis(trifluoromethyl) amine    | C4H3F8N    |     324.6 | 460.20(9) |   2.64(1) |          375(1) |                           308 |
+| Difluoromethane                                | CH2F2      | 221.50(7) | 351.28(3) |   5.79(1) |          121(4) |                  306, 309-316 |
+| 3-Difluoromethoxy-1,1,1,2,2-pentafluoropropane | C4H3F7O    |    319.09 |  455.1(1) |   2.77(2) |          363(1) |                           113 |
+| 2-(Difluoromethoxy)-1,1,1-trifluoroethane      | C3H3F5O    |  302.4(2) |  444.9(3) |   3.43(1) |         291(19) |                           113 |
+| 2,4-Difluorotoluene                            | C7H6F2     |       390 |  581.4(4) |    3.7(4) |         340(21) |                           119 |
+| 2,5-Difluorotoluene                            | C7H6F2     |       391 |  587.8(4) |    3.8(5) |         341(21) |                           119 |
+| 2,6-Difluorotoluene                            | C7H6F2     |       385 |  581.8(4) |    3.7(4) |         341(21) |                           119 |
+| 3,4-Difluorotoluene                            | C7H6F2     |       385 |  598.5(5) |    3.8(6) |         342(22) |                           119 |
+| Diheptyl phthalate                             | C22H34O4   |       633 |    830(9) |   1.24(8) |        1153(22) |                           112 |
+| Dihexyl phthalate                              | C20H30O4   |    652(5) |    817(9) |    1.3(1) |        1061(22) |                           112 |
+| 3,4-Dihydro-2H-pyran                           | C5H8O      |  358.7(2) |    561(2) |   4.63(8) |         268(34) |                            75 |
+| Diisobutylamine                                | C8H19N     |     412.8 |  584.4(2) |   3.20(6) |         518(22) |                           168 |
+| Diisopropylamine                               | C6H15N     |    357(3) |  523.1(2) |   3.02(2) |         407(18) |                           168 |
+| 1,4-Diisopropylbenzene                         | C12H18     |  483.5(2) |    675(1) |   2.30(4) |         610(65) |                           317 |
+| Diisopropyl ether                              | C6H14O     |  341.6(2) |  500.2(7) |   2.85(4) |          386(5) |             25, 290, 318, 319 |
+| 1,2-Dimethoxyethane                            | C4H10O2    |  358.2(1) |    539(4) |   3.91(5) |          305(9) |            162, 166, 175, 290 |
+| Dimethoxymethane                               | C3H8O2     |  315.5(2) |   488(11) |    4.0(2) |         259(10) |                  75, 162, 320 |
+| 1,2-Dimethoxypropane                           | C5H12O2    |       369 |    543(1) |    3.4(6) |         356(12) |                           162 |
+| 2,2-Dimethoxypropane                           | C5H12O2    |  350.6(7) |    510(3) |           |         360(13) |                           162 |
+| Dimethylamine                                  | C2H7N      |  280.5(4) |  437.5(4) |   5.34(5) |         188(13) |                 193, 322, 323 |
+| N,N-Dimethylaniline                            | C8H11N     |    466(1) |  687.7(6) |   3.63(9) |         407(15) |                        39, 40 |
+| 2,2-Dimethylbutane                             | C6H14      |  322.9(2) |  489.1(5) |   3.10(1) |          364(1) |                   86, 324-328 |
+| 2,3-Dimethylbutane                             | C6H14      |  331.2(3) |  500.2(3) |   3.13(1) |          358(1) |          19, 86, 252, 324-330 |
+| 3,3-Dimethyl-2-butanone                        | C6H12O     |  379.3(2) |  570.9(3) |   3.67(3) |          383(6) |                      164, 165 |
+| 2,3-Dimethyl-1-butene                          | C6H12      | 328.74(4) |  497.7(9) |   3.31(1) |          346(9) |                           170 |
+| 3,3-Dimethyl-1-butene                          | C6H12      | 314.39(4) |  477.4(9) |   3.18(2) |         348(10) |                           170 |
+| 2,3-Dimethyl-2-butene                          | C6H12      | 346.34(6) |  521.0(9) |    3.4(1) |          344(7) |                           170 |
+| Dimethyl carbonate                             | C3H6O3     | 363.26(9) |    557(1) |    4.8(2) |                 |                      331, 332 |
+| cis-1,3-Dimethylcyclohexane                    | C8H16      |  397.6(6) |  587.7(5) |   2.88(1) |         429(10) |                            64 |
+| cis-1,4-Dimethylcyclohexane                    | C8H16      |  397.5(7) |  603.2(3) |   3.44(2) |          434(7) |                      164, 165 |
+| trans-1,4-Dimethylcyclohexane                  | C8H16      |  392.5(5) |    588(2) |   3.04(1) |         439(18) |                            74 |
+| Dimethyl disulfide                             | C2H6S2     | 382.87(8) |    608(4) |    5.1(1) |          266(8) |                            54 |
+| Dimethyl ether                                 | C2H6O      |  248.4(2) |  400.1(8) |   5.31(3) |          171(3) |        125, 174, 186, 333-343 |
+| N,N-Dimethylformamide                          | C3H7NO     |  426.0(5) |  649.6(8) |    4.4(1) |          262(9) |                       11, 344 |
+| Dimethyl glutarate                             | C7H12O4    |    489(4) |   682(14) |    2.8(4) |         488(14) |                           321 |
+| 2,2-Dimethylheptane                            | C9H20      |    406(1) |  576.7(5) |   2.35(7) |         546(12) |                           345 |
+| Dimethyl heptanedioate                         | C9H16O4    |    518(2) |   711(14) |    2.4(1) |         608(14) |                           321 |
+| 2,2-Dimethylhexane                             | C8H18      |  380.0(4) |  549.9(4) |   2.53(3) |         481(10) |                           346 |
+| 2,3-Dimethylhexane                             | C8H18      |  388.8(5) |  563.5(4) |   2.63(2) |         466(16) |                           346 |
+| 2,4-Dimethylhexane                             | C8H18      |  382.6(4) |    553(3) |   2.55(2) |         480(39) |                      330, 346 |
+| 2,5-Dimethylhexane                             | C8H18      |  382.3(7) |  550.0(3) |   2.49(2) |         485(20) |                       19, 346 |
+| 3,3-Dimethylhexane                             | C8H18      |  385.1(6) |  562.0(4) |   2.65(2) |         450(17) |                           346 |
+| 3,4-Dimethylhexane                             | C8H18      |  390.9(4) |  568.8(4) |   2.69(2) |         467(21) |                           346 |
+| Dimethyl 1,6-hexanedioate                      | C8H14O4    |    504(3) |   692(14) |    2.5(5) |         561(13) |                           321 |
+
+6-72
+| Name                                           | Mol. form. |   T_{b}/K |   T_{c}/K | P_{c}/MPa | V_{c}/cm3 mol-1 |               Ref. (see text) |
+|------------------------------------------------+------------+-----------+-----------+-----------+-----------------+-------------------------------|
+| Diethylene glycol monoethyl ether acetate      | C8H16O4    |    491(1) |   670(12) |   2.50(6) |         524(18) |                        49, 55 |
+| Diethylene glycol monomethyl ether             | C5H12O3    |    467(2) |    672(2) |    3.7(2) |         378(25) |                            49 |
+| Diethylene glycol monopropyl ether             | C7H16O3    |  488.0(4) |    680(2) |   3.05(7) |         495(18) |                       41, 104 |
+| Diethyl ether                                  | C4H10O     |  307.6(5) |  466.8(3) |   3.64(1) |          280(5) | 19, 77, 95, 155, 196, 284-301 |
+| Diethyl oxalate                                | C6H10O4    |    459(1) |    618(2) |   2.14(2) |         464(37) |                           101 |
+| Diethyl phthalate                              | C12H14O4   |    571(2) |    776(9) |    2.2(2) |         687(15) |                           112 |
+| Diethyl succinate                              | C8H14O4    |    490(1) |   663(30) |   2.26(2) |         567(44) |                      101, 302 |
+| Diethyl sulfide                                | C4H10S     |  365.3(2) | 557.5(10) |    4.0(1) |          322(8) |                  32, 303, 304 |
+| o-Difluorobenzene                              | C6H4F2     |  367.1(5) |  566.0(4) |   4.28(7) |         290(21) |                           119 |
+| m-Difluorobenzene                              | C6H4F2     |  356.2(5) |  548.4(4) |   4.20(7) |         289(21) |                           119 |
+| p-Difluorobenzene                              | C6H4F2     |  362.1(3) |  556.9(4) |   4.28(7) |         297(22) |                           119 |
+| 1,1-Difluoroethane                             | C2H4F2     |    249.13 |  386.4(1) |   4.52(1) |          178(2) |        178, 180, 185, 305-307 |
+| 1,1-Difluoroethene                             | C2H2F2     |  187.7(8) |  302.9(6) |   4.48(5) |          155(4) |                      179, 215 |
+| 2,2-Difluoroethylbis(trifluoromethyl) amine    | C4H3F8N    |     324.6 | 460.20(9) |   2.64(1) |          375(1) |                           308 |
+| Difluoromethane                                | CH2F2      | 221.50(7) | 351.28(3) |   5.79(1) |          121(4) |                  306, 309-316 |
+| 3-Difluoromethoxy-1,1,1,2,2-pentafluoropropane | C4H3F7O    |    319.09 |  455.1(1) |   2.77(2) |          363(1) |                           113 |
+| 2-(Difluoromethoxy)-1,1,1-trifluoroethane      | C3H3F5O    |  302.4(2) |  444.9(3) |   3.43(1) |         291(19) |                           113 |
+| 2,4-Difluorotoluene                            | C7H6F2     |       390 |  581.4(4) |    3.7(4) |         340(21) |                           119 |
+| 2,5-Difluorotoluene                            | C7H6F2     |       391 |  587.8(4) |    3.8(5) |         341(21) |                           119 |
+| 2,6-Difluorotoluene                            | C7H6F2     |       385 |  581.8(4) |    3.7(4) |         341(21) |                           119 |
+| 3,4-Difluorotoluene                            | C7H6F2     |       385 |  598.5(5) |    3.8(6) |         342(22) |                           119 |
+| Diheptyl phthalate                             | C22H34O4   |       633 |    830(9) |   1.24(8) |        1153(22) |                           112 |
+| Dihexyl phthalate                              | C20H30O4   |    652(5) |    817(9) |    1.3(1) |        1061(22) |                           112 |
+| 3,4-Dihydro-2H-pyran                           | C5H8O      |  358.7(2) |    561(2) |   4.63(8) |         268(34) |                            75 |
+| Diisobutylamine                                | C8H19N     |     412.8 |  584.4(2) |   3.20(6) |         518(22) |                           168 |
+| Diisopropylamine                               | C6H15N     |    357(3) |  523.1(2) |   3.02(2) |         407(18) |                           168 |
+| 1,4-Diisopropylbenzene                         | C12H18     |  483.5(2) |    675(1) |   2.30(4) |         610(65) |                           317 |
+| Diisopropyl ether                              | C6H14O     |  341.6(2) |  500.2(7) |   2.85(4) |          386(5) |             25, 290, 318, 319 |
+| 1,2-Dimethoxyethane                            | C4H10O2    |  358.2(1) |    539(4) |   3.91(5) |          305(9) |            162, 166, 175, 290 |
+| Dimethoxymethane                               | C3H8O2     |  315.5(2) |   488(11) |    4.0(2) |         259(10) |                  75, 162, 320 |
+| 1,2-Dimethoxypropane                           | C5H12O2    |       369 |    543(1) |    3.4(6) |         356(12) |                           162 |
+| 2,2-Dimethoxypropane                           | C5H12O2    |  350.6(7) |    510(3) |           |         360(13) |                           162 |
+| Dimethylamine                                  | C2H7N      |  280.5(4) |  437.5(4) |   5.34(5) |         188(13) |                 193, 322, 323 |
+| N,N-Dimethylaniline                            | C8H11N     |    466(1) |  687.7(6) |   3.63(9) |         407(15) |                        39, 40 |
+| 2,2-Dimethylbutane                             | C6H14      |  322.9(2) |  489.1(5) |   3.10(1) |          364(1) |                   86, 324-328 |
+| 2,3-Dimethylbutane                             | C6H14      |  331.2(3) |  500.2(3) |   3.13(1) |          358(1) |          19, 86, 252, 324-330 |
+| 3,3-Dimethyl-2-butanone                        | C6H12O     |  379.3(2) |  570.9(3) |   3.67(3) |          383(6) |                      164, 165 |
+| 2,3-Dimethyl-1-butene                          | C6H12      | 328.74(4) |  497.7(9) |   3.31(1) |          346(9) |                           170 |
+| 3,3-Dimethyl-1-butene                          | C6H12      | 314.39(4) |  477.4(9) |   3.18(2) |         348(10) |                           170 |
+| 2,3-Dimethyl-2-butene                          | C6H12      | 346.34(6) |  521.0(9) |    3.4(1) |          344(7) |                           170 |
+| Dimethyl carbonate                             | C3H6O3     | 363.26(9) |    557(1) |    4.8(2) |                 |                      331, 332 |
+| cis-1,3-Dimethylcyclohexane                    | C8H16      |  397.6(6) |  587.7(5) |   2.88(1) |         429(10) |                            64 |
+| cis-1,4-Dimethylcyclohexane                    | C8H16      |  397.5(7) |  603.2(3) |   3.44(2) |          434(7) |                      164, 165 |
+| trans-1,4-Dimethylcyclohexane                  | C8H16      |  392.5(5) |    588(2) |   3.04(1) |         439(18) |                            74 |
+| Dimethyl disulfide                             | C2H6S2     | 382.87(8) |    608(4) |    5.1(1) |          266(8) |                            54 |
+| Dimethyl ether                                 | C2H6O      |  248.4(2) |  400.1(8) |   5.31(3) |          171(3) |        125, 174, 186, 333-343 |
+| N,N-Dimethylformamide                          | C3H7NO     |  426.0(5) |  649.6(8) |    4.4(1) |          262(9) |                       11, 344 |
+| Dimethyl glutarate                             | C7H12O4    |    489(4) |   682(14) |    2.8(4) |         488(14) |                           321 |
+| 2,2-Dimethylheptane                            | C9H20      |    406(1) |  576.7(5) |   2.35(7) |         546(12) |                           345 |
+| Dimethyl heptanedioate                         | C9H16O4    |    518(2) |   711(14) |    2.4(1) |         608(14) |                           321 |
+| 2,2-Dimethylhexane                             | C8H18      |  380.0(4) |  549.9(4) |   2.53(3) |         481(10) |                           346 |
+| 2,3-Dimethylhexane                             | C8H18      |  388.8(5) |  563.5(4) |   2.63(2) |         466(16) |                           346 |
+| 2,4-Dimethylhexane                             | C8H18      |  382.6(4) |    553(3) |   2.55(2) |         480(39) |                      330, 346 |
+| 2,5-Dimethylhexane                             | C8H18      |  382.3(7) |  550.0(3) |   2.49(2) |         485(20) |                       19, 346 |
+| 3,3-Dimethylhexane                             | C8H18      |  385.1(6) |  562.0(4) |   2.65(2) |         450(17) |                           346 |
+| 3,4-Dimethylhexane                             | C8H18      |  390.9(4) |  568.8(4) |   2.69(2) |         467(21) |                           346 |
+| Dimethyl 1,6-hexanedioate                      | C8H14O4    |    504(3) |   692(14) |    2.5(5) |         561(13) |                           321 |
+
+6-73
+| Name                                        | Mol. form. |    T_{b}/K |   T_{c}/K | P_{c}/MPa | V_{c}/cm3 mol-1 |                                     Ref. (see text) |
+|---------------------------------------------+------------+------------+-----------+-----------+-----------------+-----------------------------------------------------|
+| 1,2-Ethanediol                              | C2H6O2     |   470.7(1) |    719(5) |    8.1(4) |         180(11) |                                     11, 32, 41, 394 |
+| 1,1-Ethanediol, diacetate                   | C6H10O4    |     441(3) |    618(4) |    2.9(1) |         457(13) |                                                  54 |
+| Ethanethiol                                 | C2H6S      |   308.2(1) |  498.7(3) |   5.53(8) |         208(10) |                                                 304 |
+| Ethanol                                     | C2H6O      |  351.39(9) |    515(1) |   6.25(4) |          169(4) | 19, 25, 34, 80, 85, 128, 148-150, 152, 222, 395-409 |
+| Ethanolamine                                | C2H7NO     |   443.5(4) |    671(3) |    8.0(5) |         207(13) |                                                  41 |
+| Ethoxybenzene                               | C8H10O     |   443.0(2) |    647(2) |   3.45(5) |         407(16) |                                              39, 40 |
+| 2-Ethoxyethyl acetate                       | C6H12O3    |   429.8(4) |    609(2) |   3.07(3) |         443(38) |                                       141, 144, 163 |
+| 2-Ethoxy-2-methylbutane                     | C7H16O     |   374.7(4) |    546(2) |   2.83(9) |         448(29) |                                                 410 |
+| 1-Ethoxy-1,1,2,2,3,3,4,4,4-nonafluorobutane | C6H5F9O    |     350.04 |  482.0(1) |   1.98(1) |          518(2) |                                                 113 |
+| Ethyl acetate                               | C4H8O2     |   350.3(2) | 523.27(7) |   3.88(2) |         288(19) |                                19, 23, 400, 411-413 |
+| Ethylamine                                  | C2H7N      |   289.8(2) |  456.5(9) |    5.6(1) |         183(22) |                                            193, 414 |
+| Ethylbenzene                                | C8H10      |   409.4(4) |  617.1(1) |   3.61(1) |         365(61) |                        68, 78, 79, 86, 88, 172, 345 |
+| Ethyl benzoate                              | C9H10O2    |   485.7(2) |   700(14) |   3.01(5) |         470(12) |                                                 169 |
+| Ethyl butanoate                             | C6H12O2    |   394.3(4) |  566.1(1) |    3.2(3) |         421(30) |                                            415, 416 |
+| Ethyl trans-2-butenoate                     | C6H10O2    |     413(5) |   599(10) |           |          382(7) |                                                  21 |
+| Ethylcyclohexane                            | C8H16      |   405.0(4) |  606.9(4) |   3.27(4) |         431(12) |                                            170, 171 |
+| Ethylcyclopentane                           | C7H14      |   376.7(6) | 569.48(5) |   3.40(7) |          377(3) |                                                 236 |
+| Ethyl 2,2-dimethylpropanoate                | C7H14O2    |   391.5(4) |    566(2) |   2.88(2) |          461(8) |                                                 417 |
+| Ethylene                                    | C2H4       |   169.4(3) | 282.35(3) |   5.06(1) |        130.9(2) |                               61, 246, 371, 418-436 |
+| Ethyl 3-ethoxypropanoate                    | C7H14O3    |     441(2) |    621(3) |    2.7(1) |         478(19) |                                              11, 41 |
+| Ethyl formate                               | C3H6O2     | 327.24(10) |  508.5(5) |   4.78(3) |                 |                                            413, 415 |
+| Ethyl heptanoate                            | C9H18O2    |     461(2) |    634(1) |    2.3(2) |          587(8) |                                                 162 |
+| 3-Ethylhexane                               | C8H18      |   391.7(5) |  565.5(4) |   2.61(2) |         450(15) |                                                 346 |
+| Ethyl hexanoate                             | C8H16O2    |     438(1) |    615(1) |    2.6(2) |          528(8) |                                                 162 |
+| 2-Ethylhexanoic acid                        | C8H16O2    |   500.7(1) |    674(1) |   2.75(6) |          543(8) |                                            144, 163 |
+| 2-Ethyl-1-hexanol                           | C8H18O     |   459.4(2) |  640.2(3) |    3.0(2) |         508(29) |                                                 437 |
+| 2-Ethylhexyl acetate                        | C10H20O2   |     473(1) |    642(2) |   2.02(1) |         644(10) |                                                 410 |
+| Ethyl 3-methylbutanoate                     | C7H14O2    |     408(3) |    584(6) |           |          463(9) |                                            147, 162 |
+| Ethyl methyl ether                          | C3H8O      |     279(2) |  437.8(2) |   4.39(6) |          219(5) |                                       174, 304, 438 |
+| 3-Ethyl-2-methylpentane                     | C8H18      |   388.8(6) |  567.1(4) |   2.70(2) |         442(22) |                                                 346 |
+| 3-Ethyl-3-methylpentane                     | C8H18      |   391.4(9) |  576.5(4) |   2.77(1) |         463(13) |                                                 346 |
+| Ethyl 2-methylpropanoate                    | C6H12O2    |     384(2) |    554(4) |    3.1(3) |         421(76) |                                                 415 |
+| Ethyl methyl sulfide                        | C3H8S      |   339.8(3) |   533(10) |   4.62(3) |          260(6) |                                                 303 |
+| Ethyl nonanoate                             | C11H22O2   |     497(5) |    664(1) |    2.0(4) |          715(8) |                                                 162 |
+| Ethyl octanoate                             | C10H20O2   |     479(1) |   652(12) |           |          657(8) |                                            147, 162 |
+| 3-Ethylpentane                              | C7H16      |   366.6(4) |  540.7(4) |   2.90(3) |         412(14) |                                            346, 349 |
+| Ethyl pentanoate                            | C7H14O2    |     415(3) |    593(1) |    2.8(4) |         466(10) |                                                 162 |
+| 2-Ethylphenol                               | C8H10O     |   477.7(1) |    703(1) |    3.7(3) |         388(15) |                                                 218 |
+| 3-Ethylphenol                               | C8H10O     |   491.6(1) |    716(1) |    3.8(3) |         393(15) |                                                 218 |
+| 4-Ethylphenol                               | C8H10O     |  491.12(6) |    716(1) |    3.1(6) |         395(15) |                                                 218 |
+| Ethyl propanoate                            | C5H10O2    |   372.1(2) |    547(1) |   3.37(5) |         343(23) |                               19, 64, 162, 413, 415 |
+| Ethyl propyl ether                          | C5H12O     |     336(3) |  500.2(4) |   3.37(1) |         343(44) |                                             25, 304 |
+| Ethyl silicate                              | C8H20O4Si  |     441(1) |   587(12) |    2.0(4) |        701.3(2) |                                                  57 |
+| S-Ethyl thioacetate                         | C4H8OS     |     387(3) |  590.5(2) |    4.1(1) |         320(10) |                                                  49 |
+| 4-Ethyltoluene                              | C9H12      |   435.2(6) |  640.2(5) |   3.23(4) |         446(12) |                                            439, 440 |
+| Ethyl vinyl ether                           | C4H8O      |     309(2) |    475(2) |   4.06(4) |          262(8) |                                                 290 |
+| Fluorobenzene                               | C6H5F      |   357.9(3) | 560.10(7) |   4.55(1) |          272(9) |                                             86, 441 |
+| Fluoroethane                                | C2H5F      |   235.5(3) |  375.2(2) |   5.02(1) |          164(3) |                                       206, 442, 443 |
+| Fluoromethane                               | CH3F       |     194.84 | 317.42(1) |   5.88(1) |        112.4(1) |                                            444, 445 |
+| 2-Fluorotoluene                             | C7H7F      |     387(2) |  591.2(4) |    3.9(3) |         323(47) |                                                 119 |
+| 3-Fluorotoluene                             | C7H7F      |     389(2) |  591.8(4) |    3.9(3) |         332(17) |                                                 119 |
+| 4-Fluorotoluene                             | C7H7F      |   389.8(4) |  592.1(8) |   3.85(1) |         332(17) |                                                 119 |
+| Formic acid                                 | CH2O2      |        374 |   588(10) |           |        115.9(1) |                                                 146 |
+| Furan                                       | C4H4O      |   304.5(2) |  490.2(2) |   5.43(8) |          218(3) |                                            241, 290 |
+| Glycerol                                    | C3H8O3     |     562(3) |    850(9) |    7.6(8) |         251(15) |                                                 394 |
+| Heneicosane                                 | C21H44     |     632(6) |    778(8) |    1.0(1) |        1366(48) |                                                 359 |
+| Heptadecane                                 | C17H36     |     576(2) |    736(1) |   1.33(7) |        1081(28) |                                                 359 |
+| Heptadecanoic acid                          | C17H34O2   |     635(4) |    792(8) |    1.4(1) |        1130(24) |                                                 360 |
+| 1-Heptadecanol                              | C17H36O    |        597 |    780(8) |    1.4(1) |        1097(18) |                                                 361 |
+
+6-74
+| Name                                                           | Mol. form.  |   T_{b}/K |   T_{c}/K | P_{c}/MPa | V_{c}/cm3 mol-1 |                                                                                                                         Ref. (see text) |
+|----------------------------------------------------------------+-------------+-----------+-----------+-----------+-----------------+-----------------------------------------------------------------------------------------------------------------------------------------|
+| 1-Heptadecene                                                  | C17H34      |    574(3) |    734(7) |   1.34(8) |        1053(35) |                                                                                                                                     365 |
+| 2,2,3,3,5,5,6-Heptafluoro-1,4-dioxane                          | C4HF7O2     |     312.6 |    453(1) |   2.86(6) |          359(4) |                                                                                                                                     110 |
+| 1,1,1,2,2,3,3-Heptafluoropentan-4-one                          | C5H3F7O     |     337.5 | 476.55(8) |   2.57(1) |        394.2(7) |                                                                                                                                     308 |
+| 1,1,1,2,3,3,3-Heptafluoropropane                               | C3HF7       |    256.81 |  375.0(1) |   2.93(1) |          299(7) |                                                                                                                                 446-449 |
+| 1,1,1,2,4,4,4-Heptafluoro-2-trifluoromethoxybutane             | C5H2F10O    |    322.73 |    447(1) |   2.15(6) |          465(5) |                                                                                                                                     110 |
+| 1,1,1,2,2,3,3-Heptafluoro-3-(trifluoromethoxy)propane          | C4F10O      |     280.1 |  391.7(7) |   1.89(5) |         431(31) |                                                                                                                                     450 |
+| 2,2,4,4,6,8,8-Heptamethylnonane                                | C16H34      |    519(1) |    692(4) |   1.53(1) |         957(27) |                                                                                                                                     451 |
+| 1,1,1,3,5,5,5-Heptamethyltrisiloxane                           | C7H22O2Si3  |    416(1) |  553.4(6) |   1.48(2) |          828(3) |                                                                                                                                     452 |
+| Heptanal                                                       | C7H14O      |    426(3) |  616.8(4) |    3.2(2) |          434(7) |                                                                                                                                     242 |
+| 2-Heptanamine                                                  | C7H17N      |    414(4) |    598(2) |    2.9(3) |         455(18) |                                                                                                                                     170 |
+| Heptane                                                        | C7H16       | 371.53(7) |  540.1(2) |   2.74(1) |         428(15) |                                         34, 36, 62, 75, 78, 86, 131, 133-135, 157, 243, 244, 254, 286, 324, 346, 359, 394, 432, 453-463 |
+| Heptanedioic acid                                              | C7H12O4     |     615.2 |   842(13) |    3.3(2) |         463(15) |                                                                                                                                     253 |
+| Heptanoic acid                                                 | C7H14O2     |    495(2) |    678(2) |    3.0(3) |          476(5) |                                                                                                                           145, 146, 464 |
+| 1-Heptanol                                                     | C7H16O      |    451(1) |  632.4(6) |    3.1(2) |          430(9) |                                                                                                                           149, 254, 465 |
+| 2-Heptanol, (±)-                                               | C7H16O      |       432 |  608.4(6) |    3.0(1) |          442(2) |                                                                                                                                149, 465 |
+| 3-Heptanol, (S)-                                               | C7H16O      |    436(2) |  605.4(3) |    3.1(4) |          451(3) |                                                                                                                                     465 |
+| 4-Heptanol                                                     | C7H16O      |    434(2) |  602.6(3) |    3.1(6) |          455(4) |                                                                                                                                     465 |
+| 2-Heptanone                                                    | C7H14O      |  424.2(3) |  611.4(2) |   2.98(4) |          436(4) |                                                                                                                            25, 172, 466 |
+| 3-Heptanone                                                    | C7H14O      |    419(2) |  606.6(2) |    3.0(1) |          433(5) |                                                                                                                                     466 |
+| 4-Heptanone                                                    | C7H14O      |    417(1) |  602.0(2) |    3.0(3) |          434(5) |                                                                                                                                     466 |
+| 1-Heptene                                                      | C7H14       |    367(1) |  537.3(3) |   2.85(2) |          409(2) |                                                                                                               51, 52, 86, 124, 257, 467 |
+| cis-2-Heptene                                                  | C7H14       |    370(2) |  548.5(6) |    3.0(3) |          410(7) |                                                                                                                                     170 |
+| trans-2-Heptene                                                | C7H14       |    371(2) |  542.8(4) |    3.0(2) |          410(7) |                                                                                                                                     170 |
+| trans-3-Heptene                                                | C7H14       |    369(2) |  538.6(7) |    3.0(2) |          411(7) |                                                                                                                                     170 |
+| Heptylbenzene                                                  | C13H20      |    515(4) |    708(7) |    2.1(2) |         680(16) |                                                                                                                                     258 |
+| Heptyl silicate                                                | C28H60O4Si  |           |   778(16) |           |                 |                                                                                                                                      57 |
+| Hexacosane                                                     | C26H54      |   688(11) |    816(8) |    0.8(2) |        1740(59) |                                                                                                                                     358 |
+| Hexadecane                                                     | C16H34      |  560.1(7) |  722.2(8) |    1.4(2) |        1009(53) |                                                                                                                            34, 244, 245 |
+| Hexadecanoic acid                                              | C16H32O2    |    624(6) |    785(8) |    1.5(2) |        1059(23) |                                                                                                                                     360 |
+| 1-Hexadecanol                                                  | C16H34O     |    598(2) |    770(8) |  1.47(10) |        1019(17) |                                                                                                                                     361 |
+| 1-Hexadecene                                                   | C16H32      |    558(1) |    718(7) |    1.4(2) |         986(33) |                                                                                                                                     365 |
+| Hexaethyldisiloxane                                            | C12H30OSi2  |    525(7) |  692.9(1) |           |          955(2) |                                                                                                                                      34 |
+| Hexafluoroacetylacetone                                        | C5H2F6O2    |    342(2) |  485.1(5) |    2.9(2) |         313(49) |                                                                                                                                     468 |
+| Hexafluorobenzene                                              | C6F6        |  353.4(2) |  516.4(5) |   3.28(1) |          337(4) |                                                                                                                   74, 198, 286, 469-473 |
+| 2,2,4,4,5,5-Hexafluoro-1,3-dioxolane                           | C3F6O2      |     251.0 |  368.1(7) |   2.72(4) |         293(30) |                                                                                                                                     116 |
+| Hexafluoroethane                                               | C2F6        |  195.1(1) |  292.9(2) |   3.03(1) |          223(3) |                                                                                                                            172, 474-477 |
+| 1,1,1,2,3,3-Hexafluoro-3-(2,2,3,3,3-pentafluoropropoxy)propane | C6H3F11O    |    360.64 | 486.48(7) |   1.95(1) |          529(2) |                                                                                                                                     113 |
+| 1,1,1,2,3,3-Hexafluoropropane                                  | C3H2F6      |    279.35 | 412.40(6) |   3.42(1) |          270(5) |                                                                                                                 203, 447, 448, 478, 479 |
+| 1,1,1,3,3,3-Hexafluoropropane                                  | C3H2F6      |  271.8(2) | 398.07(6) |   3.18(1) |         262(18) |                                                                                                                                     203 |
+| 1,1,1,2,3,3-Hexafluoro-3-(2,2,3,3-tetrafluoropropoxy)propane   | C6H4F10O    |    379.07 |  516.2(3) |    2.2(2) |         543(34) |                                                                                                                                     113 |
+| 1,1,1,2,3,3-Hexafluoro-3-(2,2,2-trifluoroethoxy)propane        | C5H3F9O     |    345.87 | 475.74(9) |   2.23(2) |          455(2) |                                                                                                                                     113 |
+| 1,1,1,3,3,3-Hexafluoro-2-trifluoromethyl-2-methoxypropane      | C5H3F9O     |       327 |    463(1) |   2.37(7) |          448(5) |                                                                                                                                     110 |
+| Hexamethylbenzene                                              | C12H18      |    541(3) |    758(2) |    2.6(4) |         581(15) |                                                                                                                                      25 |
+| 1,1,1,5,5,5-Hexamethyl-3,3-bis[(trimethylsilyl)oxy]trisiloxane | C12H36O4Si5 |     494.7 |  622.6(2) |   1.03(2) |        1323(90) |                                                                                                                                      34 |
+| Hexamethyldisiloxane                                           | C6H18OSi2   |  373.7(3) |  518.7(6) |   1.95(2) |         629(15) |                                                                                                                                     480 |
+| 2,6,10,15,19,23-Hexamethyltetracosane                          | C30H62      |    693(6) |    796(2) |   0.60(4) |        2060(70) |                                                                                                                                     481 |
+| Hexanal                                                        | C6H12O      |  402.8(4) |    592(3) |    3.4(2) |          378(7) |                                                                                                                                163, 242 |
+| Hexane                                                         | C6H14       | 341.87(6) |  507.5(1) |   3.03(1) |        366.0(8) | 19, 29, 33, 34, 38, 52, 77, 78, 84, 86, 96, 106, 124, 131, 133, 134, 243, 244, 254, 281, 286, 318, 324-328, 401, 456, 458, 470, 482-488 |
+| 1,6-Hexanediamine                                              | C6H16N2     |    470(2) |    685(7) |    3.6(5) |         446(17) |                                                                                                                                     140 |
+| 1,6-Hexanedioic acid                                           | C6H10O4     |     610.7 |   841(13) |    3.8(3) |         449(17) |                                                                                                                                     253 |
+
+6-75
+| Name                                      | Mol. form. |   T_{b}/K |   T_{c}/K | P_{c}/MPa | V_{c}/cm3 mol-1 |                                                         Ref. (see text) |
+|-------------------------------------------+------------+-----------+-----------+-----------+-----------------+-------------------------------------------------------------------------|
+| 1,6-Hexanediol                            | C6H14O2    |       481 |   741(10) |    4.1(1) |         404(13) |                                                                     489 |
+| Hexanenitrile                             | C6H11N     |  436.7(3) |  633.8(2) |   2.99(6) |          378(8) |                                                                      35 |
+| Hexanoic acid                             | C6H12O2    |  478.1(6) |    661(7) |           |         413(15) |                                                      145, 146, 360, 464 |
+| 1-Hexanol                                 | C6H14O     |  430.1(7) |  611.0(4) |   3.40(9) |         381(30) |                                        34, 149, 151, 152, 254, 255, 456 |
+| 2-Hexanol                                 | C6H14O     |    411(6) |  585.9(5) |    3.3(3) |          406(8) |                                                           149, 255, 437 |
+| 3-Hexanol                                 | C6H14O     |    416(2) |  582.4(4) |    3.3(1) |         378(14) |                                                            64, 254, 255 |
+| 2-Hexanone                                | C6H12O     |  400.8(1) |  586.7(5) |   3.31(4) |          377(4) |                                                            25, 172, 466 |
+| 3-Hexanone                                | C6H12O     |  396.7(3) |  583.1(5) |   3.32(1) |          378(4) |                                                                 25, 466 |
+| Hexatriacontane                           | C36H74     |    777(7) |    872(9) |   0.47(7) |         2711(2) |                                                                     358 |
+| 1-Hexene                                  | C6H12      |  336.6(1) |  504.1(9) |   3.20(3) |          381(9) |                                             86, 201, 202, 252, 257, 490 |
+| cis-2-Hexene                              | C6H12      |  342.1(5) |  513.4(9) |   3.34(6) |          347(7) |                                                                     170 |
+| trans-2-Hexene                            | C6H12      | 341.00(9) |  509.0(7) |   3.16(1) |          353(7) |                                                                     170 |
+| cis-3-Hexene                              | C6H12      |  339.6(5) |    510(1) |   3.29(1) |          351(7) |                                                                     170 |
+| trans-3-Hexene                            | C6H12      | 340.21(9) |    507(2) |   3.18(1) |          352(7) |                                                                     170 |
+| 5-Hexen-2-one                             | C6H10O     |  402.3(5) |  593.5(6) |   3.51(4) |         359(10) |                                                                      51 |
+| Hexyl acetate                             | C8H16O2    |  444.3(7) |    618(1) |    2.5(1) |          526(8) |                                                                     162 |
+| Hexylamine                                | C6H15N     |    405(1) |  592.3(7) |    3.4(3) |         402(15) |                                                                     170 |
+| Hexylbenzene                              | C12H18     |    499(2) |    695(7) |    2.4(2) |         620(14) |                                                                     258 |
+| Hexyl benzoate                            | C13H18O2   |       545 |   748(14) |    2.0(3) |         658(14) |                                                                     169 |
+| Hexyl silicate                            | C24H52O4Si |           |   757(16) |           |                 |                                                                      57 |
+| Indan                                     | C9H10      |  451.0(4) |  684.8(4) |   3.95(3) |         385(22) |                                                                      25 |
+| Isobutanal                                | C4H8O      |  337.3(2) |  543.6(6) |   5.12(8) |         283(10) |                                                                164, 165 |
+| Isobutane                                 | C4H10      |  261.5(5) | 407.84(7) |   3.64(2) |          256(7) |                                                      125, 132, 491, 492 |
+| Isobutene                                 | C4H8       |  266.2(2) |  418.0(3) |   4.00(4) |          240(3) |                                                      123, 158, 493, 494 |
+| Isobutyl acetate                          | C6H12O2    |  390.1(6) |    562(2) |   2.97(6) |         369(37) |                                                      166, 201, 202, 415 |
+| Isobutylbenzene                           | C10H14     |  445.9(4) |    650(3) |    3.0(2) |         493(15) |                                                                      96 |
+| Isobutyl butanoate                        | C8H16O2    |    430(1) |    611(6) |    2.5(3) |          524(9) |                                                                     147 |
+| Isobutylcyclohexane                       | C10H20     |     444.5 |  642.1(6) |   2.61(7) |         550(14) |                                                                     170 |
+| Isobutyl formate                          | C5H10O2    |  371.6(3) |    551(4) |    3.9(4) |         359(25) |                                                                     415 |
+| Isobutyl isobutanoate                     | C8H16O2    |    421(3) |    602(6) |           |          530(9) |                                                                     147 |
+| Isobutyl 3-methylbutanoate                | C9H18O2    |    442(3) |    621(6) |           |          581(9) |                                                                     147 |
+| Isobutyl propanoate                       | C7H14O2    |    409(2) |    586(8) |           |          462(9) |                                                                162, 167 |
+| Isopentane                                | C5H12      | 300.98(6) | 460.37(9) |   3.35(6) |         313(17) |                                                    19, 86, 96, 127, 495 |
+| Isopentyl acetate                         | C7H14O2    |  414.8(7) |  586.1(4) |   2.76(7) |          464(9) |                                                                     166 |
+| Isopentyl butanoate                       | C9H18O2    |  458.0(3) |    619(6) |           |         595(10) |                                                                     147 |
+| Isopentyl nitrite                         | C5H11NO2   |    372(3) |   626(16) |   5.07(4) |        386.2(1) |                                                                      52 |
+| Isopentyl propanoate                      | C8H16O2    |    446(4) |    611(6) |           |          523(9) |                                                                     147 |
+| Isopropyl acetate                         | C5H10O2    |  361.8(2) |  531.1(6) |   3.31(4) |          343(4) |                                                  64, 166, 172, 411, 490 |
+| Isopropylamine                            | C3H9N      |  305.0(2) |  472.2(9) |   4.55(7) |          231(5) |                                                                 75, 170 |
+| Isopropylbenzene                          | C9H12      |  425.6(2) |    631(1) |    3.2(1) |          423(5) |                                                         79, 90, 96, 172 |
+| Isopropylcyclohexane                      | C9H18      |  427.6(4) |  632.2(4) |    3.1(2) |         484(14) |                                                                     170 |
+| Isopropyl formate                         | C4H8O2     |    341(2) |  534.6(5) |   3.95(3) |         294(11) |                                                                164, 165 |
+| 1-Isopropyl-4-methylbenzene               | C10H14     |    450(2) |    654(8) |    2.8(1) |         495(16) |                                                                 96, 147 |
+| Isopropyl methyl ether                    | C4H10O     |  304.0(5) |  464.4(2) |   3.76(1) |         287(11) |                                                                      25 |
+| Isoquinoline                              | C9H7N      |  516.4(6) |    803(8) |   5.07(3) |         380(17) |                                                                     218 |
+| d-Limonene                                | C10H16     |  450.8(5) |    653(2) |   2.81(2) |         498(11) |                                                                     496 |
+| (-)-Menthol                               | C10H20O    |   487(12) |    694(5) |    2.7(5) |         539(14) |                                                                       - |
+| Mesityl oxide                             | C6H10O     |  402.9(4) |    605(2) |   3.85(2) |         353(27) |                                                                     497 |
+| Methane                                   | CH4        |  111.7(2) | 190.56(2) |   4.60(1) |           99(3) |                                                       132, 134, 498-508 |
+| Methane-d4                                | CD4        |           |  189.2(6) |           |           98(3) |                                                                     507 |
+| Methanethiol                              | CH4S       |  279.2(1) |  469.9(3) |   7.24(9) |          148(4) |                                                                     304 |
+| Methanol                                  | CH4O       |  337.7(7) |  512.7(6) |   8.01(3) |          117(4) | 19, 38, 67, 80, 85, 87, 131, 148, 152, 155, 196, 405, 458, 482, 509-516 |
+| 1-Methoxy-2,4-dimethylbenzene             | C9H12O     |       465 |    682(4) |    3.2(7) |         451(18) |                                                                     162 |
+| 2-Methoxy-1,4-dimethylbenzene             | C9H12O     |       467 |    677(1) |    3.2(7) |         451(15) |                                                                     162 |
+| 2-Methoxyethanol                          | C3H8O2     |  397.5(1) |    598(1) |   5.28(8) |          263(6) |                                                                      49 |
+| 2-Methoxyethyl acetate                    | C5H10O3    |    415(3) |    603(3) |    3.6(5) |         368(15) |                                                                     162 |
+| 4-Methoxy-1,1,1,2,2,3,3-heptafluorobutane | C5H5F7O    |    344.13 |  481.5(2) |   2.38(1) |          431(2) |                                                                     113 |
+| 1-Methoxy-1,1,2,2,3,3-hexafluoropropane   | C4H4F6O    |    341.02 |  487.0(3) |    2.9(1) |         370(25) |                                                                     113 |
+
+6-76
+|2-Methoxy-2-methylbutane|C6H14O|359.6(1)|536(2)|3.23(9)|372(19)|172, 410, 517
+|5-Methoxy-1,1,2,2,3,3,4,4-octafluoropentane|C6H6F8O|395.83|546.1(3)|2.40(7)|493(30)|113
+|1-Methoxy-2-propanol|C4H10O2|393.2(6)|579.8(3)|4.11(4)|304(12)|49
+|2-Methoxy-1-propene|C4H8O|308.9(3)|478.5(6)|4.2(3)|257(13)|518
+|Methyl|acetate|C3H6O2|329.9(2)|506.7(4)|4.73(7)|227(22)|19, 411-413
+|Methylamine|CH5N|266.8(3)|430.6(6)|7.61(9)|139(1)|130, 193, 322, 323
+|2-Methylaniline|C7H9N|473.2(4)|710(1)|3.6(1)|377(52)|519
+|3-Methylaniline|C7H9N|476.5(5)|709(10)|4.6(5)|346(17)|106
+|4-Methylaniline|C7H9N|474(1)|667(10)|3.3(7)|334(16)|106
+|N-Methylaniline|C7H9N|470(1)|702(5)|5.2(6)|347(16)|117
+|2-Methylanisole|C8H10O|446(2)|662(1)|3.6(3)|397(18)|162
+|3-Methylanisole|C8H10O|450(2)|665(1)|3.6(3)|449(22)|162
+|4-Methylanisole|C8H10O|448(2)|667(1)|3.6(4)|396(15)|162
+|α-Methylbenzenemethanol|C8H10O|478(4)|699(5)|3.8(7)|399(16)|32
+|Methyl|benzoate|C8H8O2|472(2)|702(1)|3.8(1)|408(11)|517
+|2-Methylbutanal, (±)-|C5H10O|363|531.6(1)|4.04(3)|318(10)|124
+|Methyl|butanoate|C5H10O2|375.1(1)|554.4(1)|3.49(8)|341(20)|19, 413, 416
+|3-Methylbutanoic|acid|C5H10O2|449.7(2)|629(1)|3.4(2)|355(10)|146
+|2-Methyl-1-butanol, (±)-|C5H12O|402.2(4)|575.4(5)|3.9(1)|342(8)|254
+|3-Methyl-1-butanol|C5H12O|404.0(3)|579(2)|3.9(3)|335(7)|21, 91, 222, 254, 511, 520
+|2-Methyl-2-butanol|C5H12O|375.6|544(1)|3.71(5)|326(9)|147, 254
+|3-Methyl-2-butanol, (±)-|C5H12O|386.9(4)|556.1(5)|3.9(4)|336(9)|254
+|3-Methyl-2-butanone|C5H10O|367.4(2)|553.1(3)|3.83(10)|321(33)|157, 166
+|3-Methyl-1-butene|C5H10|293.3(2)|452.7(5)|3.51(4)|305(8)|490
+|2-Methyl-2-butene|C5H10|311.7(4)|470(1)|3.4(1)|299(7)|521
+|Methyl|tert-butyl|ether|C5H12O|328.3(1)|497.0(6)|3.41(5)|335(10)|25, 440
+|Methylcyclohexane|C7H14|374.1(1)|572.3(2)|3.48(9)|368(3)|34, 74, 78, 86, 88, 171, 235, 236
+|Methylcyclopentane|C6H12|345.0(2)|532.78(5)|3.79(5)|322(2)|78, 235, 236
+|2-Methylcyclopentanone|C6H10O|413(3)|631(2)|4.0(6)|328(17)|162
+|2-Methyl-N,N-dimethylaniline|C9H13N|458(2)|668.0(7)|3.12(8)|466(15)|39, 40
+|Methyl|dodecanoate|C13H26O2|541(2)|712(5)|1.4(4)|842(9)|218
+|1,1'-Methylenebis[(1-methylethyl) benzene]|C19H24|592|795(8)|1.6(1)|871(30)|394
+|Methyl|formate|C2H4O2|304.8(3)|487.16(10)|6.01(1)|172(6)|19, 412, 413
+|2-Methylfuran|C5H6O|337.1(2)|528(3)|4.77(8)|252(3)|290
+|2-Methylheptane|C8H18|390.8(9)|559.6(1)|2.50(2)|487(12)|86, 346, 522
+|3-Methylheptane|C8H18|392.1(6)|563.7(4)|2.54(2)|463(12)|346
+|4-Methylheptane|C8H18|390.9(5)|561.7(4)|2.54(2)|480(14)|346
+|Methyl|heptanoate|C8H16O2|442.9(4)|628(2)|2.6(4)|521(8)|162
+|4-Methyl-3-heptanol|C8H18O|430(2)|623.5(7)|2.8(4)|505(13)|437
+|5-Methyl-3-heptanol|C8H18O|427(2)|621.2(3)|2.8(3)|493(13)|437
+|2-Methyl-3-heptanone|C8H16O|431|615(1)|2.7(3)|487(11)|162
+|5-Methyl-3-heptanone|C8H16O|432(4)|619(4)|2.7(7)|484(11)|162
+|2-Methyl-1-heptene|C8H16|392(2)|567.5(9)|2.6(2)|466(10)|170
+|2-Methyl-2-heptene|C8H16|395(2)|569(1)|2.6(4)|465(11)|170
+|2-Methylhexane|C7H16|363.2(8)|530.4(1)|2.73(3)|420(15)|86, 346, 349, 522
+|3-Methylhexane|C7H16|365|535.4(5)|2.82(6)|405(19)|346, 349
+|5-Methyl-2-hexanone|C7H14O|412(2)|604(1)|2.9(3)|434(13)|162
+|2-Methyl-3-hexanone|C7H14O|407(3)|593(1)|2.9(4)|428(13)|162
+|2-Methyl-1-hexene|C7H14|365(2)|542(1)|2.9(3)|407(8)|170
+|5-Methyl-1-hexene|C7H14|358(1)|528.7(4)|2.9(2)|410(9)|170
+|N-Methylhexylamine|C7H17N|418|592(1)|2.8(8)|458(20)|170
+|Methyl|isobutanoate|C5H10O2|365(1)|540.7(5)|3.43(1)|341(42)|19, 413
+|Methyl|methacrylate|C5H8O2|373.8(2)|540.3(6)|2.97(6)|320(6)|51
+|1-Methylnaphthalene|C11H10|517.6(9)|771(5)|3.56(7)|479(22)|86, 218, 523
+|2-Methylnaphthalene|C11H10|514.3(3)|761(3)|3.37(6)|464(20)|218
+|2-Methyloctane|C9H20|416(1)|582.8(2)|2.30(2)|547(17)|345, 522
+|Methyloxirane|C3H6O|308|488.11(8)|5.44(2)|290, 524
+|Methyl|pentafluoroethyl|ether|C3H3F5O|278.8(9)|406.81(5)|2.89(1)|301(5)|176, 448, 525
+|2-Methylpentane|C6H14|333.36(9)|497.9(2)|3.03(1)|371(2)|86, 127, 252, 325-328, 487, 522
+
+6-77
+|3-Methylpentane|C6H14|336.5(5)|504.6(2)|3.12(1)|368.7(3)|252, 324-328, 526
+|Methyl|pentanoate|C6H12O2|400.51(6)|588.9(3)|3.20(5)|398(6)|164, 165
+|2-Methyl-1-pentanol|C6H14O|430(6)|604.4(5)|3.4(2)|410(8)|254
+|4-Methyl-1-pentanol|C6H14O|424(2)|603.5(7)|3.4(4)|406(7)|437
+|2-Methyl-2-pentanol|C6H14O|394(1)|559.5(7)|3.6(4)|410(11)|437
+|4-Methyl-2-pentanol|C6H14O|405.2(5)|574.4(5)|389(9)|437
+|2-Methyl-3-pentanol|C6H14O|401.1(2)|576(1)|3.5(1)|380(9)|254
+|3-Methyl-3-pentanol|C6H14O|402(4)|575.6(6)|3.5(2)|376(10)|254
+|4-Methyl-2-pentanone|C6H12O|388.9(2)|575.4(10)|3.4(1)|378(12)|166, 527
+|4-Methyl-1-pentene|C6H12|327(2)|493.1(5)|3.18(7)|170, 497
+|2-Methyl-2-pentene|C6H12|340.5(5)|509.3(5)|3.26(1)|348(7)|170
+|4-Methyl-cis-2-pentene|C6H12|329.6(1)|496.3(7)|3.24(1)|350(7)|170
+|Methyl|pentyl|ether|C6H14O|372(3)|546.5(2)|3.04(10)|395(14)|173, 174
+|2-Methyl-1,3-propanediol|C4H10O2|494(4)|708(2)|5.4(4)|300(12)|55
+|Methyl|propanoate|C4H8O2|351.8(2)|530.57(10)|4.0(2)|19, 412, 413, 415
+|2-Methylpropanoic|acid|C4H8O2|427.6(2)|605(2)|3.7(3)|296(10)|146
+|2-Methyl-1-propanol|C4H10O|380.99(7)|548(2)|4.30(4)|274(17)|25, 91, 148, 153, 155
+|2-Methyl-2-propanol|C4H10O|355.5(1)|506.2(1)|3.98(7)|283(4)|153
+|Methyl|propyl|ether|C4H10O|311.7(10)|476.2(2)|3.80(1)|281(7)|25
+|2-Methylpyridine|C6H7N|402.6(2)|622(1)|4.62(4)|75, 528
+|3-Methylpyridine|C6H7N|417.3(1)|644.8(6)|4.63(3)|90, 528
+|4-Methylpyridine|C6H7N|418.5(1)|645.8(5)|4.68(4)|75, 90
+|N-Methyl-2-pyrrolidinone|C5H9NO|477.4(3)|721.7(4)|4.5(4)|330(12)|144, 242
+|2-Methylquinoline|C10H9N|520.6(4)|778(2)|3.91(2)|447(49)|530
+|8-Methylquinoline|C10H9N|520.6(7)|787(2)|4.22(2)|530
+|Methyl|salicylate|C8H8O3|495.8(5)|709(30)|4.4(7)|436(17)|302
+|Methyl|silicate|C4H12O4Si|393.3(7)|558(12)|2.8(6)|464(22)|57
+|2-Methyltetrahydrofuran|C5H10O|353(1)|537(2)|3.74(6)|292(4)|290
+|(Methylthio)benzene|C7H8S|467.5(2)|706(4)|4.1(1)|374(13)|99
+|Methyl|trifluoromethyl|ether|C2H3F3O|248.0(7)|377.92(6)|3.64(3)|219(2)|447, 525
+|Methyltris(trimethylsiloxy)silane|C10H30O3Si4|464.4|597.4(2)|1.23(2)|1089(74)|34
+|4-Morpholinecarboxaldehyde|C5H9NO2|511(1)|779(4)|5.0(4)|326(14)|54
+|Naphthalene|C10H8|491.2(1)|748.3(4)|4.06(4)|408(21)|79, 82, 86, 241, 251, 355, 451, 531
+|Neopentane|C5H12|282.65(6)|433.71(1)|3.20(1)|311.6(7)|532
+|Nitromethane|CH3NO2|374.34(10)|588(3)|6.0(2)|175(2)|533, 534
+|Nonadecane|C19H40|603(3)|756(5)|1.16(7)|1216(43)|358, 359
+|1-Nonadecene|C19H38|604(17)|755(8)|1.2(2)|1196(36)|365
+|1,1,1,2,2,3,3,4,4-Nonafluorohexan-5-one|C6H3F9O|360.47|498.97(8)|2.20(2)|504(2)|308
+|Nonanal|C9H18O|468(3)|658(2)|2.7(1)|546(10)|242
+|Nonane|C9H20|424.0(2)|594.2(5)|2.29(5)|547(23)|34, 36, 78, 86, 131, 243-245, 247, 249, 251, 454, 456, 535, 536
+|1,9-Nonanediamine|C9H22N2|531.9|726(7)|2.6(3)|600(23)|140
+|Nonanedioic|acid|C9H16O4|630.3|844(13)|2.7(2)|586(17)|253
+|Nonanoic|acid|C9H18O2|529(1)|712(3)|592(16)|146
+|1-Nonanol|C9H20O|486.9(4)|670.6(5)|2.54(7)|555(75)|149, 152, 254, 255
+|2-Nonanol, (±)-|C9H20O|466.7|649(1)|2.53(10)|575(11)|149, 255
+|3-Nonanol, (±)-|C9H20O|468|648.0(3)|2.5(3)|577(12)|255
+|4-Nonanol|C9H20O|465.7|645.1(3)|2.5(3)|577(12)|255
+|2-Nonanone|C9H18O|467(1)|652.1(7)|2.5(1)|560(8)|49, 466
+|3-Nonanone|C9H18O|460(4)|648(4)|2.4(6)|560(7)|466
+|4-Nonanone|C9H18O|461(4)|643.7(3)|2.4(3)|560(7)|466
+|5-Nonanone|C9H18O|461.6(3)|641.4(3)|2.35(2)|560(7)|466
+|1-Nonene|C9H18|420.1(6)|594(1)|2.38(1)|529(2)|257
+|Nonyl|silicate|C36H76O4Si|830(16)|57
+|Octacosane|C28H58|705(6)|824(8)|0.8(1)|1916(65)|358
+|Octadecane|C18H38|589(2)|748(1)|1.3(1)|1167(41)|244
+|1-Octadecanol|C18H38O|624(2)|790(8)|1.28(10)|1157(18)|361
+|1-Octadecene|C18H36|588.7(10)|748(8)|1.3(1)|1119(34)|365
+|1,1,1,2,2,3,3,4-Octafluorobutane|C4H2F8|300.62|432.0(1)|2.80(2)|360(22)|537
+|1,2,2,3,3,4,4,5-Octafluoro-1-pentanol|C5H4F8O|413.2|571(1)|2.9(1)|440(24)|362
+|Octafluorotetrahydrofuran|C4F8O|272.3|399.6(7)|2.68(9)|350(30)|450
+
+6-78
+|Octamethylcyclotetrasiloxane|C8H24O4Si4|448.6(9)|585.8(9)|1.33(1)|1006(67)|114, 538
+|Octamethyltrisiloxane|C8H24O2Si3|425.7(8)|564.1(2)|1.42(1)|882(16)|539
+|Octanal|C8H16O|447(3)|639.3(3)|3.0(3)|489(7)|163, 242
+|Octane|C8H18|398.77(10)|568.7(1)|2.48(1)|490(22)|11, 19, 33, 34, 36, 78, 83, 86, 91, 96, 131, 133, 134, 243-245, 247, 249, 318, 319, 324, 346, 465, 469, 535, 540, 541
+|1,8-Octanediamine|C8H20N2|498.8|712(7)|2.8(3)|547(20)|140
+|Octanedioic|acid|C8H14O4|618.7|843(13)|3.0(2)|520(16)|253
+|Octanenitrile|C8H15N|475(3)|674.4(4)|2.85(3)|494(10)|35
+|Octanoic|acid|C8H16O2|513(1)|694(1)|2.9(3)|522(19)|145, 146, 360, 464
+|1-Octanol|C8H18O|467.9(8)|651(2)|2.80(7)|490(47)|25, 149, 152, 254, 255
+|2-Octanol|C8H18O|452(7)|629.5(9)|2.75(4)|519(10)|149, 254, 255
+|3-Octanol|C8H18O|457(6)|628.4(3)|2.8(4)|515(10)|255
+|4-Octanol|C8H18O|449.5|625.1(3)|2.8(3)|516(10)|255
+|2-Octanone|C8H16O|446(3)|632.7(2)|2.7(5)|497(6)|466
+|3-Octanone|C8H16O|439(4)|627.7(2)|2.7(3)|497(6)|466
+|4-Octanone|C8H16O|439(3)|623.8(2)|2.7(3)|497(6)|466
+|1-Octene|C8H16|394.5(2)|566.58(5)|2.68(2)|464(2)|86, 257
+|trans-2-Octene|C8H16|398.1(5)|569.8(4)|2.58(9)|471(9)|170
+|trans-4-Octene|C8H16|395.6(5)|566(1)|2.55(6)|472(9)|170
+|Octylamine|C8H19N|451.8(2)|641(1)|2.82(3)|494(41)|542
+|Octylbenzene|C14H22|536(2)|725(7)|2.0(2)|746(17)|258
+|Octyl|silicate|C32H68O4Si|812(16)|57
+|Oxazole|C3H3NO|342.7(2)|551(4)|6.8(2)|185(23)|54
+|Oxirane|C2H4O|283.6(1)|469(1)|7.2(2)|138(4)|543, 544
+|Paraldehyde|C6H12O3|397(2)|563(10)|410(15)|12
+|Pentacene|C22H14|1115(47)|806(23)|545
+|1H-Pentadecafluoroheptane|C7HF15|368(2)|495.8(7)|1.7(5)|644(38)|546
+|Pentadecane|C15H32|543.8(4)|707(2)|1.54(9)|938(36)|243, 244, 245, 247, 249, 363, 547
+|Pentadecanoic|acid|C15H30O2|612(4)|777(8)|1.6(2)|1002(22)|360
+|1-Pentadecanol|C15H32O|591(2)|757(8)|1.6(2)|961(16)|361
+|1-Pentadecene|C15H30|541.6(4)|705(7)|1.56(5)|933(30)|365
+|Pentafluorobenzene|C6HF5|358(3)|530.93(5)|3.53(1)|322(22)|472, 548
+|3,3,4,4,4-Pentafluorobutan-2-one|C4H3F5O|314.36|453(1)|2.90(6)|333(4)|110
+|Pentafluoroethane|C2HF5|225.06|339.2(2)|3.63(1)|210(3)|180, 309, 312, 315, 447, 448, 549-554
+|1,1,1,2,2-Pentafluoropentan-3-one|C5H5F5O|335.24|475.5(1)|2.64(1)|356(1)|308
+|1,1,1,2,2-Pentafluoropropane|C3H3F5|255.2(3)|380.1(4)|3.14(2)|273(3)|555
+|1,1,1,3,3-Pentafluoropropane|C3H3F5|288.29|427.20(7)|3.66(2)|262(14)|203
+|1,1,2,2,3-Pentafluoropropane|C3H3F5|298.28|447.57(6)|3.96(2)|258(13)|203
+|1,1,1,2,2-Pentafluoro-3-(1,1,2,2-tetrafluoroethoxy)propane|C5H3F9O|343.5|473.0(1)|2.24(1)|457(2)|113
+|Pentafluoro(trifluoromethoxy)ethane|C3F8O|249.5|356.8(1)|2.4(5)|319(5)|442
+|Pentanal|C5H10O|376(2)|567(3)|3.1(3)|313(11)|104, 124
+|Pentane|C5H12|309.21(7)|469.7(1)|3.37(1)|310(1)|19, 34, 36, 52, 64, 77, 84-86, 127, 131, 133, 134, 201, 202, 243, 244, 254, 286, 324, 359, 394, 456, 490, 556-562
+|Pentanedioic|acid|C5H8O4|546(10)|840(13)|4.3(5)|343(13)|253
+|Pentanenitrile|C5H9N|413(1)|610.3(2)|3.58(5)|320(8)|35
+|Pentanoic|acid|C5H10O2|459.3(3)|639(2)|3.6(1)|347(15)|11, 41, 145, 146, 464
+|1-Pentanol|C5H12O|410.8(4)|587.9(4)|3.9(3)|331(9)|25, 34, 149, 329, 456, 465, 563
+|2-Pentanol|C5H12O|392.3(5)|560.4(2)|4.2(4)|340(3)|149, 254, 465
+|3-Pentanol|C5H12O|396(2)|559.6(3)|4.9(9)|325(2)|465
+|2-Pentanone|C5H10O|375.4(1)|561.0(2)|3.70(6)|324(4)|25, 172
+|3-Pentanone|C5H10O|375.1(1)|561.4(2)|3.73(7)|319(11)|25
+|1-Pentene|C5H10|303.2(3)|464.74(5)|3.55(2)|301.0(1)|86, 470, 559
+|cis-2-Pentene|C5H10|310.1(2)|474.9(4)|3.69(2)|301(7)|564
+|Pentyl|acetate|C7H14O2|422.6(3)|600(2)|2.79(3)|141, 162, 166
+|Pentylbenzene|C11H16|476(3)|675(7)|2.6(3)|559(12)|258
+
+6-79
+|Pentyl|benzoate|C12H16O2|533(3)|736(14)|2.2(2)|661(14)|169
+|Pentyl|formate|C6H12O2|399(3)|576(4)|3.5(8)|453(35)|415
+|Pentyl|silicate|C20H44O4Si|714(14)|57
+|Perfluoroacetone|C3F6O|245.8(4)|357.2(1)|2.85(1)|329(7)|197, 470
+|Perfluorobutane|C4F10|271.1(8)|386.3(2)|2.33(2)|380(18)|565, 566
+|Perfluorocyclobutane|C4F8|267.24|388.4(1)|2.78(1)|316(8)|265, 470, 567, 568
+|Perfluorocyclohexane|C6F12|326.0|sp|457.1(5)|2.24(3)|424(32)|569
+|Perfluorocyclohexene|C6F10|324.9(1)|461.7(7)|2.6(1)|434(28)|546
+|Perfluorodecane|C10F22|408(3)|542.4(4)|1.45(3)|892(7)|240, 570
+|Perfluorodimethoxymethane|C3F8O2|263.2(7)|372.4(2)|2.34(1)|370(30)|116, 571
+|Perfluoro-2,3-dimethylbutane|C6F14|333.0(3)|463.0(1)|1.95(3)|523(18)|240, 572
+|Perfluoroethyl|ethyl|ether|C4H5F5O|301(3)|431.23(8)|2.53(1)|366(3)|176
+|Perfluoroethyl|2,2,2-trifluoroethyl|ether|C4H2F8O|301.04|421.68(8)|2.33(1)|409(3)|176
+|Perfluoroheptane|C7F16|355.7(2)|477(3)|1.63(1)|603(14)|232, 566, 570, 573-576
+|Perfluoro-1-heptene|C7F14|354(4)|478.2(7)|1.7(3)|555(34)|546
+|Perfluorohexane|C6F14|330.4(2)|451(3)|1.88(2)|552(77)|198, 470, 546, 570, 572, 573, 577
+|1H-Perfluorohexane|C6HF13|345|471.8(7)|2.0(3)|504(32)|546
+|Perfluoro-1-hexene|C6F12|330.2|454.3(7)|462(31)|546
+|Perfluoroisobutane|C4F10|273|395.4(7)|396(22)|578
+|Perfluoroisopropyl|methyl|ether|C4H3F7O|302(1)|433.30(8)|2.55(1)|369(3)|176
+|Perfluoromethylcyclohexane|C7F14|349.5(2)|486.5(10)|2.02(1)|561(4)|325, 326, 327, 566, 569
+|Perfluoromethylcyclopentane|C6F12|321.58|451.43(5)|2.17(1)|419(37)|579
+|Perfluoro-2-methylpentane|C6F14|330.8(3)|454.6(2)|1.87(2)|585(10)|572, 580
+|Perfluoro-3-methylpentane|C6F14|331(9)|450(1)|1.69(1)|511(36)|572
+|Perfluoronaphthalene|C10F8|473(8)|673(1)|2.9(6)|464(29)|546
+|Perfluorononane|C9F20|390(3)|524.0(1)|1.56(4)|846(48)|570
+|Perfluorooctane|C8F18|378(2)|502.3(1)|1.66(2)|738(17)|34, 240, 570, 573
+|Perfluorooxetane|C3F6O|244.6(6)|361.8(5)|3.10(2)|274(24)|116, 571
+|Perfluoropentane|C5F12|302.4(2)|421.8(1)|2.04(2)|463(7)|570, 573
+|1H-Perfluoropentane|C5HF11|319|443.9(7)|2.2(3)|413(28)|546
+|Perfluoropropane|C3F8|236.4(3)|345.03(8)|2.67(1)|301(12)|187, 305, 470, 581
+|Perfluoropropyl|methyl|ether|C4H3F7O|307(1)|437.7(1)|2.48(1)|382(3)|176
+|Perfluorotoluene|C7F8|377.8(3)|534.4(2)|2.70(2)|423(26)|25
+|Perfluorovaleric|acid|C5HF9O2|415.4|545.5(2)|2.10(5)|496(29)|583
+|Phenol|C6H6O|455.0(1)|694.3(1)|5.5(2)|283(10)|218, 584
+|Phenyl|acetate|C8H8O2|468(1)|686(2)|3.60(6)|407(12)|55
+|Phenyl|isocyanate|C7H5NO|439.5(4)|657(10)|3.6(1)|342(15)|54
+|α-Pinene, (-)|C10H16|429.2|644(2)|3.4(2)|472(10)|496
+|Piperazine|C4H10N2|421.78(5)|660(5)|5.4(4)|283(16)|331, 489
+|Piperidine|C5H11N|379.34(9)|594.14(5)|4.7(1)|294(10)|39, 218
+|Propanal|C3H6O|321.2(2)|503.7(8)|5.04(3)|218(9)|104, 124, 163, 242
+|Propane|C3H8|231.04(9)|369.9(1)|4.25(1)|199(6)|29, 125, 127, 131-134, 252, 322, 323, 336, 371, 387, 470, 486, 509, 540, 585-596
+|1,3-Propanediamine|C3H10N2|412.4(7)|632(7)|5.7(6)|257(13)|140
+|1,2-Propanediol|C3H8O2|460.5(2)|676(1)|5.9(2)|237(10)|32
+|1,3-Propanediol|C3H8O2|487.9(3)|718(2)|6.7(2)|255(12)|55
+|Propanenitrile|C3H5N|370.5(4)|561.3(2)|4.26(7)|211(7)|35
+|1-Propanethiol|C3H8S|340.9(1)|536.6(6)|4.7(1)|286(11)|143, 144
+|Propanoic|acid|C3H6O2|414.7(2)|603(3)|4.5(7)|232(12)|39, 145, 146, 493, 597, 598
+|1-Propanol|C3H8O|370.19(9)|536.8(2)|5.1(1)|220(22)|19, 34, 80, 148-150, 152, 153, 599, 600
+|2-Propanol|C3H8O|355.36(9)|508.3(2)|4.7(1)|226(1)|25, 91, 148, 149, 153, 324, 440, 520, 601, 602
+|Propene|C3H6|225.6(1)|364.9(5)|4.59(2)|184(11)|67, 123, 172, 181, 427, 603-610
+|2-Propoxyethanol|C5H12O2|425(3)|614.7(7)|3.65(9)|364(13)|11, 41
+|1-Propoxy-2-propanol|C6H14O2|423.4(7)|605(1)|3.1(1)|417(16)|32
+|Propyl|acetate|C5H10O2|374.2(2)|549.69(8)|3.37(7)|346(24)|19, 411, 413, 415
+|Propylamine|C3H9N|320.36(8)|499.2(4)|4.77(6)|230(12)|170, 193
+|Propylbenzene|C9H12|432.4(5)|638.3(1)|3.20(2)|441(6)|79, 86, 88
+|Propyl|benzoate|C10H12O2|504(2)|710(14)|2.6(3)|530(10)|169
+
+6-80
+|Propyl|butanoate|C7H14O2|417(2)|593(1)|2.72(6)|463(10)|162, 166
+|Propylcyclohexane|C9H18|429.9(3)|630.8(9)|2.87(4)|489(13)|170, 171
+|Propylene|carbonate|C4H6O3|514.8(7)|763(2)|4.1(2)|256.5(5)|55
+|1,2-Propylene|glycol|1-tert-butyl|ether|C7H16O2|425.3|601(4)|2.7(1)|468(15)|99
+|1,2-Propylene|glycol|monomethyl|ether acetate|C6H12O3|419.2(4)|598(1)|3.1(2)|432(16)|41, 144
+|Propyl|formate|C4H8O2|353.8(2)|538.1(1)|4.07(2)|281(31)|19, 412, 413, 415
+|Propyl|isobutanoate|C7H14O2|407(4)|582(11)|463(9)|162, 167
+|Propyl|3-methylbutanoate|C8H16O2|428(3)|609(6)|523(9)|147
+|Propyl|propanoate|C6H12O2|395.4(1)|569(3)|3.1(1)|403(6)|162, 166
+|Propyl|silicate|C12H28O4Si|499|649(12)|57
+|Propyne|C3H4|250.0|402(2)|5.63(6)|160(10)|605, 611
+|Pyrazine|C4H4N2|389.5(1)|627(1)|6.49(3)|225(16)|612
+|Pyridine|C5H5N|388.4(1)|619(2)|5.63(7)|248(12)|16, 17, 60, 90, 246, 290, 520, 613
+|Pyrrole|C4H5N|402.89(4)|639.7(2)|8.0(2)|222(15)|241
+|Pyrrolidine|C4H9N|359.8(1)|568.6(2)|5.69(8)|259(3)|241, 290
+|Quinoline|C9H7N|510.3(5)|782(3)|4.75(10)|382(17)|218
+|Resorcinol|C6H6O2|553(2)|836(10)|6.3(3)|292(10)|489
+|Octadecanoic|acid|C18H36O2|644(3)|803(8)|1.3(2)|1251(27)|360
+|Styrene|C8H8|418.5(6)|635(2)|3.9(2)|357(15)|481
+|Succinic|acid|C4H6O4|507(3)|851(20)|308(21)|253
+|o-Terphenyl|C18H14|610(5)|857(6)|2.9(1)|737(37)|108
+|m-Terphenyl|C18H14|648(1)|883(7)|2.2(2)|747(37)|108, 358
+|p-Terphenyl|C18H14|649|913(22)|2.5(5)|713(37)|108, 614
+|Tetrachloromethane|CCl4|349.9(2)|556.5(3)|4.57(7)|276(9)|19, 27, 469, 615-619
+|Tetracosane|C24H50|664(5)|800(5)|0.9(1)|1585(55)|358, 359
+|Tetradecamethylcycloheptasiloxane|C14H42O7Si7|548.5|683.2(2)|0.99(2)|1634(110)|34
+|Tetradecane|C14H30|526.7(4)|693(1)|1.56(8)|870(49)|34, 244
+|Tetradecanedioic|acid|C14H26O4|639(10)|1.9(2)|253
+|Tetradecanoic|acid|C14H28O2|599(1)|763(8)|1.6(2)|921(20)|360
+|1-Tetradecanol|C14H30O|569.0(4)|743(7)|1.70(4)|887(15)|361
+|2-Tetradecanone|C14H28O|562(6)|728(9)|896(26)|256
+|3-Tetradecanone|C14H28O|552|727(6)|896(26)|256
+|4-Tetradecanone|C14H28O|552|725(6)|900(27)|256
+|7-Tetradecanone|C14H28O|552|723(8)|904(27)|256
+|1-Tetradecene|C14H28|524.3(4)|691(7)|1.58(7)|851(24)|365
+|Tetraethylene|glycol|C8H18O5|588(7)|800(30)|2.8(7)|608(31)|283
+|Tetraethylsilane|C8H20Si|426.6(7)|606(2)|2.297(10)|596.4(2)|620
+|1,2,3,4-Tetrafluorobenzene|C6H2F4|367.5(8)|550.8(2)|3.791(10)|312(22)|25
+|1,2,3,5-Tetrafluorobenzene|C6H2F4|357.5(8)|535.2(2)|3.75(1)|311(22)|25
+|1,2,4,5-Tetrafluorobenzene|C6H2F4|363.4(3)|543.3(2)|3.80(1)|309(22)|25
+|1,1,2,2-Tetrafluoro-2-(2,2-difluoroethoxy)ethane|C4H4F6O|352.13|501.08(8)|3.09(2)|356(1)|113
+|1,1,1,2-Tetrafluoroethane|C2H2F4|247.1(1)|374.2(2)|4.06(1)|200(2)|113, 182, 183, 188, 278-280, 305, 313, 315, 447, 448, 478, 621-631
+|1,1,2,2-Tetrafluoroethane|C2H2F4|253(1)|391.75(8)|4.61(1)|192(1)|178, 632
+|Tetrafluoroethene|C2F4|197(1)|307(1)|3.94(5)|183(3)|633, 634
+|1,2,2,2-Tetrafluoroethyl|difluoromethyl ether|C3H2F6O|296(2)|428.95(8)|3.05(1)|315(2)|176
+|1,1,2,2-Tetrafluoroethyl 1,1,1-trifluoroethyl|ether|C4H3F7O|329.37|463.89(7)|2.71(1)|373(1)|113
+|Tetrafluoromethane|CF4|145.3(1)|227.54(3)|3.73(3)|140(1)|506, 635
+|1,1,2,2-Tetrafluoro-3-methoxypropane|C4H6F4O|347.5|505.4(1)|3.28(1)|331(1)|113
+|1,2,2,3-Tetrafluoro-1-propanol|C3H4F4O|386.5|554(2)|3.3(2)|280(15)|362
+|1,1,2,2-Tetrafluoro-3-(1,1,2,2-tetrafluoroethoxy)propane|C5H4F8O|366.32|510.07(8)|2.58(1)|440(2)|113
+|3,4,4,4-Tetrafluoro-3-trifluoromethylbutan-2-one|C5H3F7O|328.76|468(1)|2.50(6)|409(5)|110
+|4,4,5,5-Tetrafluoro-2-trifluoromethyl-1,3-dioxolane|C4HF7O2|304.7|435(1)|2.62(7)|376(4)|110
+|Tetrahydrofuran|C4H8O|339.2(1)|540(1)|5.29(6)|223(2)|23, 241, 290
+
+6-81
+|1,2,3,4-Tetrahydronaphthalene|C10H12|480.4(3)|720(1)|3.6(1)|431(40)|144, 242, 636
+|Tetrahydropyran|C5H10O|361.2(4)|572.0(3)|4.8(2)|278(18)|75
+|Tetrahydrothiophene|C4H8S|394.3(2)|632.0(2)|5.4(6)|276(19)|143, 241
+|1,2,4,5-Tetraisopropylbenzene|C18H30|532|703(1)|1.65(2)|983(83)|317
+|1,2,4,5-Tetramethylbenzene|C10H14|470(1)|676(2)|2.9(3)|489(11)|39
+|1,1,3,3-Tetramethyl-1,3-diphenyldisiloxane|C16H22OSi2|565|750(8)|353
+|2,2,3,3-Tetramethylhexane|C10H22|433(2)|623.0(5)|2.51(6)|574(14)|536
+|2,2,5,5-Tetramethylhexane|C10H22|410(2)|581.4(5)|2.19(1)|600(14)|536
+|2,2,3,3-Tetramethylpentane|C9H20|413.4(4)|607.5(5)|2.74(3)|514(15)|536
+|2,2,3,4-Tetramethylpentane|C9H20|406.2(8)|592.6(5)|2.60(3)|517(17)|536
+|2,2,4,4-Tetramethylpentane|C9H20|395.4(10)|574.6(5)|2.49(1)|532(16)|536
+|2,3,3,4-Tetramethylpentane|C9H20|414.7(7)|607.5(5)|2.72(4)|517(17)|536
+|Tetramethylsilane|C4H12Si|299.9(5)|449(2)|2.82(1)|362(7)|637-639
+|Tetramethylstannane|C4H12Sn|350.0(10)|521.77(5)|2.98(1)|640, 641
+|Thiacyclohexane|C5H10S|414.88(4)|684(44)|6.50(7)|284(11)|104
+|Thiobis(trifluoromethane)|C2F6S|251.3|376.8(1)|3.2(5)|216(19)|442
+|Thiophene|C4H4S|357.3(1)|579.4(2)|5.7(2)|230(3)|241, 290
+|Thymol|C10H14O|506(3)|698(10)|528(21)|302
+|Toluene|C7H8|383.75(7)|591.9(2)|4.13(2)|314(7)|34, 63, 68, 74, 78, 79, 84, 86, 88, 90, 96, 163, 172, 258, 481, 636, 642-646
+|Triacontane|C30H62|724(7)|843(8)|0.6(1)|2055(69)|358
+|Tribromomethane|CHBr3|422.4(5)|682(1)|5.8(2)|261(12)|647
+|Trichloroacetyl|chloride|C2Cl4O|391.4(3)|604(2)|4.21(3)|331(54)|410
+|Trichloroethylsilane|C2H5Cl3Si|371.9(7)|559.9(6)|3.34(4)|403(5)|266
+|Trichlorofluoromethane|CCl3F|296.9(6)|471.1(2)|4.40(3)|248.0(9)|33, 34, 191, 271, 571
+|Trichloromethane|CHCl3|334.4(1)|536.0(4)|5.5(2)|237(7)|18, 27, 28, 117
+|Trichloromethylsilane|CH3Cl3Si|339(2)|517.7(3)|3.52(3)|329(9)|264, 648
+|1,3,5-Trichloro-2,4,6-trifluorobenzene|C6Cl3F3|472(27)|684.7(4)|3.3(1)|443(27)|25
+|1,1,2-Trichloro-1,2,2-trifluoroethane|C2Cl3F3|320.8(2)|487.4(2)|3.40(2)|325(1)|191, 265, 271, 649
+|Tricosane|C23H48|654(9)|790(8)|0.9(1)|1527(53)|359
+|Tridecane|C13H28|508.6(4)|676(1)|1.68(4)|824(30)|34, 244, 249
+|1-Tridecanol|C13H28O|560(8)|732(7)|1.8(2)|828(14)|361
+|2-Tridecanone|C13H26O|541(1)|717(6)|1.8(2)|820(24)|256
+|3-Tridecanone|C13H26O|539|716(5)|1.7(5)|823(24)|256
+|4-Tridecanone|C13H26O|539|712(6)|1.7(5)|823(24)|256
+|5-Tridecanone|C13H26O|539|710(8)|1.7(5)|826(17)|256
+|6-Tridecanone|C13H26O|539|709(5)|1.7(5)|826(24)|256
+|7-Tridecanone|C13H26O|539(9)|708(5)|1.7(5)|830(24)|256
+|1-Tridecene|C13H26|506.0(7)|673(7)|1.74(5)|770(17)|365
+|Tridecylbenzene|C19H32|613(4)|790(8)|1.5(1)|1079(43)|258
+|Triethylamine|C6H15N|362.0(2)|535.6(3)|3.1(3)|392(25)|117, 286
+|1,3,5-Triethylbenzene|C12H18|489.0(9)|679(2)|2.32(1)|624(60)|332
+|Triethylene|glycol|C6H14O4|561.8(2)|775(30)|3.3(2)|454(25)|283
+|Trifluoroacetonitrile|C2F3N|204.4(8)|311.1(4)|3.61(4)|202(4)|470
+|1,2,3-Trifluorobenzene|C6H3F3|368|560.3(4)|4.1(4)|296(20)|119
+|1,2,4-Trifluorobenzene|C6H3F3|363|551.1(4)|4.1(6)|297(20)|119
+|1,3,5-Trifluorobenzene|C6H3F3|350.2(5)|530.9(4)|3.8(2)|300(20)|119
+|1,1,1-Trifluoroethane|C2H3F3|226.0(1)|345.89(7)|3.77(1)|195(15)|179, 203, 309, 478, 479, 549, 624, 650-653
+|2,2,2-Trifluoroethanol|C2H3F3O|347.0(3)|498.57(5)|4.81(1)|211(12)|654, 655
+|2,2,2-Trifluoroethyl|methyl|ether|C3H5F3O|304.77|448.98(8)|3.51(6)|277(3)|176
+|Trifluoroiodomethane|CF3I|251.4(6)|396.44(6)|3.95(1)|231(3)|656-659
+|Trifluoromethane|CHF3|191.2(1)|299.00(2)|4.82(1)|133(1)|310, 606, 660-664
+|Trifluoromethyl|difluoromethyl|ether|C2HF5O|238.2(2)|354.49(6)|3.36(2)|226(20)|203
+|(Trifluoromethyl)sulfur|pentafluoride|CF8S|252.4|381.2(1)|3.4(1)|284(4)|442
+|Trifluoromethyl|1,1,2,2-tetrafluoroethyl ether| C3HF7O|269.9(10)|387.8(5)|2.65(1)|341(22)|116, 571
+|Trifluoromethyl|1,2,2,2-tetrafluoroethyl ether| C3HF7O|263.6|377.26(6)|2.62(1)|321(2)|525
+
+6-82
+|3,3,3-Trifluoro-1-propene|C3H3F3|246(4)|378.6(5)|3.61(8)|229(14)|440
+|Trimethylamine|C3H9N|276.0(2)|433.0(6)|4.08(4)|254(6)|322, 323, 665
+|1,2,3-Trimethylbenzene|C9H12|449.2(4)|664.4(1)|3.45(3)|423(11)|79
+|1,2,4-Trimethylbenzene|C9H12|442.6(3)|649.1(1)|3.3(1)|436(12)|79, 86, 96, 251
+|1,3,5-Trimethylbenzene|C9H12|437.9(3)|637.31(10)|3.13(5)|435(12)|79
+|3,7,7-Trimethyl-bicyclo[4.1.0]hept-3-ene|C10H16|445|658(2)|2.9(5)|487(10)|496
+|2,2,3-Trimethylbutane|C7H16|354.0(1)|531.3(5)|2.96(3)|401(13)|346, 349
+|Trimethylchlorosilane|C3H9ClSi|330.8(4)|497.7(6)|3.20(3)|366(6)|266
+|1α,3α,5β-1,3,5-Trimethylcyclohexane|C9H18|414(2)|602(2)|2.6(3)|494(14)|74
+|3,3,5-Trimethylheptane|C10H22|430(3)|609.5(5)|2.32(5)|583(18)|536
+|2,2,5-Trimethylhexane|C9H20|397(2)|570(2)|2.46(3)|547(18)|350
+|2,2,3-Trimethylpentane|C8H18|383.0(4)|563.5(4)|2.73(2)|442(16)|346
+|2,2,4-Trimethylpentane|C8H18|372.4(2)|543.9(4)|2.57(2)|475(20)|33, 34, 86, 159, 346, 666, 667
+|2,3,3-Trimethylpentane|C8H18|387.9(3)|573.5(4)|2.82(3)|454(14)|346
+|2,3,4-Trimethylpentane|C8H18|386.6(3)|566.4(4)|2.72(2)|462(12)|346
+|cis-Tri(methylphenyl)trisiloxane|C21H24O3Si3|824(8)|353
+|2,4,6-Trimethyl-2,4,6-triphenylcyclotrisiloxane|C21H24O3Si3|839(8)|353
+|Tris(perfluorobutyl)amine|C12F27N|451(2)|566(4)|1.24(9)|1196(66)|582
+|Undecafluorocyclohexane|C6HF11|335.2|477.7(7)|546
+|Undecane|C11H24|469.1(3)|638.8(2)|2.01(3)|683(20)|34, 86, 131, 243, 249, 363, 535
+|Undecanoic|acid|C11H22O2|553|728(7)|2.1(2)|741(20)|360
+|1-Undecanol|C11H24O|519(2)|703.0(6)|2.15(7)|707(12)|149
+|2-Undecanone|C11H22O|506.3(3)|688(2)|2.08(1)|692(20)|256
+|3-Undecanone|C11H22O|500|685(2)|2.0(4)|692(20)|256
+|4-Undecanone|C11H22O|501|681(2)|2.0(2)|692(20)|256
+|5-Undecanone|C11H22O|500|679(2)|2.0(2)|692(20)|256
+|6-Undecanone|C11H22O|500.6(5)|678(2)|2.02(1)|692(20)|256
+|Undecylbenzene|C17H28|585(3)|763(8)|1.6(1)|946(35)|258
+|Vinyl|acetate|C4H6O2|345.8(3)|519.2(2)|4.17(3)|269(7)|156, 440
+|o-Xylene|C8H10|417.6(4)|630.26(10)|3.74(1)|372(40)|34, 68, 78, 79, 88, 669
+|m-Xylene|C8H10|412.3(4)|616.9(3)|3.54(1)|377(7)|34, 68, 79, 88, 90, 106, 668
+|p-Xylene|C8H10|411.5(5)|616.17(9)|3.55(2)|372(35)|34, 68, 74, 79, 88, 90, 669
+|2,3-Xylenol|C8H10O|490.03(5)|723(1)|4.1(3)|397(15)|218
+|2,4-Xylenol|C8H10O|484.09(3)|708(1)|3.5(3)|389(15)|218
+|2,5-Xylenol|C8H10O|484.29(8)|707(1)|3.9(1)|397(15)|25
+|2,6-Xylenol|C8H10O|474.18(5)|701(1)|3.8(1)|396(15)|218
+|3,4-Xylenol|C8H10O|500.46(5)|730(1)|4.9(5)|388(15)|218
+|3,5-Xylenol|C8H10O|494.86(5)|716(1)|3.8(2)|396(15)|218
