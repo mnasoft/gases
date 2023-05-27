@@ -1,10 +1,5 @@
-;;;; web.lisp
-<<<<<<< HEAD
+;;;; ./src/web/web.lisp
 
-(in-package :cl-user)
-
-=======
->>>>>>> a6f74355141d554fc1cef78ac6c7eb24957b6563
 (defpackage :gases/web
   (:use #:cl)
   (:export html-out
@@ -208,14 +203,8 @@
 	  (make-instance 'math/matr:<matrix>
 			 :dimensions '(10 19)
 			 :initial-element nil)))
-      
-<<<<<<< HEAD
-    (loop :for i :from 0 :below (math:rows tbl-perodic-long) :do
-      (loop :for j :from 0 :below (math:cols tbl-perodic-long) :do
-=======
     (loop :for i :from 0 :below (math/matr:rows tbl-perodic-long) :do
       (loop :for j :from 0 :below (math/matr:cols tbl-perodic-long) :do
->>>>>>> a6f74355141d554fc1cef78ac6c7eb24957b6563
 	(setf (math/matr:mref tbl-perodic-long i j) nil)))
   
     (loop :for i :from 1 :to 112 :do

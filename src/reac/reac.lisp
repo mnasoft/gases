@@ -227,13 +227,10 @@
     (let ((lay-iter (make-layer-iterator (length rows))))
       (loop :for i :from 0 :to (expt 1000 (length rows)) :do
 	(let ((koeff
-<<<<<<< HEAD
-		(math/matr:row (math/ls-gauss:backward-run 
-=======
-		(math/matr:row (math/ls-gauss:solve-x 
->>>>>>> a6f74355141d554fc1cef78ac6c7eb24957b6563
-			   (set-last-col-values mm rows (funcall lay-iter))) 
-			  0)))
+		(math/matr:row
+                 (math/ls-gauss:solve-x 
+		  (set-last-col-values mm rows (funcall lay-iter))) 
+		 0)))
 	  (when (every #'(lambda (el) (and (integerp el) (plusp el)))
 		       koeff)
 	    (return koeff)))))))

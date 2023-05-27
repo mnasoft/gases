@@ -1,10 +1,6 @@
-;;;; test.lisp
+;;;; ./src/gas-dynamics/test.lisp
 
-<<<<<<< HEAD
-(in-package :gases/gas-dynamics )
-=======
 (in-package :gases/gas-dynamics)
->>>>>>> a6f74355141d554fc1cef78ac6c7eb24957b6563
 
 (defconstant +F-GT+ 0.004780 "м2")
 

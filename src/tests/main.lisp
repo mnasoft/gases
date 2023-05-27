@@ -1,8 +1,8 @@
 (defpackage :gases-tests
   (:use #:cl #:fiveam)
-  (:export #:run!
-	   #:all-tests
-	   #:test-geses))
+  (:export :run!
+	   :all-tests
+	   :test-geses))
 
 (in-package :gases-tests)
 
@@ -74,64 +74,36 @@
 (def-test component-mole-fraction-test ()
   "Проверка молярного состава."
   (with-fixture fix-gases ()
-<<<<<<< HEAD
-    (is-true (math/matr:semi-equal
-	      (gases:mole-fraction
-=======
     (is-true (math/core:semi-equal
 	      (gases/core:mole-fraction
->>>>>>> a6f74355141d554fc1cef78ac6c7eb24957b6563
 	       (gethash "N2"
 			(gases/core:<composition>-components +air+)))
 	      0.780840))
-<<<<<<< HEAD
-    (is-true (math/matr:semi-equal
-	      (gases:mole-fraction
-=======
     (is-true (math/core:semi-equal
 	      (gases/core:mole-fraction
->>>>>>> a6f74355141d554fc1cef78ac6c7eb24957b6563
 	       (gethash "O2"
 			(gases/core:<composition>-components +air+)))
 	      0.209476))
-<<<<<<< HEAD
-    (is-true (math/matr:semi-equal
-	      (gases:mole-fraction
-=======
     (is-true (math/core:semi-equal
 	      (gases/core:mole-fraction
->>>>>>> a6f74355141d554fc1cef78ac6c7eb24957b6563
 	       (gethash "CO2"
 			(gases/core:<composition>-components +air+)))
 	      0.000319))
-<<<<<<< HEAD
-    (is-true (math/matr:semi-equal
-	      (gases:mole-fraction
-=======
     (is-true (math/core:semi-equal
 	      (gases/core:mole-fraction
->>>>>>> a6f74355141d554fc1cef78ac6c7eb24957b6563
 	       (gethash "Ar"
 			(gases/core:<composition>-components +air+)))
 	      0.009365))))
 
 (def-test molar-fraction-summ-test ()
   (with-fixture fix-gases ()
-<<<<<<< HEAD
-    (is-true (math/matr:semi-equal (gases:molar-fraction-summ +air+) 1.0))
-    (is-true (math/matr:semi-equal (gases:molar-mass +air+)  28.965115))
-    (gases:culc-mass-fractions +air+)
-    (is-true (math/matr:semi-equal (gases:mass-fraction-summ +air+)  1.0))
-    (is-true (gases:check-mole-fraction +air+))
-    (is-true (gases:check-mass-fraction +air+))))
-=======
     (is-true (math/core:semi-equal (gases/core:molar-fraction-summ +air+) 1.0))
     (is-true (math/core:semi-equal (gases/core:molar-mass +air+)  28.965115))
     (gases/core:culc-mass-fractions +air+)
     (is-true (math/core:semi-equal (gases/core:mass-fraction-summ +air+)  1.0))
     (is-true (gases/core:check-mole-fraction +air+))
     (is-true (gases/core:check-mass-fraction +air+))))
->>>>>>> a6f74355141d554fc1cef78ac6c7eb24957b6563
+
 
 (def-test mix-composition-test ()
   (with-fixture fix-gases ()
@@ -143,15 +115,9 @@
 		     (gases/core:mix-composition
 		      +Ar+  0.012915987
 		      +CO2+ 4.846875e-4)
-<<<<<<< HEAD
-		   (gases:mix-composition cmp-1 mfr-1 cmp-2 mfr-2)))))
-      (is-true (math/matr:semi-equal (gases:mole-fraction (gases:reference "N2" +air+))
-				(gases:mole-fraction (gases:reference "N2" cmp)))))))
-=======
 		   (gases/core:mix-composition cmp-1 mfr-1 cmp-2 mfr-2)))))
       (is-true (math/core:semi-equal (gases/core:mole-fraction (gases/core:reference "N2" +air+))
 				(gases/core:mole-fraction (gases/core:reference "N2" cmp)))))))
->>>>>>> a6f74355141d554fc1cef78ac6c7eb24957b6563
 
 (def-test combustion-reaction-test ()
   (is-true (eq 'gases/reac:<reaction>
