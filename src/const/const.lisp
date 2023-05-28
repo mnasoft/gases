@@ -1,7 +1,7 @@
 ;;;; ./gases/src/const/const.lisp
 
 (defpackage :gases/const
-  (:use cl)
+  (:use #:cl)
   (:export +Rμ+
            +kal+
            +C-0+

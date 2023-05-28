@@ -1,5 +1,5 @@
 (defpackage :gases/docs
-  (:use #:cl ) 
+  (:use #:cl)
   (:nicknames "GASES/DOCS")
   (:export make-all)
   (:documentation "Пакет @b(ases/docs) содержит функции
