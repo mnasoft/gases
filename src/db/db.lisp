@@ -1,6 +1,6 @@
 ;;;; ./src/db/db.lisp
 
-(defpackage gases/db
+(defpackage :gases/db
   (:use cl)
   (:export <sp-rec> <sp-rec>-polynomial-exponents
            <sp-rec>-temperature-range <sp-rec>-number-coeff
@@ -13,7 +13,7 @@
   (:export get-db clear-db get-sp init-db dump dump+ dump+d->e)
   (:export *not-combasted-sp-names* *not-combasted-sp* *sp-db* *str-db*))
 
-(in-package gases/db)
+(in-package :gases/db)
 
 (defgeneric dump (reference stream)
   (:documentation "@b(Описание:) метод @b(dump) сбравывает символьное

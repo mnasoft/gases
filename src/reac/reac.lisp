@@ -1,6 +1,6 @@
 ;;;; /src/reac/reac.lisp
 
-(defpackage gases/reac
+(defpackage :gases/reac
   (:use cl gases/const gases/db gases/core)
   (:export molar-mass
            combustion-reaction 
@@ -26,7 +26,7 @@
            culc-molar-fractions
            ))
 
-(in-package gases/reac)
+(in-package :gases/reac)
 
 (defclass <reactant> ()
   ((species :accessor species :initarg :species

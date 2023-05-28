@@ -1,6 +1,6 @@
 ;;;; ./gases/src/const/const.lisp
 
-(defpackage gases/const
+(defpackage :gases/const
   (:use cl)
   (:export +Rμ+
            +kal+
@@ -10,7 +10,7 @@
            +P-normal+
            +P-standard+))
 
-(in-package gases/const)
+(in-package :gases/const)
 
 (defconstant +Rμ+ 8.31446261815324d0
   "Унинверсальная газовая постоянная [Дж/(моль*К)]")

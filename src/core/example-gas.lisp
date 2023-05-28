@@ -1,6 +1,6 @@
 ;;;; example-gas.lisp
 
-(in-package gases/core)
+(in-package :gases/core)
 
 (defparameter *N2*
   (make-instance-composition

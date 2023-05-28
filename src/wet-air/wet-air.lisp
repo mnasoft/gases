@@ -1,6 +1,6 @@
 ;;;; air.lisp
 
-(defpackage gases/wet-air
+(defpackage :gases/wet-air
   (:use cl)
   (:nicknames "W-A" "WET-AIR")
   (:export d-wet-air
@@ -38,7 +38,7 @@
 @end(code)
 ")) 
 
-(in-package gases/wet-air)
+(in-package :gases/wet-air)
 
 (defconstant +torr+ 133.322
   "@b(Описание:) константа @b(+torr+) содержит значение одного торра.

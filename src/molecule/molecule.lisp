@@ -1,7 +1,7 @@
 ;;;; classes.lisp
 
 (defpackage :gases/molecule
-  (:use cl)
+  (:use #:cl)
   (:nicknames "G/MOL")
   (:export <molecule> <molecule>-name-en-short <molecule>-formula
            <molecule>-μcp-a-b-c <molecule>-name-ru <molecule>-mass

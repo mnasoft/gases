@@ -1,7 +1,7 @@
 ;;;; gasodinamic-func.lisp
 
-(defpackage gases/gas-dynamics
-  (:use cl gases/const)
+(defpackage :gases/gas-dynamics
+  (:use #:cl #:gases/const)
 ;;  (:import-from gases/const +Rμ+ )
   (:nicknames "gas-dynamics" "g-d")
   (:export Mah-by-lambda 
@@ -25,7 +25,7 @@
            ro-by-p-t-lambda-k-mu 
            w-by-lambda-temperature ))
 
-(in-package gases/gas-dynamics)
+(in-package :gases/gas-dynamics)
 
 ;;;;
 ;;;; Число Маха - отношение скорости потока к местной скорости звука.

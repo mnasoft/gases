@@ -1,10 +1,10 @@
-(defpackage :gases-tests
+(defpackage :gases/tests
   (:use #:cl #:fiveam)
   (:export :run!
 	   :all-tests
 	   :test-geses))
 
-(in-package :gases-tests)
+(in-package :gases/tests)
 
 (def-suite all-tests
   :description "Мастер-набор всех тестов проекта gases.")

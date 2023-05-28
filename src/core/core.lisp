@@ -1,7 +1,7 @@
 ;;;; package.lisp
 
-(defpackage gases/core
-  (:use cl gases/const gases/db)
+(defpackage :gases/core
+  (:use #:cl #:gases/const #:gases/db)
   (:export molar-mass
            molar-isobaric-heat-capacity 
            molar-isochoric-heat-capacity 
@@ -46,7 +46,7 @@
 
 ;;;; gases.lisp
 
-(in-package gases/core)
+(in-package :gases/core)
 
 (defun Cp/R-old (TT a1 a2 a3 a4 a5) ; a6 a7
   "Возвращает мольную теплоемкость отнесенную к универсальной газовой постоянной.
