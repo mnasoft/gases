@@ -28,12 +28,19 @@
 
 (in-package :gases/reac)
 
-(defclass <reactant> ()
-  ((species :accessor species :initarg :species
-	    :documentation
-	    "Должен содержать объект типа <sp>.")
-   (moles-number :accessor moles-number :initarg :mole :initform nil
-		 :documentation "Количество молей реактанта, участвующих в химической реакции."))
+(defclass <reac>-<prod> ()
+    ((species
+    :accessor species :initarg :species
+    :documentation
+    "Должен содержать объект типа <sp>.")
+   (moles-number
+    :accessor moles-number :initarg :mole :initform nil
+    :documentation
+    "Количество молей реактанта или продукта, участвующих или получаемых в
+химической реакции.")))
+
+(defclass <reactant> (<reac>-<prod>)
+  ()
   (:documentation
    "Представляет реактант химической реакции."))
 
@@ -43,12 +50,8 @@
 (defmethod elements ((rt <reactant>))
   (elements (species rt)))
 
-(defclass <product> ()
-  ((species :accessor species :initarg :species
-	    :documentation
-	    "Должен содержать объект типа <sp>.")
-   (moles-number :accessor moles-number :initarg :mole :initform nil
-		 :documentation "Количество молей продукта, получаемого а результате химической реакции."))
+(defclass <product> (<reac>-<prod>)
+  ()
   (:documentation
    "Представляет продукт химической реакции."))
 
@@ -71,17 +74,26 @@
    "Представляет продукт химической реакции."))
 
 (defmethod initialize-instance :after ((react <reaction>)
-				       &key (reactant-names nil)
-					 (product-names nil))
-  (when reactant-names
-    (setf (<reaction>-reactants react)
-	  (mapcar #'(lambda (el) (make-instance '<reactant> :species (get-sp el)))
-	   reactant-names)))
-  (when product-names
-    (setf (<reaction>-products react)
-	  (mapcar #'(lambda (el) (make-instance '<product> :species (get-sp el)))
-		  product-names)))
-  (culc-koeffitients react)
+				       &key
+                                         (reactant-names nil)
+					 (product-names  nil)
+                                         (reactants nil)
+                                         (products  nil)
+                                         (culc-koeffitients t))
+  (when (and reactant-names product-names)
+    (when reactant-names
+      (setf (<reaction>-reactants react)
+	    (mapcar #'(lambda (el) (make-instance '<reactant> :species (get-sp el)))
+	            reactant-names)))
+    (when product-names
+      (setf (<reaction>-products react)
+	    (mapcar #'(lambda (el) (make-instance '<product> :species (get-sp el)))
+		    product-names)))
+    (when culc-koeffitients
+      (culc-koeffitients react)))
+  (when (and reactants products)
+    (setf (<reaction>-reactants react) reactants)
+    (setf (<reaction>-products  react)  products))
   react)
 
 (defmethod print-object ((reac <reaction>) s)
@@ -270,27 +282,32 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod thermal-effect ((rt <reactant>))
-"@b(Описание:) метод @b(thermal-effect) возвращает
- тепловой эффект при реагировании реактанта.
-"
-  (* -1
-     (moles-number rt)
-     (<sp>-heat-formation (species rt))))
+  "@b(Описание:) метод @b(thermal-effect) возвращает
+ тепловой эффект при реагировании реактанта (его исчезновении)."
+  (values
+   (* -1
+      (moles-number rt)
+      (<sp>-heat-formation (species rt)))
+   "J/mol"))
 
 (defmethod thermal-effect ((rt <product>))
-"@b(Описание:) метод @b(thermal-effect) возвращает
+  "@b(Описание:) метод @b(thermal-effect) возвращает
  тепловой эффект получении продукта химической реакции.
 "
-  (* (moles-number rt)
-     (<sp>-heat-formation (species rt))))
+  (values
+   (* (moles-number rt)
+      (<sp>-heat-formation (species rt)))
+   "J/mol"))
 
 (defmethod thermal-effect ((reac <reaction>))
-"@b(Описание:) метод @b(thermal-effect) возвращает
+  "@b(Описание:) метод @b(thermal-effect) возвращает
  тепловой эффект химической реакции.
 "
-  (apply #'+
-   (mapcar #'thermal-effect
-           (append (<reaction>-reactants reac) (<reaction>-products reac)))))
+  (values
+   (apply #'+
+          (mapcar #'thermal-effect
+                  (append (<reaction>-reactants reac) (<reaction>-products reac))))
+   "J/mol"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; combustion-reaction
@@ -299,16 +316,16 @@
   (:documentation "@b(Описание:) обобщенная_функция @b(combustion-reaction)"))
 
 (defgeneric relativ-oxigen-mass-for-burning (species)
- (:documentation "@b(Описание:) обобщенная_функция
- @b(relativ-oxigen-mass-for-burning) возвращает количество килограмм
- кислорода (кг), необходимого для сжигания одного килограмма
- топлива."))
+  (:documentation
+   "@b(Описание:) обобщенная функция @b(relativ-oxigen-mass-for-burning)
+ возвращает количество килограмм кислорода (кг), необходимого для
+ сжигания одного килограмма топлива."))
 
 (defgeneric relativ-air-mass-for-burning  (species)
   (:documentation
    "@b(Описание:) обобщенная_функция @b(relativ-air-mass-for-burning)
  возвращает количество килограмм воздуха (кг), необходимого для
- сжигания одного килограмма топлива. "))
+ сжигания одного килограмма топлива."))
 
 (defgeneric wobber-hight (species)
   (:documentation
@@ -328,14 +345,14 @@
 (defgeneric Q-work-low (species)
   (:documentation
    "@b(Описание:) обобщенная_функция @b(Q-work-low) возвращает низшую
- теплотворную способность топлива кДж/кг. "))
+ теплотворную способность топлива кДж/кг."))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod combustion-reaction ((sp <sp>))
-"@b(Описание:) метод @b(combustion-reaction) возвращает реакцию горения
-компонента в кислороде.
-В хештаблице *not-combasted-sp* сохраняются негорючие компоненты.
+  "@b(Описание:) метод @b(combustion-reaction) возвращает реакцию
+горения компонента в кислороде.  В хештаблице *not-combasted-sp*
+сохраняются негорючие компоненты.
 
  @b(Пример использования:)
 @begin[lang=lisp](code)
@@ -419,30 +436,44 @@
 ;;;; Q-work-low
 
 (defmethod Q-work-low ((sp <sp>))
-"@b(Описание:) метод @b(Q-work-low) 
+  " @b(Пример использования:)
+@begin[lang=lisp](code)
+  (gases/reac:q-work-low (get-sp \"H2\"))
+  => -119960.51352263031d0, \"kJ/kg\"
+@end(code)
 "
   (let* ((reac-combustion (combustion-reaction sp))
 	 (reactants (<reaction>-reactants reac-combustion))
 	 (fuel   (first reactants)))
-    (/ (thermal-effect reac-combustion)
+    (values
+     (/ (thermal-effect reac-combustion)
        (moles-number fuel)
-       (molar-mass (species fuel)))))
+       (molar-mass (species fuel)))
+     "kJ/kg")))
 
 (defmethod Q-work-low ((c-t <component>))
 "@b(Описание:) метод @b(Q-work-low)
 "
-  (* (mass-fraction c-t)
-     (Q-work-low (species c-t))))
+  (values
+   (* (mass-fraction c-t)
+      (Q-work-low (species c-t)))
+   "kJ/kg"))
 
 (defmethod Q-work-low ((c-n <composition>))
-"@b(Описание:) метод @b(Q-work-low)
-"
+  "@b(Описание:) метод @b(Q-work-low)
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+  (gases/reac:q-work-low
+   (make-instance-composition '((\"H2\" 0.2) (\"CH4\" 0.80))))
+  => -52157.383798196955d0, \"kJ/kg\"
+@end(code)"
   (let ((rez 0.0))
     (maphash #'(lambda (key value)
 		 (declare (ignore key))
 		 (setf rez (+ rez (Q-work-low value))))
 	     (<composition>-components c-n))
-    rez))
+    (values rez "kJ/kg")))
 
 (defmethod Q-volume-low ((sp <sp>) pressure temperature)
   (* (Q-work-low sp) (density sp pressure temperature)))
@@ -514,3 +545,32 @@
 (defmethod wobber-hight ((c-n <composition>))
   (error "Not defined")
   )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod gases/core:molar-enthalpy ((x <reac>-<prod>) temperature)
+  "Возвращает мольную энтальпию muΗ, [J/mol]"  
+  (values
+   (* (moles-number x)
+      (molar-enthalpy
+       (species x)
+       temperature))
+   "J/mol"))
+
+(defmethod gases/core:molar-enthalpy ((x cons) temperature)
+  (apply #'+
+         (mapcar #'(lambda (el)
+                     (molar-enthalpy el temperature))
+                 x)))
+
+(defmethod gases/core:temperature-by-molar-enthalpy ((x cons) molar-enthalpy)
+  "Значение возвращается в Кельвинах [K].
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (temperature-by-molar-enthalpy *air* 0.0)
+ => 298.1499, T, 1.5258789e-4, 2.9914992e-4
+@end(code)
+"
+  (labels ((func (temperature x)
+             (- (molar-enthalpy x temperature) molar-enthalpy)))
+    (math/half-div:h-div-lst 200.0 6000.0 #'func 0 (list t x))))
