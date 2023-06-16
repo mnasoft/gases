@@ -4,26 +4,44 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(relativ-air-mass-for-burning (make-instance-composition '(("CH4" 0.9) ("H2" 0.1))))
+(gases/reac:relativ-air-mass-for-burning
+ (make-instance-composition
+  '(("CH4" 0.0) ("H2" 1.0))))
 
-(molar-mass (make-instance-composition '(("CH4" 1.0) ("H2" 0.0))))
+(molar-mass
+ (make-instance-composition
+  '(("CH4" 1.0) ("H2" 0.0))))
 
-(density (make-instance-component "CH4" 1.0) 101325.0 273.)
-(density (make-instance-composition '(("CH4" 0.8) ("H2" 0.2))) 101325.0 273.)
-(density (make-instance-composition '(("CH4" 0.9) ("H2" 0.1))) 101325.0 273.)
-(density (make-instance-composition '(("CH4" 0.95) ("H2" 0.05))) 101325.0 273.)
+(density
+ (make-instance-component "CH4" 1.0) 101325.0 273.)
+
+(density
+ (make-instance-composition
+  '(("CH4" 0.8) ("H2" 0.2)))
+ 101325.0 273.)
+
+(density
+ (make-instance-composition
+  '(("CH4" 0.9) ("H2" 0.1)))
+ 101325.0 273.)
+
+(density
+ (make-instance-composition
+  '(("CH4" 0.95) ("H2" 0.05)))
+ 101325.0 273.)
 
 
-(density (get-sp "H2") *p-normal*   *t-normal*)
+(density (get-sp "H2") *p-normal*   +c-0+ )
 (density (get-sp "CH4") *p-normal*  293.15)
 
-(combustion-reaction (get-sp "C2H4"))
+(gases/reac:combustion-reaction (get-sp "C2H4"))
 
 
+(gases/reac:q-work-low (get-sp "H2"))
+(gases/reac:q-work-low (get-sp "CH4"))
 
-(Q-work-low (get-sp "H2"))
-(Q-work-low (make-instance-component "H2" 0.030457929595689225d0  :mass))
-(Q-work-low (make-instance-composition '(("H2" 0.2) ("CH4" 0.80))))
+(gases/reac:q-work-low (make-instance-component "H2" 0.030457929595689225d0  :mass))
+(gases/reac:q-work-low (make-instance-composition '(("H2" 0.2) ("CH4" 0.80))))
 
 (wobber-low (make-instance-composition '(("H2" 0.2) ("CH4" 0.80))))
 
@@ -35,18 +53,13 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defparameter *c-n* (make-instance-composition '(("H2" 0.95) ("CH4" 0.05))))
+(type-of *c-n*)
 
-
-(relativ-air-mass-for-burning *c-n*)
-(thermal-effect )
+(gases/reac:relativ-air-mass-for-burning *c-n*)
+(gases/reac:thermal-effect *c-n* )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
-@annot.doc:doc
-"
-"
 (defun select (&key atoms designation description)
   (when atoms
     (maphash
@@ -77,35 +90,32 @@
 (gases/db:dump (get-sp "NH3") t )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(check-sp "Air")
+(gases/db::check-sp (get-sp "N2PO"))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defparameter *rt*  
-  (make-instance '<reactant> :species (get-sp "H2O") :mole 2))
+  (make-instance 'gases/reac:<reactant> :species (get-sp "H2O") :mole 2))
 
+(type-of *rt*)
 (molar-mass *rt*)
 
-(thermal-effect *rt*)
+(gases/reac:thermal-effect *rt*)
 
 (<sp>-heat-formation (species *rt*))
 
 
 
 (defparameter *reac*
-  (make-instance '<reaction> :reactant-names '("C2H5OH" "O2") :product-names '("H2O" "CO2")))
+  (make-instance 'gases/reac:<reaction> :reactant-names '("C2H5OH" "O2") :product-names '("H2O" "CO2")))
 
 (defparameter *reac*
-  (make-instance '<reaction> :reactant-names '("C2H5OH" "O2") :product-names '("H2O(L)" "CO2")))
+  (make-instance 'gases/reac:<reaction> :reactant-names '("C2H5OH" "O2") :product-names '("H2O(L)" "CO2")))
 
 (defparameter *reac*
-  (make-instance '<reaction> :reactant-names '("H2" "O2") :product-names '("H2O")))
+  (make-instance 'gases/reac:<reaction> :reactant-names '("H2" "O2") :product-names '("H2O")))
 
 (defparameter *reac*
-  (make-instance '<reaction> :reactant-names '("CH4" "O2") :product-names '("H2O(L)" "CO2")))
-
-(thermal-effect *reac*)
-
-(culc-koeffitients *reac*)
+  (make-instance 'gases/reac:<reaction> :reactant-names '("CH4" "O2") :product-names '("H2O(L)" "CO2")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -263,48 +273,130 @@
   (defparameter *X-N2* (/ (* *G-ΟK* *G-N2*)  *mu-OK*)) ; => 275.17096 моль/с N2
   )
 
-(*X-O2* *X-CH4*)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(/ (* *X-O2* *mu-O2*) (+ (* *X-O2* *mu-O2*) (* *X-N2* *mu-N2*) (* *X-CH4* *mu-CH4*)))  ; => 0.2515597486500869d0 (25.15597486500869d0%)
+(defparameter *reac*
+  (make-instance 'gases/reac:<reaction> :reactant-names '("H2" "O2") :product-names '("H2O")))
 
-(+ (* 83.12455 0.032) (* 275.17096 0.028))
+(gases/reac:thermal-effect *reac*)
 
-(/ *X-O2* *X-CH4*)
+(+
+ (* 2.0 (molar-enthalpy (get-sp "H2") 298.15))
+ (molar-enthalpy (get-sp "O2") (+ 298.15 400.0)))
+;=> 12439.059
+
+(<sp>-heat-formation (get-sp "O2"))
+
+(<sp>-heat-formation (get-sp "H2O"))
+;=> (+ 12439.058830211387d0 -483652.0d0)   ; =>
+
+(gases/reac:thermal-effect *reac*) ;  (/ -483652.0 2)  -241826.0 "J"
+(gases/reac:q-work-low (get-sp "H2"))
+
+(/ -471212.9411697886d0 2) 
+
+(temperature-by-molar-enthalpy (get-sp "H2O") -126965.5633264229d0)
+
+(molar-enthalpy (get-sp "H2O") (+ 2500 273.15)) ; => -126965.5633264229d0, "J/mol"
+
+(molar-enthalpy (get-sp "H2O") 298.15) ; -241824.623 "J/mol"
+
+(molar-enthalpy (get-sp "H2O")  (+ 298.15    0.0))  ; => -241824.62351031243d0, "J/mol"
+(molar-enthalpy (get-sp "H2O")  (+ 298.15  400.0))  ; => -227702.0265908651d0, "J/mol"
+
+(gases/reac:<reaction>-reactants *reac*)
+(car (gases/reac:<reaction>-products *reac*))
+
+(culc-koeffitients *reac*)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;; 2*H2 + 1*O2 => 2*H2O
+;;;; 2*0.2091*H2 + 0.2091*O2 + 0.7909*N2 => 2*0.2091*H2O + 0.7909*N2
+
+(/ 0.4182 (+ 0.4182 0.7909)) ; => 0.34587708 (34.587708%)
+(/ 0.7909 (+ 0.4182 0.7909)) ; => 0.65412292 (65.412292%)
+
+(defparameter *reac* 
+  (make-instance 'gases/reac:<reaction>
+                 :reactant-names '("H2" "O2")
+                 :product-names '("H2O")))
+
+*reac*  
+
+(gases/reac:thermal-effect *reac*)  ; => -483652.0d0, "J"
+
+(* -1 0.34587708 1/2 (gases/reac:thermal-effect *reac*))  ; => 83642.07102757692d0
+
+(defparameter *H2+AIR+product*
+  (make-instance-composition
+   `(("H2O" 0.34587708)
+     ("N2"  0.65412292))))
+
+(molar-enthalpy *H2+AIR+product* 273.15)   ; => -84407.78859927837d0, "J/mol"
+
+(- (temperature-by-molar-enthalpy
+    *H2+AIR+product*
+    (+ (molar-enthalpy *H2+AIR+product* 273.15)
+       (* -1
+          0.34587708 1/2
+          (gases/reac:thermal-effect *reac*))))
+   273.15) ; => 2221.8362
 
 
-(/ 0.35829127  0.013075)  ; => 27.402775
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; 1*CH4 + 2*O2 => 2*H2O + 1*CO2
+;;;; 0.5*0.2091*CH4 + 0.2091*O2 + 0.7909*N2 => 0.2091*H2O + 0.5*0.2091*CH4  + 0.7909*N2
 
-(* 0.20914815553254193 27.402775)  ; => 5.73124 моль O2
-                                        ; => 5.777447 моль O2
+(defparameter *reac*
+  (make-instance 'gases/reac:<reaction>
+                 :reactant-names '("CH4" "O2")
+                 :product-names  '("H2O" "CO2")))
 
-(* 0.7908518444674582 27.402775) ; => 21.671535
-                                        ; => 21.84626  моль Ν2
+*reac*  ; => 1*CH4 + 2*O2 => 2*H2O + 1*CO2
 
-5.73124
+(defparameter *reac* 
+  (make-instance 'gases/reac:<reaction>
+                 :reactants
+                 (list 
+                  (make-instance 'gases/reac:<reactant>
+                                 :species (get-sp "CH4")
+                                 :mole (* 0.5 0.2091))
+                  (make-instance 'gases/reac:<reactant>
+                                 :species (get-sp "O2")
+                                 :mole (* 1.0 0.2091))
+                  (make-instance 'gases/reac:<reactant>
+                                 :species (get-sp "N2")
+                                 :mole (* 1.0 0.7909)))
+                 :products
+                 (list 
+                  (make-instance 'gases/reac:<product>
+                                 :species (get-sp "H2O")
+                                 :mole (* 1.0 0.2091))
+                  (make-instance 'gases/reac:<product>
+                                 :species (get-sp "CH4")
+                                 :mole (* 0.5 0.2091))
+                  (make-instance 'gases/reac:<reactant>
+                                 :species (get-sp "N2")
+                                 :mole (* 1.0 0.7909)))))
 
-(/
- (* (- 5.73124 2.0) 32)
- (- (+ 44.0 36.0 (* (- 5.73124 2.0) 32) (* 21.671535 28)) 16.0))
-
-(/
- (* (- 5.73124 2.0) 32)
- (+ 44.0 36.0 (* (- 5.73124 2.0) 32) (* 21.671535 28)))
- ; => 0.14810131 (14.810131%)
-                                        ; => 0.14810131 (14.810131%)
-
-(/
- (* 3.777447 32)
- (+ 44.0 36.0 (* 3.777447 32) (* 21.84626 28)))  ; => 0.14875983 (14.875982%)
-
-(/
- (- 0.232 0.14860)
- (- 0.232 0.14810131)) ; => 0.99405617 (99.40562%)
+(molar-enthalpy (gases/reac:<reaction>-reactants *reac*) 2298.15) ; => -7799.385660305199d0
+(molar-enthalpy (gases/reac:<reaction>-products  *reac*) 298.15) ; => -58364.91254359074d0
 
 
-(/ 210 15.0)
-                                        ; => 14.0
 
-(/ 60.0 14.0)
 
-(* 2300 (/ 4.5 60.0 24))  ; => 7.1875
-                                        ; => 172.5
+(gases/reac:thermal-effect *reac*) ; => -802562.0d0, "J/mol"
+
+(temperature-by-molar-enthalpy
+ (gases/reac:<reaction>-products *reac*)
+ (- (+ (molar-enthalpy (gases/reac:<reaction>-products  *reac*) 298.15)
+       (- (molar-enthalpy (gases/reac:<reaction>-reactants *reac*) (+ 298.15 500.0))
+          (molar-enthalpy (gases/reac:<reaction>-reactants *reac*) (+ 298.15 0.0)))
+       )
+    (gases/reac:thermal-effect *reac*)))
+
+
+(<sp>-heat-formation (get-sp "CH4"))
+

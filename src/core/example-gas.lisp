@@ -2,6 +2,17 @@
 
 (in-package :gases/core)
 
+(defparameter *air*
+  (make-instance-composition
+   `(("N2" ,(/ 76.8 100))
+     ("O2" ,(/ 23.2 100)))
+   :mass
+   ))
+
+(molar-enthalpy *air* (+ +C-0+ 25.0))
+
+(molar-mass *air*)
+
 (defparameter *N2*
   (make-instance-composition
    `(("N2" ,(/ 100. 100)))))

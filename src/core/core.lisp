@@ -3,9 +3,11 @@
 (defpackage :gases/core
   (:use #:cl #:gases/const #:gases/db)
   (:export molar-mass
-           molar-isobaric-heat-capacity 
-           molar-isochoric-heat-capacity 
-           molar-enthalpy 
+           molar-isobaric-heat-capacity
+           molar-isochoric-heat-capacity)
+  (:export mass-isochoric-heat-capacity 
+           mass-isobaric-heat-capacity)
+  (:export molar-enthalpy 
            molar-entropy 
            adiabatic-index 
            molar-fraction-summ 
@@ -20,6 +22,7 @@
            insert 
            density 
            density-relative)
+  (:export temperature-by-molar-enthalpy)
   (:export cp/r-old
            h/rt-old
            s/r-old)
@@ -107,11 +110,11 @@ Cp/R = a1 T^-2 + a2 T^-1 + a3 + a4 T + a5 T^2 + a6 T^3 + a7 T^4    (4.9)
      (* a7 TT TT TT TT)))
 
 (defun H/RT-new (TT a1 a2 a3 a4 a5 a6 a7 a8 ) ; a9
-  "Возвращает мольную энтальпию отнесенную к универсальной газовой постоянной и абсолютной температуре.
-см.
-https://www.grc.nasa.gov/www/CEAWeb/RP-1311.pdf p.20
-The NASA new polynomials have the form:
-H/RT = -a1 T^-2 + a2 T^-1 ln T + a3 T^2 /3 + a4 T /2 + a5 T^2 /3 + a6 T^3 /4 + a7 T^4 /5 + a8/T    (4.10)
+  "Возвращает мольную энтальпию отнесенную к универсальной газовой
+постоянной и абсолютной температуре.
+см. https://www.grc.nasa.gov/www/CEAWeb/RP-1311.pdf p.20 The NASA new
+polynomials have the form: H/RT = -a1 T^-2 + a2 T^-1 ln T + a3 T^2 /3
++ a4 T /2 + a5 T^2 /3 + a6 T^3 /4 + a7 T^4 /5 + a8/T (4.10)
 "  
   (+ (/ a1 TT TT -1)
      (* a2 (/ TT) (log TT))
@@ -293,8 +296,17 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 - в зависимости от температуры (temperature), [K]."))
 
 (defgeneric molar-isochoric-heat-capacity (species temperature)
-  
   (:documentation "Возвращает мольную изохорую теплоемкость 
+- для класса species
+- в зависимости от температуры (temperature), [K]"))
+
+(defgeneric mass-isobaric-heat-capacity (species temperature)
+  (:documentation "Возвращает массовую изобарную теплоемкость 
+- для класса species
+- в зависимости от температуры (temperature), [K]."))
+
+(defgeneric mass-isochoric-heat-capacity (species temperature)
+  (:documentation "Возвращает массовую изохорую теплоемкость 
 - для класса species
 - в зависимости от температуры (temperature), [K]"))
 
@@ -302,6 +314,12 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
   (:documentation "Возвращает мольную энтальпию 
 - для класса species
 - в зависимости от температуры (temperature), [K]."))
+
+(defgeneric temperature-by-molar-enthalpy (species molar-enthalpy)
+  (:documentation "Возвращает температуру для 
+- для класса species
+- в зависимости от мольной энтальпии (molar-enthalpy), [J/mol].")
+  )
 
 (defgeneric molar-entropy (species temperature)
   (:documentation "Возвращает мольную энтальпию 
@@ -311,8 +329,7 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 (defgeneric adiabatic-index (species temperature)
   (:documentation "Возвращает показатель адиабаты
 - для класса species
-- в зависимости от температуры (temperature), [K]"
-		  ))
+- в зависимости от температуры (temperature), [K]"))
 
 (defgeneric molar-fraction-summ (species)
   (:documentation "Возвращает сумму мольных долей смеси газов
@@ -335,7 +352,7 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 
 (defgeneric reference (key container)
   (:documentation "Получает ссылку на элемент, находящийся в
-  конлейнере по ключу."))
+  контейнере по ключу."))
 
 (defgeneric elemental-mass-fraction (reference)
   (:documentation "@b(Описание:) метод @b(elemental-mass-fraction)
@@ -409,42 +426,59 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 		 (declare (ignore key))
 		 (push (molar-mass value) rez))
 	     (<composition>-components x))
-    (apply #'+ rez)))
+    (values (apply #'+ rez) "[g/mol]")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-isobaric-heat-capacity
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod molar-isobaric-heat-capacity ((x <sp-rec>) temperature)
-"Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]"
-  (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7)  (values-list (<sp-rec>-coefficients x))
-    (* +Rμ+ (Cp/R-new temperature a1 a2 a3 a4 a5 a6 a7))))
+  "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]
+"
+  (values
+   (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7)  (values-list (<sp-rec>-coefficients x))
+     (* +Rμ+ (Cp/R-new temperature a1 a2 a3 a4 a5 a6 a7)))
+   "J/(mol*K)"))
 
 (defmethod molar-isobaric-heat-capacity ((x <sp>) temperature)
-"Возвращает мольную изобарную теплоемкость muCp, [kJ/(mol*K)]"
-  (molar-isobaric-heat-capacity
+  "@b(Описание:) метод @b(molar-isobaric-heat-capacity) возвращает
+мольную изобарную теплоемкость muCp, [J/(mol*K)].
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (molar-isobaric-heat-capacity (gases/db:get-sp \"N2\" ) (+ +c-0+ 25.0))
+ => 29.124184357365994d0, \"J/(mol*K\"
+ (molar-isobaric-heat-capacity (gases/db:get-sp \"O2\" ) (+ +c-0+ 25.0))
+ => 29.378185929015267d0, \"J/(mol*K\"
+  
+@end(code)"
+  (values
+   (molar-isobaric-heat-capacity
    (find-if
     #'(lambda (el)
 	(multiple-value-bind (a b) (values-list (<sp-rec>-temperature-range el))
 	  (<= a temperature b)))
     (<sp>-reccords x))
-   temperature))
+   temperature)
+   "J/(mol*K)"))
 
 (defmethod molar-isobaric-heat-capacity ((x <component>) temperature)
-"Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]"
-  (* (mole-fraction  x)
-     (molar-isobaric-heat-capacity
-      (species x)
-      temperature)))
+  "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]"
+  (values
+   (* (mole-fraction  x)
+      (molar-isobaric-heat-capacity
+       (species x)
+       temperature))
+   "J/(mol*K)"))
 
 (defmethod molar-isobaric-heat-capacity ((x <composition>) temperature)
-"Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]" 
+  "Возвращает мольную изобарную теплоемкость muCp, [J/(mol*K)]" 
   (let ((rez nil))
     (maphash #'(lambda (key value)
 		 (declare (ignore key))
 		 (push (molar-isobaric-heat-capacity value temperature) rez))
 	     (<composition>-components x))
-    (apply #'+ rez)))
+    (values (apply #'+ rez) "J/(mol*K)")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-isochoric-heat-capacity                                                           ;;;;
@@ -455,64 +489,139 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
   (- (molar-isobaric-heat-capacity x temperature) +Rμ+))
 
 (defmethod molar-isochoric-heat-capacity ((x <sp>) temperature)
-"Возвращает мольную изохорную теплоемкость muCv, [kJ/(mol*K)]"
-  (- (molar-isobaric-heat-capacity x temperature) +Rμ+))
+  "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (molar-isochoric-heat-capacity (gases/db:get-sp \"N2\") (+ +c-0+ 25.0))
+ => 20.809721739212755d0, \"J/(mol*K)\"
+ (molar-isochoric-heat-capacity (gases/db:get-sp \"O2\") (+ +c-0+ 25.0))
+ => 21.063723310862027d0, \"J/(mol*K)\"
+@end(code)"
+  (values
+   (- (molar-isobaric-heat-capacity x temperature) +Rμ+)
+   "J/(mol*K)"))
 
 (defmethod molar-isochoric-heat-capacity ((x <component>) temperature)
-"Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]" 
-  (* (mole-fraction x)
-     (molar-isochoric-heat-capacity
-      (species x)
-      temperature)))
+  "Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]" 
+  (values (* (mole-fraction x)
+             (molar-isochoric-heat-capacity
+              (species x)
+              temperature))
+          "J/(mol*K)"))
 
 (defmethod molar-isochoric-heat-capacity ((x <composition>) temperature)
-"Возвращает мольную изохорную теплоемкость muCv, [J/(mol*K)]"
+  "@b(Описание:) метод @b(molar-isochoric-heat-capacity) возвращает
+мольную изохорную теплоемкость muCv, [J/(mol*K)].
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (let ((air (make-instance-composition
+             `((\"N2\" ,(/ 76.8 100))
+               (\"O2\" ,(/ 23.2 100)))
+             :mass)))
+   (molar-isochoric-heat-capacity air (+ +c-0+ 25.0)))
+@end(code)
+"
   (let ((rez nil))
     (maphash #'(lambda (key value)
 		 (declare (ignore key))
 		 (push (molar-isochoric-heat-capacity value temperature) rez))
 	     (<composition>-components x))
-    (apply #'+ rez)))
+    (values (apply #'+ rez) "J/(mol*K)")))
+
+(defmethod mass-isobaric-heat-capacity ((x <composition>) temperature)
+  "@b(Описание:) метод @b(mass-isochoric-heat-capacity) возвращает
+массовую изохорную теплоемкость Cv, [kJ/(kg*K)].
+"
+  (values
+   (/ (molar-isobaric-heat-capacity x temperature)
+      (molar-mass x))
+   "kJ/(kg*K)"))
+
+(defmethod mass-isochoric-heat-capacity ((x <composition>) temperature)
+  "@b(Описание:) метод @b(mass-isochoric-heat-capacity) возвращает
+массовую изохорную теплоемкость Cv, [kJ/(kg*K)].
+"
+  (values
+   (/ (molar-isochoric-heat-capacity x temperature)
+      (molar-mass x))
+   "kJ/(kg*K)"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-enthalpy                                                                          ;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod molar-enthalpy ((x <sp-rec>) temperature)
-"Возвращает мольную энтальпию muΗ, [J/(mol*K)]"
-  (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7 a8)
-      (values-list
-       (concatenate
-	'list
-	(<sp-rec>-coefficients x)
-	(list (first (<sp-rec>-integration-constants x)))))
-    (* +Rμ+ temperature (H/RT-new temperature a1 a2 a3 a4 a5 a6 a7 a8))))
+  "Возвращает мольную энтальпию muΗ, [J/mol]"
+  (values
+   (multiple-value-bind (a1 a2 a3 a4 a5 a6 a7 a8)
+       (values-list
+        (concatenate
+	 'list
+	 (<sp-rec>-coefficients x)
+	 (list (first (<sp-rec>-integration-constants x)))))
+     (* +Rμ+ temperature (H/RT-new temperature a1 a2 a3 a4 a5 a6 a7 a8)))
+   "J/mol"))
 
 (defmethod molar-enthalpy ((x <sp>) temperature)
-"Возвращает мольную энтальпию muΗ, [J/(mol*K)]"
-  (molar-enthalpy
-   (find-if
-    #'(lambda (el)
-	(multiple-value-bind (a b) (values-list (<sp-rec>-temperature-range el))
-	  (<= a temperature b)))
-    (<sp>-reccords x))
-   temperature))
+  "Возвращает мольную энтальпию muΗ, [J/mol]"
+  (values
+   (molar-enthalpy
+    (find-if
+     #'(lambda (el)
+	 (multiple-value-bind (a b) (values-list (<sp-rec>-temperature-range el))
+	   (<= a temperature b)))
+     (<sp>-reccords x))
+    temperature)
+   "J/mol"))
 
 (defmethod molar-enthalpy ((x <component>) temperature)
-"Возвращает мольную энтальпию muΗ, [J/(mol*K)]"  
-  (* (mole-fraction x)
-     (molar-enthalpy
-      (species x)
-      temperature)))
+  "Возвращает мольную энтальпию muΗ, [J/mol]"  
+  (values
+   (* (mole-fraction x)
+      (molar-enthalpy
+       (species x)
+       temperature))
+   "J/mol"))
 
 (defmethod molar-enthalpy ((x <composition>) temperature)
-"Возвращает мольную энтальпию muΗ, [J/(mol*K)]"
+"Возвращает мольную энтальпию muΗ, [J/mol]"
   (let ((rez nil))
     (maphash #'(lambda (key value)
 		 (declare (ignore key))
 		 (push (molar-enthalpy value temperature) rez))
 	     (<composition>-components x))
-    (apply #'+ rez)))
+    (values (apply #'+ rez) "J/mol")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;    temperature-by-molar-enthalpy                                                           ;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defmethod temperature-by-molar-enthalpy ((sp <sp>) molar-enthalpy)
+  "Значение возвращается в Кельвинах [K].
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (temperature-by-molar-enthalpy (get-sp \"O2\") 4000.0)
+ => 432.1808, T, 3.3569336e-4, 4.331808e-4
+@end(code)"
+  (labels ((func (temperature sp)
+             (- (molar-enthalpy sp temperature) molar-enthalpy)))
+    (math/half-div:h-div-lst 200.0 6000.0 #'func 0 (list t sp))))
+
+(defmethod temperature-by-molar-enthalpy ((cmp <composition>) molar-enthalpy)
+  "Значение возвращается в Кельвинах [K].
+
+ @b(Пример использования:)
+@begin[lang=lisp](code)
+ (temperature-by-molar-enthalpy *air* 0.0)
+ => 298.1499, T, 1.5258789e-4, 2.9914992e-4
+@end(code)
+"
+  (labels ((func (temperature cmp)
+             (- (molar-enthalpy cmp temperature) molar-enthalpy)))
+    (math/half-div:h-div-lst 200.0 6000.0 #'func 0 (list t cmp))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;    molar-entropy                                                                           ;;;;
@@ -671,7 +780,7 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defmethod mass-molar ((x <composition>))
-"@b(Описание:) метод @b(mass-molar) вспомогательный.
+  "@b(Описание:) метод @b(mass-molar) вспомогательный.
 Используется в @b(culc-molar-fractions).
 "
   (let ((rez nil))
