@@ -4,7 +4,29 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defparameter *gas*
+  (gases/core:make-instance-composition
+   '(
+     ("CO2"             0.1088 )
+     ("N2"              0.0095 )
+     ("H2O"             0.0021 )
+     ("CH4"             0.6726 ) ; 0.6724 
+     ("C2H6"            0.1020 )
+     ("C3H8"            0.0478 )
+     ("C4H10,isobutane" 0.0116 )
+     ("C4H10,n-butane"  0.0214 )
+     ("C5H12,i-pentane" 0.0094 )
+     ("C5H12,n-pentane" 0.0083 )
+     ("C6H14,n-hexane"  0.0057 )
+     ("C7H16,n-heptane" 0.0008 ))))
+
+(gases/reac:relativ-air-mass-for-burning *gas*)
+
 (gases/reac:relativ-air-mass-for-burning
+ (make-instance-composition
+  '(("CH4" 0.0) ("H2" 1.0))))
+
+(gases/reac:relativ-oxigen-mass-for-burning
  (make-instance-composition
   '(("CH4" 0.0) ("H2" 1.0))))
 
@@ -31,8 +53,8 @@
  101325.0 273.)
 
 
-(density (get-sp "H2") *p-normal*   +c-0+ )
-(density (get-sp "CH4") *p-normal*  293.15)
+(density (get-sp "H2") +p-normal+   +c-0+ )
+(density (get-sp "CH4") +p-normal+  293.15)
 
 (gases/reac:combustion-reaction (get-sp "C2H4"))
 

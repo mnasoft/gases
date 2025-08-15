@@ -382,7 +382,10 @@ S/R  = -a1 T^-2 /2 - a2 T^-1 + a3 lnT + a4 T + a5 T^2 /2 + a6 T^3 /3 + a7 T^4 /4
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; defmethods.lisp
-;;;; molar-mass 
+;;;; molar-mass
+
+(defmethod molar-mass ((arg (eql nil)))
+  0)
 
 (defmethod molar-mass ((x <sp>))
 "Возвращает молекулярную массу, [g/mol]

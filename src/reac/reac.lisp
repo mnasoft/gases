@@ -24,7 +24,9 @@
   (:export elements
            moles-number
            culc-molar-fractions
-           ))
+           )
+  (:export *air*)
+  )
 
 (in-package :gases/reac)
 
